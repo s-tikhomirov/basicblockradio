@@ -11,6 +11,8 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - AAVE
 - Aave
 - Acki Nacki
+- Golem
+- Jito
 - Amper Computing
 - Arbitrum
 - Binance
@@ -40,6 +42,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - Spark
 - Stakehound
 - stETH
+- Tezos
 - Tornado Cash
 - Zerion
 
@@ -48,6 +51,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - API
 - APR
 - blue chip
+- capital efficiency
 - collateral
 - curated vaults
 - DAO
@@ -75,9 +79,12 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - withdrawal queue
 
 ### People and Organizations
+- 21Shares
 - Ethereum Foundation
 - Lazarus Group
+- Oracle (в значении компании)
 - SEC
+- WisdomTree
 
 ---
 
@@ -109,6 +116,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - Виталик
 - кофаундер
 - проаудированный
+- вход рубль, выход два = вход рубль, выход два (idiom for expensive entry/exit)
 
 ---
 
@@ -124,6 +132,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 |-------|------|-------|
 | stETH | staked ETH | Liquid staking token |
 | LDO | Lido DAO Token | Governance token |
+| LST | Liquid Staking Token | Generic term for liquid staking tokens |
 | EPR | Effective Percentage Rate | Staking yield metric |
 | MEV | Maximal Extractable Value | Block production profit |
 | KYC | Know Your Customer | Identity verification |
@@ -145,12 +154,15 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 - биткоин = Bitcoin
 - биткойн = Bitcoin
 - байнэнс = Binance
+- бикончейн = beacon chain
 - Виталик = Виталик Бутерин
 - волт = vault
 - гovernance = governance
+- капитал-эффективность = capital efficiency
 - дапп = dapp
 - ДАО = DAO
 - дефи = DeFi
+- децентрализованно = decentrally
 - депег = depeg
 - деплой = deploy
 - документация = documentation
@@ -163,6 +175,7 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 - лендинг = lending
 - ликвидность = liquidity
 - ликвидный стейкинг = liquid staking
+- moat = moat (экономический ров, конкурентное преимущество)
 - мейннет = mainnet
 - минтинг = minting
 - нод-оператор = node operator
