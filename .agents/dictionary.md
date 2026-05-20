@@ -138,9 +138,57 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 
 ---
 
+## Equivalent Terms (Alternative Spellings)
+
+Terms that are equivalent and should not be flagged as discrepancies during SRT comparison. Format: `alternative form = canonical form`
+
+- биткоин = Bitcoin
+- биткойн = Bitcoin
+- байнэнс = Binance
+- Виталик = Виталик Бутерин
+- волт = vault
+- гovernance = governance
+- дапп = dapp
+- ДАО = DAO
+- дефи = DeFi
+- депег = depeg
+- деплой = deploy
+- документация = documentation
+- доллар = USD
+- интерфейс = interface
+- коммьюнити = community
+- конфа = конференция
+- крипта = криптовалюта
+- крипто = криптовалютный
+- лендинг = lending
+- ликвидность = liquidity
+- ликвидный стейкинг = liquid staking
+- мейннет = mainnet
+- минтинг = minting
+- нод-оператор = node operator
+- оракул = oracle
+- ребейз = rebase
+- рестейкинг = restaking
+- синтетикс = Synthetix
+- слэшинг = slashing
+- смарт-контракт = smart contract
+- стейк = stake
+- стейкинг = staking
+- токен = token
+- трейдинг = trading
+- тестнет = testnet
+- холд = hold
+- эфир = Ethereum
+- эфириум = Ethereum
+- АМЛ = AML
+- КУС = KYC
+
+---
+
 ## Notes
 
 1. Project names always keep English capitalization: Lido, AAVE, Solana, Cosmos
 2. Naturalized terms use Russian spelling: блокчейн, стейкинг, коммьюнити
 3. Technical abbreviations stay in English: MEV, KYC, AML, stETH
 4. Consistency within a transcript is more important than strict rules
+5. During SRT comparison, terms in the Equivalent Terms section are considered identical

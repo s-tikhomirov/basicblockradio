@@ -13,45 +13,74 @@ Clean up Whisper transcription output by:
 
 ## Input
 
-The episode file containing:
-- Frontmatter with episode-specific context:
-  - guest: name of the guest
-  - recording_date: when the episode was recorded
-  - status: raw (will be updated to edited after review)
-- Transcript content (raw Whisper output)
+Required in user prompt when invoking skill:
+- Episode number (extract from filename like `219-raw-1.srt` → 219, or ask if unclear)
+- Guest name (who is being interviewed)
+- Host names (who is asking questions)
 
-Additional context (provided when invoking the skill):
-- Technical terms with correct spelling for this episode
-- Any names or projects likely to be misspelled
-- Unfamiliar terminology or guest-specific vocabulary
+Content being edited:
+- Raw SRT file with timestamped segments (the AI reads this directly)
+
+Context sources (read by the skill):
+- Technical terms from `.agents/dictionary.md`
+- Podcast metadata from `podcast-info.md`
+
+Processing approach:
+- The AI reads and parses the SRT file directly
+- Groups segments into paragraphs based on pauses and topic shifts
+- Preserves all original timestamps for intelligent speaker detection
+- Does not use external scripts — all processing is done by the AI
 
 ## Output
 
-The edited episode file with:
-- Edited transcript section (only the transcript content is modified)
-- Frontmatter unchanged except status field
-- All episode context preserved
+New transcript file `episodes/NNN/NNN-transcript.md` containing:
+- Frontmatter with episode context:
+  - episode: episode number
+  - guest: guest name (from user input)
+  - hosts: host names (from user input)
+  - recording_date: if available from podcast-info.md
+  - status: raw
+- Transcript content only — no chapter headers, no summarization
+- Format: Speaker Name (timestamp): text of speech
+- Timestamp format: parentheses, not bold — (00:15:30)
+- Example: (00:15:30) Александр Селезнев: Вопрос о стейкинге...
 - Consistent speaker labels
-- Corrected technical terms
+- Corrected technical terms from dictionary
 - Preserved informal tone
-- No structural changes to content
+
+Note: The output filename starts with episode number (e.g., `219-transcript.md`).
 
 ## Constraints
 
+- DO NOT generate Python scripts, temporary files, or external tools
 - DO NOT soften direct statements
 - DO NOT add transition phrases or corporate speak
 - DO NOT restructure sentences or paragraphs
 - DO NOT remove personality or informal constructions
+- DO NOT add chapter headers, section titles, or summarization
+- DO NOT use bold formatting for timestamps or speaker names
 - DO change only what is necessary for accuracy and basic readability
+- DO read and process SRT content directly to produce the transcript
+- DO output only the transcript content with speaker labels and timestamps
+- DO insert exactly one blank line between paragraphs (speaker changes or topic shifts)
 
 ## Usage
 
-1. Open the episode file with status: raw
-2. Paste raw Whisper output into the Transcript section
-3. Run this skill, providing episode-specific term list and context
-4. Review the suggested edits to the transcript
-5. Apply the changes (AI updates the Transcript section)
-6. Update frontmatter status to edited
+1. Generate SRT file from Whisper (e.g., `219-raw-1.srt`)
+2. Open the SRT file in Cursor
+3. Run this skill with the SRT file open
+4. In your prompt, provide:
+   - Episode number (e.g., 219)
+   - Guest name
+   - Host names with context (who asks questions, who gives answers)
+5. The skill will:
+   - Read the SRT file directly
+   - Convert segments to paragraphs with timestamps
+   - Identify speakers using provided names and heuristics
+   - Apply correct spellings from dictionary.md
+   - Create transcript file (e.g., `episodes/219/219-transcript.md`)
+6. Review the created transcript
+7. Update frontmatter status to edited when satisfied
 
 ## Style Guide
 
@@ -62,17 +91,45 @@ The edited episode file with:
 - Do not remove precise or challenging questions and answers
 - Preserve the friendly but technically demanding dynamic
 
-## Paragraph Structure
+## Speaker Identification
 
-When converting SRT timestamps to paragraph format:
+Identify speakers using the following context and patterns:
 
-- Each paragraph must have exactly one timestamp at the start: `[HH:MM:SS]`
-- A new paragraph starts when:
-  1. The speaker changes
-  2. The previous sentence has ended (ends with `.`, `!`, `?`, `...`, or `—`)
-  3. A new logical thought/topic begins after a completed sentence
-- DO NOT split paragraphs mid-sentence — consecutive segments from the same speaker should be merged into one paragraph if the first segment ends mid-sentence (ends with `,`, `:` , or conjunction words like `то есть`, `которые`, `когда`, `что`, etc.)
-- Keep the first timestamp when merging consecutive segments
+### Known Speakers
+
+The user must provide all speaker names when invoking the skill:
+
+- Guest name: Required — who is being interviewed
+- Host names: Required — which hosts are present in this episode
+
+The skill uses these exact names plus heuristics to label speakers.
+
+Use only the provided names for speaker labels — do not invent speaker names.
+If speaker identity is uncertain, mark as `[неясно]: text` rather than guessing.
+
+### Identification Heuristics
+
+Use these patterns to distinguish speakers when the raw SRT lacks diarization:
+
+- Hosts typically:
+  - Ask questions (sentences ending with `?`)
+  - Introduce the episode topic at the beginning
+  - Read sponsor messages at the start and end of the episode
+  - Manage topic transitions and wrap up discussions
+  - Speak less overall compared to guests
+
+- Guests typically:
+  - Answer questions in detail
+  - Provide technical explanations and examples
+  - Speak the majority of the episode
+  - Focus on content rather than managing the conversation flow
+
+### Speaker Label Format
+
+- Format: Full Name (timestamp): text of speech
+- Example: (00:15:30) Александр Селезнев: Добро пожаловать на подкаст
+- Timestamp in parentheses, no bold formatting
+- If uncertain about speaker identity, mark as (неясно) (timestamp): text
 
 ## Terms and Corrections
 
@@ -80,15 +137,21 @@ Terminology is mixed: some English terms have naturalized into Russian spelling 
 
 General rules:
 
-- Project names: Always in English with correct capitalization
+- Project names: Always in English with correct capitalization (AAVE, Lido, Ethereum)
 - Company names: Always in English with correct capitalization
+- Established Russian terms: Use naturalized forms (блокчейн, стейкинг, коммьюнити)
 
-Examples of how specific terms should be spelled in transcripts:
+Source for correct spellings:
 
-[TBD: Add established terms with their correct Russian spelling]
-[TBD: Add newer terms that should remain in English]
-[TBD: Add names and project names with correct capitalization]
+- Read `.agents/dictionary.md` for the complete list of:
+  - Spelled in English (protocols, platforms, technical terms)
+  - Spelled in Russian (naturalized technical concepts)
+  - Equivalent Terms (alternative forms that should be normalized)
+  - Abbreviations and their expansions
+
+Apply these spellings consistently throughout the transcript.
 
 ## Context Reference
 
 See `../../../podcast-info.md` for podcast metadata, hosts, and goals.
+Read episode frontmatter for guest name and recording date.
