@@ -1,11 +1,10 @@
 ---
-episode_number:
-recording_date:
+episode:
 publication_date:
 guest:
+hosts:
+  -
 status: raw
 ---
-
-# Episode N: [Title TBD]
 
 [Paste edited transcript here]
