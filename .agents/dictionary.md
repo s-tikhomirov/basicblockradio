@@ -123,6 +123,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 ## Context-Dependent
 
 - vault vs волт: Use "волт" in casual speech, "vault" in technical descriptions
+- Cosmos vs космос: Use "Cosmos" for the blockchain protocol, "космос" for literal space/universe. When the speaker says "коммьюнити Космоса" referring to the blockchain ecosystem, use "Cosmos". When they say "в космосе" meaning outer space, use "космос".
 
 ---
 

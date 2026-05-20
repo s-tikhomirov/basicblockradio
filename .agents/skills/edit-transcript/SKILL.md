@@ -155,3 +155,4 @@ Apply these spellings consistently throughout the transcript.
 
 See `../../../podcast-info.md` for podcast metadata, hosts, and goals.
 Read episode frontmatter for guest name and recording date.
+Follow `.agents/editing-standards.md` for year formatting and other common editing rules.
