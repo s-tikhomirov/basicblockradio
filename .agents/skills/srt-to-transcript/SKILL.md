@@ -1,6 +1,16 @@
 # srt-to-transcript
 
-Pass 1: turn Whisper SRT into a structured transcript file. Establishes speakers, timestamped paragraphs, spelling, and light cleanup. Does not do readable-style rewriting (that is pass 2, `transcript-to-readable`).
+Turn Whisper SRT into a structured transcript file. Establishes speakers, timestamped paragraphs, spelling, and light cleanup. Does not rewrite blocks for readable prose.
+
+## Scope (this skill only)
+
+When this skill is invoked, complete only the work described here and stop.
+
+- Produce `episodes/NNN/NNN-transcript.md` from the raw SRT.
+- Do not run `scripts/` under `knowledge-bases/basicblockradio/`.
+- Do not generate Python or shell tools to transform SRT or transcript text.
+- Do not start readable copy-editing or create `NNN-readable.md`.
+- Do not split or merge transcript files for downstream passes.
 
 ## Purpose
 
@@ -10,8 +20,8 @@ Clean up Whisper output and freeze episode structure:
 - Correct obvious mistranscriptions
 - Merge SRT cues into paragraphs with one timestamp per paragraph (see Paragraph boundaries)
 - Standardize speaker labels and timestamp format
-- Remove obvious noise fillers and false starts without changing meaning (pass 2 may still cut leftovers and speech redundancy inside each block)
-- Do not merge or split paragraphs for readability prose (pass 2 copy-edits inside the same blocks)
+- Remove obvious noise fillers and false starts without changing meaning
+- Do not merge or split paragraphs for readable prose; only structural boundaries per rules below
 
 ## Input
 
@@ -34,7 +44,7 @@ Processing approach:
 
 - The AI reads and parses the SRT file directly
 - Builds paragraphs from consecutive SRT cues (same speaker, within duration limits)
-- Pass 1 is agent-driven from SRT (no SRT parser script in this repo). Pass 2 may use `scripts/` only to split/merge files, not to change structure or prose.
+- Agent-driven from SRT only — no parser or batch scripts in this workflow
 
 ## Output
 
@@ -77,14 +87,14 @@ Soft duration guideline (not a hard cap):
 
 - Rough guide: many blocks fall in the one-to-three minute range; about two minutes is typical, not a maximum
 - Measure span from the block start timestamp to the end of the last SRT cue in that block
-- If the same speaker continues one topic well beyond about three to four minutes with no natural break, consider splitting at the nearest SRT gap or sentence boundary so pass 2 is not faced with one enormous paragraph — but do not split mid-thought just to satisfy a timer
+- If the same speaker continues one topic well beyond about three to four minutes with no natural break, consider splitting at the nearest SRT gap or sentence boundary so later copy-editing is not faced with one enormous paragraph — but do not split mid-thought just to satisfy a timer
 - If a block is very long because the topic is long, that is acceptable
 
 Do not merge cues across different speakers.
 
-Pass 2 (`transcript-to-readable`) will not merge or split these blocks. Structure set here is final for the episode file.
+Paragraph boundaries in the transcript file are the canonical structure for the episode. Do not merge or split blocks for style in this skill.
 
-## Fillers (pass 1 — bulk cleanup)
+## Fillers (bulk cleanup)
 
 Remove when clearly noise only, without changing meaning: ну, значит, короче, типа, вот (standalone), так что (sentence start), вот как-то / так вот / вот именно, знаешь, понимаешь, слышишь, как бы, собственно, типа того, получается (pause), по-моему / не знаю / наверное (empty hedge), кстати (empty), там / вот там, false starts.
 
@@ -92,22 +102,24 @@ Context-dependent: и так далее, и все такое, короче го
 
 «типа» is always a filler. «это» only when clearly empty pause-filler, not when grammatically needed.
 
-Pass 2 (`transcript-to-readable`) copy-edits inside each block and may still remove fillers, duplicates, and spoken clutter that pass 1 missed. Pass 1 does not need to catch every disfluency.
+You do not need to catch every disfluency; remove obvious noise only. Do not copy-edit for readable flow or cut redundancy inside blocks beyond filler cleanup.
 
 ## Constraints
 
-- DO NOT generate scripts or tools that transform transcript prose (pass 2 orchestration under `scripts/` is out of scope for pass 1)
+- DO NOT run or write scripts under `knowledge-bases/basicblockradio/scripts/`
+- DO NOT generate scripts or tools that transform transcript prose
+- DO NOT create `NNN-readable.md` or perform readable-style rewriting
 - DO NOT soften direct statements
 - DO NOT add transition phrases or corporate speak
 - DO NOT restructure sentences for style (fix obvious errors and fillers only)
 - DO NOT remove personality or informal constructions
 - DO NOT add chapter headers, section titles, or summarization
 - DO NOT use bold formatting for timestamps or speaker names
-- DO NOT copy-edit for readable flow or cut redundancy inside blocks — that is pass 2, without changing boundaries
 - DO change only what is necessary for accuracy, structure rules above, and filler removal
 - DO read and process SRT content directly to produce the transcript
 - DO output only the transcript content with speaker labels and timestamps
 - DO insert exactly one blank line between paragraph blocks
+- DO stop after writing and verifying `NNN-transcript.md`
 
 ## Usage
 
@@ -126,6 +138,8 @@ Pass 2 (`transcript-to-readable`) copy-edits inside each block and may still rem
    - Create transcript file (e.g., `episodes/219/219-transcript.md`)
 6. Review the created transcript
 7. Update frontmatter status to edited when satisfied
+
+Do not continue with any other skill or script in the same run unless the user explicitly asks.
 
 ## Style Guide
 

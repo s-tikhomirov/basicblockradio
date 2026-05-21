@@ -1,10 +1,20 @@
 # transcript-to-readable
 
-Pass 2: copy-edit each transcript block into readable direct speech — clearer sentences and flow inside the paragraph, while keeping the same boundaries and facts. Pass 1 (`srt-to-transcript`) already set speakers, timestamps, paragraph structure, spelling, and removed the most obvious noise fillers.
+Copy-edit each transcript block into readable direct speech — clearer sentences and flow inside the paragraph, while keeping the same boundaries and facts. Expect input already structured with speakers, timestamps, paragraph lines, and dictionary spellings.
+
+## Scope (this skill only)
+
+When this skill is invoked, complete only the work described here.
+
+- Input: `episodes/NNN/NNN-transcript.md`
+- Output: `episodes/NNN/NNN-readable.md`
+- Chunk orchestration scripts (split/merge only) are allowed in chunked mode; they must not rewrite Russian prose.
+
+Do not convert raw SRT in this skill. If the user only has `NNN-raw.srt`, ask them to produce `NNN-transcript.md` from the SRT in a separate chat invocation before running this skill.
 
 ## Files
 
-- Input: `episodes/NNN/NNN-transcript.md` (`status: edited`). Episode number from filename.
+- Input: `episodes/NNN/NNN-transcript.md` (`status: edited` when ready). Episode number from filename.
 - Output: `episodes/NNN/NNN-readable.md` — frontmatter like source, `status: readable`, same line format:
 
 ```
@@ -13,7 +23,7 @@ Pass 2: copy-edit each transcript block into readable direct speech — clearer 
 
 ## Hard limits
 
-Do not: third-person narrative; editorial commentary; drop or change timestamps; add or remove paragraph blocks; merge two input lines into one; split one input line into two; change speaker labels; change facts, numbers, or technical claims; soften or sharpen tone; telegraphic compression (dropping pronouns, objects, or examples the speaker clearly expressed); “fix” gender or pronouns when referent is ambiguous; strip pronouns or objects that carry meaning (ты/вы/она/он/это/в ней/мне and similar) only to sound tighter; compress a block into headline-style dash chains; use scripts or tools that rewrite Russian prose or auto-edit wording (orchestration split/merge under `scripts/` is allowed).
+Do not: third-person narrative; editorial commentary; drop or change timestamps; add or remove paragraph blocks; merge two input lines into one; split one input line into two; change speaker labels; change facts, numbers, or technical claims; soften or sharpen tone; telegraphic compression (dropping pronouns, objects, or examples the speaker clearly expressed); “fix” gender or pronouns when referent is ambiguous; strip pronouns or objects that carry meaning (ты/вы/она/он/это/в ней/мне and similar) only to sound tighter; compress a block into headline-style dash chains; use scripts or tools that rewrite Russian prose or auto-edit wording (orchestration split/merge under `scripts/` is allowed in chunked mode only).
 
 Do: copy-edit every block so it reads clearly as written Russian, not as raw transcript pasted verbatim; keep first person and speaker on every block; one output line per input line (same timestamp and speaker); restore implied subjects when written Russian needs them; fix Russian endings when context is clear (section Russian grammar).
 
@@ -24,11 +34,11 @@ Do: copy-edit every block so it reads clearly as written Russian, not as raw tra
 - Blank line between blocks, same as input. No chapter headings, no bold on names or times.
 - If an input block is missing or extra lines appear, fix to match input count before finishing.
 
-## Fillers and speech noise (pass 2)
+## Fillers and speech noise
 
-Pass 1 removes the bulk of stand-alone fillers (ну, как бы, короче, …). Pass 2 still removes words when copy-editing the block:
+While copy-editing each block, still remove words when they add no meaning in writing:
 
-- Leftover noise fillers pass 1 missed
+- Stand-alone fillers (ну, как бы, короче, …) if any remain in the transcript line
 - Empty hedges that add no meaning in writing (наверное, не знаю) when they only stall
 - False starts, stutters, and immediate self-repeats («я я», «то есть то есть»)
 - Trailing «и так далее», «вот», «да» at clause ends when they are pause-fillers, not emphasis
@@ -37,7 +47,7 @@ Do not delete a word that changes emphasis, irony, or a careful qualification th
 
 ## Prose (copy-edit within the block)
 
-Goal: each block should read noticeably cleaner than the transcript line — full sentences, clear flow — while still sounding like the same person on the podcast. Verbatim preservation of spoken clutter is a failure mode for this pass.
+Goal: each block should read noticeably cleaner than the transcript line — full sentences, clear flow — while still sounding like the same person on the podcast. Verbatim preservation of spoken clutter is a failure mode for this skill.
 
 Stay close to how the person spoke; several clear sentences beat one stitched telegram block.
 
@@ -116,16 +126,16 @@ Orchestration only — run repo scripts from `knowledge-bases/basicblockradio/sc
 
 1. Split: `python3 split_transcript_chunks.py episodes/NNN/NNN-transcript.md`  
    - Default: writes `episodes/NNN/.chunks/chunk-001.md`, … (gitignored; safe to delete after merge).  
-   - Defaults: about **15 minutes** per chunk (`--max-span-seconds 900`) and `--max-blocks 22` (whichever limit is hit first). Smaller chunks reduce pass 2 quality drift on long episodes.  
+   - Defaults: about **15 minutes** per chunk (`--max-span-seconds 900`) and `--max-blocks 22` (whichever limit is hit first). Smaller chunks reduce quality drift on long episodes.  
    - Override only when needed, e.g. `--max-span-seconds 1200` for ~20 minutes.  
    - `--dry-run` prints JSON manifest (block counts, line ranges, timestamps, span per chunk) without writing files.
-2. For each chunk file: apply pass 2 rules to every line in that chunk only — exactly one output line per input line; same timestamps and speakers; full within-block copy-edit; no merge/split across chunk boundaries.
+2. For each chunk file: apply this skill’s rules to every line in that chunk only — exactly one output line per input line; same timestamps and speakers; full within-block copy-edit; no merge/split across chunk boundaries.
 3. Save each result as `episodes/NNN/.chunks/chunk-NNN-readable.md` (same chunk order as split).
 4. Merge:  
    `python3 merge_readable_chunks.py --transcript episodes/NNN/NNN-transcript.md --chunks-dir episodes/NNN/.chunks -o episodes/NNN/NNN-readable.md`  
    Optional: `--qc` warns on blocks where readable text is much shorter than transcript (ratio heuristic).
 5. Verify merged block count equals the transcript; spot-check timestamps monotonic.
-6. Remove the chunk working directory after a successful merge — do not leave split/readable chunk files on disk. Delete `episodes/NNN/.chunks/` entirely (e.g. `rm -rf episodes/NNN/.chunks`). Only keep `NNN-readable.md` as the pass 2 artifact.
+6. Remove the chunk working directory after a successful merge — do not leave split/readable chunk files on disk. Delete `episodes/NNN/.chunks/` entirely (e.g. `rm -rf episodes/NNN/.chunks`). Only keep `NNN-readable.md` as the artifact for this skill.
 
 For three or more chunks, parallel Task subagents (one per chunk) are reasonable; each subagent gets one chunk path and the same hard limits above. The orchestrating agent still runs merge and step 6 cleanup.
 
@@ -133,7 +143,7 @@ Goal: reads like the podcast in clearly edited written Russian — not a summary
 
 ## End-to-end example
 
-Input (three blocks from pass 1 — boundaries unchanged):
+Input (three blocks — boundaries unchanged):
 
 ```markdown
 (00:06:28) Василий Шаповалов: Если быть вот совсем честным в этой истории, да, ликвидный стейкинг — это идея была не новая, когда Lido появилась. Впервые я ее прочитал в коммьюнити Космоса, где это была большой-большой темой.
@@ -146,7 +156,7 @@ Input (three blocks from pass 1 — boundaries unchanged):
 → readable (three blocks, same timestamps):
 
 ```markdown
-(00:06:28) Василий Шаповалов: Если быть совсем честным, идея ликвидного стейкинга была не новой, когда появился Lido. Впервые я прочитал о ней в коммьюнити Космоса, где это была большая тема.
+(00:06:28) Василий Шаповалов: Если быть совсем честным, идея ликвидного стейкинга была не новая, когда появился Lido. Впервые я прочитал о ней в коммьюнити Космоса, где это была большая тема.
 
 (00:06:53) Василий Шаповалов: В начале 2020 года я в середине февраля начал работать CTO в P2P-валидаторе, тоже один из проектов Кости. Буквально в первые две недели я посмотрел, какие будут важные темы, что мне нужно сделать в этом году.
 
@@ -156,3 +166,5 @@ Input (three blocks from pass 1 — boundaries unchanged):
 ## Usage
 
 Run on `NNN-transcript.md` with `status: edited` → `NNN-readable.md`; review; optionally set `reviewed` in frontmatter.
+
+Do not convert SRT or build `NNN-transcript.md` in the same run unless the user explicitly asks for that work separately.
