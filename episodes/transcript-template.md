@@ -7,4 +7,4 @@ hosts:
 status: raw
 ---
 
-[Paste edited transcript here]
+(00:00:00) Speaker Name: Line of speech...

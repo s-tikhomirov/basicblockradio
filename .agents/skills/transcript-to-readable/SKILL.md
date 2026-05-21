@@ -1,174 +1,158 @@
 # transcript-to-readable
 
-Transform an edited transcript into a readable version by removing filler words, merging segments by topic, and restructuring for clarity while preserving the direct-speech format.
+Pass 2: copy-edit each transcript block into readable direct speech — clearer sentences and flow inside the paragraph, while keeping the same boundaries and facts. Pass 1 (`srt-to-transcript`) already set speakers, timestamps, paragraph structure, spelling, and removed the most obvious noise fillers.
 
-## Purpose
+## Files
 
-Aggressively polish an edited transcript into a fluid, readable form while maintaining:
-- Direct-speech format with speaker attribution
-- First-person perspective of each speaker
-- One timestamp per logical section
-- All technical content, facts, and semantic meaning
-
-This transformation removes all conversational artifacts of live speech: filler words, fragmented sentences, repetitive phrasing, and jumpy ordering — without converting to third-person narrative.
-
-## Input
-
-Content being transformed:
-- Edited transcript file `episodes/NNN/NNN-transcript.md` with `status: edited`
-
-The skill infers the episode number from the filename and reads the transcript directly.
-
-## Output
-
-New file `episodes/NNN/NNN-readable.md` containing:
-- Frontmatter copied from source with `status: readable`
-- Polished transcript with same speaker-timestamp format
-- Merged paragraphs by topic within speaker boundaries
-- Removed filler words and smoothed sentence flow
-
-Output format preserves the structure of the edited transcript:
+- Input: `episodes/NNN/NNN-transcript.md` (`status: edited`). Episode number from filename.
+- Output: `episodes/NNN/NNN-readable.md` — frontmatter like source, `status: readable`, same line format:
 
 ```
-(00:06:28) Василий Шаповалов: Полированный текст без заполнителей, объединенный из нескольких сегментов на одну тему...
+(00:06:28) Speaker Name: Text...
 ```
 
-## Constraints
+## Hard limits
 
-- DO NOT convert to third-person narrative
-- DO NOT add editorial commentary or interpretation
-- DO NOT remove timestamps entirely — keep one timestamp per merged paragraph
-- DO NOT change technical content, numbers, or factual claims
-- DO NOT soften or intensify statements — preserve original tone and emphasis
-- DO NOT merge speech from different speakers into one paragraph
-- DO NOT add chapter headers or section titles
-- DO NOT use bold formatting for timestamps or speaker names
-- DO preserve first-person pronouns and direct speech perspective
-- DO maintain speaker attribution for every paragraph
+Do not: third-person narrative; editorial commentary; drop or change timestamps; add or remove paragraph blocks; merge two input lines into one; split one input line into two; change speaker labels; change facts, numbers, or technical claims; soften or sharpen tone; telegraphic compression (dropping pronouns, objects, or examples the speaker clearly expressed); “fix” gender or pronouns when referent is ambiguous; strip pronouns or objects that carry meaning (ты/вы/она/он/это/в ней/мне and similar) only to sound tighter; compress a block into headline-style dash chains; use scripts or tools that rewrite Russian prose or auto-edit wording (orchestration split/merge under `scripts/` is allowed).
 
-## Transformation Rules
+Do: copy-edit every block so it reads clearly as written Russian, not as raw transcript pasted verbatim; keep first person and speaker on every block; one output line per input line (same timestamp and speaker); restore implied subjects when written Russian needs them; fix Russian endings when context is clear (section Russian grammar).
 
-### 1. Speaker Boundaries
+## Structure (locked)
 
-Never merge speech from different speakers. Each paragraph belongs to exactly one speaker.
+- Paragraph boundaries are fixed in `NNN-transcript.md`. Do not merge or split blocks.
+- For each input line `(time) Name: text`, produce exactly one output line with the same `(time)` and `Name:`.
+- Blank line between blocks, same as input. No chapter headings, no bold on names or times.
+- If an input block is missing or extra lines appear, fix to match input count before finishing.
 
-### 2. Aggressive Topic-Based Merging
+## Fillers and speech noise (pass 2)
 
-Merge consecutive segments from the same speaker liberally. A single paragraph may span multiple original timestamps if the speaker continues on the same general topic. Create a new paragraph only when:
-- A different speaker begins talking
-- The speaker explicitly answers a new question
-- The subject matter shifts to a completely different topic area
+Pass 1 removes the bulk of stand-alone fillers (ну, как бы, короче, …). Pass 2 still removes words when copy-editing the block:
 
-Default to merging. If segments flow together conceptually, combine them into one cohesive paragraph.
+- Leftover noise fillers pass 1 missed
+- Empty hedges that add no meaning in writing (наверное, не знаю) when they only stall
+- False starts, stutters, and immediate self-repeats («я я», «то есть то есть»)
+- Trailing «и так далее», «вот», «да» at clause ends when they are pause-fillers, not emphasis
 
-### 3. Timestamp Placement
+Do not delete a word that changes emphasis, irony, or a careful qualification the speaker meant. When unsure, keep it.
 
-Place one timestamp at the start of each merged paragraph using the earliest timestamp from the group of segments being merged.
+## Prose (copy-edit within the block)
 
-### 4. Filler Removal
+Goal: each block should read noticeably cleaner than the transcript line — full sentences, clear flow — while still sounding like the same person on the podcast. Verbatim preservation of spoken clutter is a failure mode for this pass.
 
-Always remove (pure noise, never carry meaning):
-- "ну", "значит", "короче", "типа", "вот" (standalone)
-- "так что" (at sentence start)
-- "вот как-то", "вот так вот", "вот именно"
-- "знаешь", "понимаешь", "слышишь", "понимаешь ли"
-- "как бы", "собственно", "типа того"
-- "получается" (when used as filler pause)
-- "по-моему" (when hedging)
-- "не знаю" (when self-deprecating)
-- "наверное" (when uncertain)
-- "кстати" (when empty transition)
-- "там", "вот там"
-- Repetitions: "точно-точно", "ну-ну", "вот-вот" (when agreement)
-- False starts and self-corrections
+Stay close to how the person spoke; several clear sentences beat one stitched telegram block.
 
-Evaluate in context (may carry semantic weight):
-- "и так далее", "и все такое", "и так далее и тому подобное" — keep when indicating intentional non-exhaustiveness of a list; remove when clearly just trailing off
-- "все такое" — keep if referring to previously mentioned category; remove if filler
-- "короче говоря" — keep when genuinely summarizing; remove when just restarting
+Within the block only (structure stays one line):
 
-### 5. Aggressive Sentence Restructuring
+- Reorder jumpy clauses; join fragments; break run-ons; turn abandoned half-sentences into complete thoughts or drop them if they add nothing.
+- Cut duplicate ideas said twice in one breath; trim rhetorical repetition that is typical of speech but heavy on the page.
+- Rephrase for grammar, anaphora, and readability; keep the speaker’s terms, numbers, and technical claims.
+- Remove or shorten wordy spoken glue when written Russian does not need it, as long as meaning stays the same.
+- Keep spoken pronouns and objects that carry meaning (e.g. «как она проходит», «кто в ней участвует»). Do not replace «Можешь рассказать» with bare «Расскажи» unless the speaker said so.
+- Preserve: substantive examples, asides that add content, idioms, humor, full questions, emphasis that matters.
 
-Restructure sentences liberally within speaker paragraphs to create fluid, readable prose:
+Length: a block may become somewhat shorter when cutting redundancy; it may stay similar length when the transcript is already tight. Do not chase brevity. Long answers stay long in full sentences — never bullets or headline dash chains.
 
-Do aggressively:
-- Reorder sentences for logical flow — even if it means significant reordering
-- Combine fragmented sentences into flowing, complete thoughts
-- Break overly long run-on sentences into clearer structure
-- Smooth out self-corrections and false starts completely
-- Remove redundant phrases and repetitions of the same idea
-- Rephrase awkward constructions while keeping the speaker's vocabulary
-- Convert conversational parentheticals into integrated clauses
-- Fix broken anaphora (pronouns with unclear antecedents)
+Punctuation: prefer periods between thoughts, not `;` or dash chains. Em dash for apposition only (e.g. «нужно предоставить proof — выписку из университета»).
 
-Example of aggressive restructuring:
-- Input: "Я посмотрел, какие будут важные темы. Буквально в первые две недели. Я посмотрел три самые важные вещи. Из вещей, которые были важны в 20-м году уже. Там были Game of Zones космосовские."
-- Output: "В первые две недели я определил три самые важные темы для 2020 года: Game of Zones космосовские, запуск стейкинга на Polkadot и на эфире."
+Dash chaining (from host questions about Eindhoven / PhD):
 
-Preserve:
-- Technical terms and their original phrasing
-- Specific numbers, dates, and quantities
-- Named entities (projects, people, protocols)
-- Emotional emphasis and intentional informal constructions
-- Metaphors, idioms, and figurative expressions (e.g., "объекты в зеркале ближе, чем кажется")
-- Direct questions and challenges
-- Humor and personality markers
+Bad:
+«пара вопросов про Эйндховен, где ты защитил PhD — поздравляю с защитой. Я полистал тезис, introduction, что-то понял, очень немного — впечатляет. Почему именно Эйндховен, сильная школа криптографии — как выбрал университет?»
 
-### 6. Format
+Better:
+«пара вопросов про Эйндховен, где ты защитил PhD (поздравляю с защитой!). Я полистал тезис, introduction, что-то понял, хотя очень немного — впечатляет. Почему именно Эйндховен, там сильная школа криптографии? Как ты выбрал университет?»
 
-Maintain exactly the same format as the edited transcript:
+Semicolons and dashes instead of sentences (from guest path to PhD):
 
-```
-(00:15:30) Speaker Name: Text of speech...
-```
+Bad:
+«В квантовом центре нашли проблемы с доказательствами безопасности одной из схем; написал одному из ведущих специалистов по этой схеме — она тогда участвовала в конкурсе NIST на стандартизацию — что обнаружили проблему, интересует PhD»
 
-- One blank line between paragraphs
-- Timestamp in parentheses, not bold
-- Speaker name in original form
-- No section headers or chapter breaks
+Better:
+«В квантовом центре мы нашли проблемы с доказательствами безопасности одной из схем. Я написал одному из ведущих специалистов по этой схеме. Она тогда участвовала в конкурсе NIST на стандартизацию. Я объяснил, что мы обнаружили проблему и что меня интересует PhD»
 
-## Processing Approach
+Question clarity — input: «Рассчитано на студентов или есть ограничение по возрасту?» Too terse without subject. Better: «Олимпиада рассчитана на студентов? Есть ограничение по возрасту или квалификации?»
 
-1. Read the edited transcript file directly
-2. Parse segments by speaker and timestamp
-3. Group aggressively: combine consecutive segments from the same speaker unless there is a clear topic shift
-4. For each group:
-   - Take the earliest timestamp
-   - Strip ALL filler words and conversational artifacts
-   - Restructure sentences for logical flow and readability
-   - Combine fragments into cohesive paragraphs
-5. Output the polished transcript with updated frontmatter
+Pronouns — do not compress for style:
 
-Be aggressive. The goal is readable prose, not cautious preservation of transcript structure. If a speaker has 10 consecutive segments on the same topic, merge them into 1-2 flowing paragraphs.
+Transcript: «Можешь бы рассказать, что это за олимпиада, как она проходит, кто в ней участвует.»
 
-## Example Transformation
+Too aggressive: «Расскажи, что это за олимпиада, как проходит, кто участвует.»
 
-Input (edited transcript):
+Better: «Можешь рассказать, что это за олимпиада? Как она проходит, кто в ней участвует?»
+
+## Russian grammar
+
+Read each block as written Russian. Use `podcast-info.md` and episode frontmatter for host/guest gender when «я» forms are wrong in the transcript.
+
+- Speaker «я»: fix verb/participle gender when speaker is clearly male or female (e.g. работал я, not работала я, for a male guest).
+- Do not change «она/он» for общий род or unclear referent (e.g. специалист … Она участвовала — «она» = специалист, not forced «он» from «одному специалисту»).
+- Restore when missing in transcript: я, мы, все, это, objects needed for grammar (…я смогу взломать эту подпись; все уже перешли; им это не понадобится).
+- Do not remove when present in transcript: same words if the speaker said them — including ты/вы forms, «она/он» for things (олимпиада … она проходит), «в ней», «мне», «тебе». Fixing errors ≠ making speech telegraphic.
+- «это» depends on context: may be required (e.g. copula when speech omits it: способ таргетировать → способ — это таргетировать).
+- Subject–verb: verb agrees with grammatical subject (Северная Корея … начнет, not начнут).
+- Skip fixes that need facts not in the transcript.
+
+## Workflow
+
+### When to use chunked mode
+
+Use chunked mode when either:
+
+- Block count in `NNN-transcript.md` is greater than 50, or
+- Wall-clock span from first to last block timestamp exceeds about 45 minutes
+
+Otherwise a single full-file pass is fine.
+
+### Single-file mode
+
+1. Read `NNN-transcript.md` line by line (each timestamped speaker line is one block).
+2. For each block: copy-edit per Prose and Fillers above (expect visible improvement, not near-verbatim output); keep same timestamp and speaker; do not merge with adjacent blocks.
+3. Verify output block count and timestamps match input.
+4. Write `NNN-readable.md` with frontmatter like the source and `status: readable`; use `.agents/dictionary.md`, `podcast-info.md`, `.agents/editing-standards.md`.
+
+### Chunked mode (long episodes)
+
+Orchestration only — run repo scripts from `knowledge-bases/basicblockradio/scripts/` (they do not edit Russian text):
+
+1. Split: `python3 split_transcript_chunks.py episodes/NNN/NNN-transcript.md`  
+   - Default: writes `episodes/NNN/.chunks/chunk-001.md`, … (gitignored; safe to delete after merge).  
+   - Defaults: about **15 minutes** per chunk (`--max-span-seconds 900`) and `--max-blocks 22` (whichever limit is hit first). Smaller chunks reduce pass 2 quality drift on long episodes.  
+   - Override only when needed, e.g. `--max-span-seconds 1200` for ~20 minutes.  
+   - `--dry-run` prints JSON manifest (block counts, line ranges, timestamps, span per chunk) without writing files.
+2. For each chunk file: apply pass 2 rules to every line in that chunk only — exactly one output line per input line; same timestamps and speakers; full within-block copy-edit; no merge/split across chunk boundaries.
+3. Save each result as `episodes/NNN/.chunks/chunk-NNN-readable.md` (same chunk order as split).
+4. Merge:  
+   `python3 merge_readable_chunks.py --transcript episodes/NNN/NNN-transcript.md --chunks-dir episodes/NNN/.chunks -o episodes/NNN/NNN-readable.md`  
+   Optional: `--qc` warns on blocks where readable text is much shorter than transcript (ratio heuristic).
+5. Verify merged block count equals the transcript; spot-check timestamps monotonic.
+6. Remove the chunk working directory after a successful merge — do not leave split/readable chunk files on disk. Delete `episodes/NNN/.chunks/` entirely (e.g. `rm -rf episodes/NNN/.chunks`). Only keep `NNN-readable.md` as the pass 2 artifact.
+
+For three or more chunks, parallel Task subagents (one per chunk) are reasonable; each subagent gets one chunk path and the same hard limits above. The orchestrating agent still runs merge and step 6 cleanup.
+
+Goal: reads like the podcast in clearly edited written Russian — not a summary, not a near-verbatim transcript. Structure matches the transcript file (whole file or sum of chunks).
+
+## End-to-end example
+
+Input (three blocks from pass 1 — boundaries unchanged):
+
 ```markdown
-(00:06:28) Василий Шаповалов: Если быть вот совсем честным в этой истории, да, ликвидный стейкинг — это идея была не новая, когда Lido появилась. Впервые я ее прочитал в коммьюнити Космоса, где это была большой-большой темой. Космос вообще очень много сделал для какой-то теории продуктовой, какое-то развитие стейкинга как коммьюнити нод-операторов и так далее. Это была очень мощная сетка для того, чтобы стейкинг в индустрию запустить после Тезоса.
+(00:06:28) Василий Шаповалов: Если быть вот совсем честным в этой истории, да, ликвидный стейкинг — это идея была не новая, когда Lido появилась. Впервые я ее прочитал в коммьюнити Космоса, где это была большой-большой темой.
 
-(00:06:53) Василий Шаповалов: В начале 20-го года я в середине февраля начал работать CTO в P2P-валидаторе. Тоже один из проектов Кости. Буквально в первые же две недели я посмотрел, какие будут важные темы, что мне нужно сделать в этом году. Из вещей, которые были важны в 20-м году уже, там, знаешь, объекты в зеркале ближе, чем кажется.
+(00:06:53) Василий Шаповалов: В начале 20-го года я в середине февраля начал работать CTO в P2P-валидаторе. Тоже один из проектов Кости. Буквально в первые же две недели я посмотрел, какие будут важные темы, что мне нужно сделать в этом году.
 
-(00:07:30) Василий Шаповалов: Почему? Потому что он был заточен под людей, которые будут стейкать свои, у тебя дома, 32 эфира, без встроенных в протокол механизмов делегации стейкинга операторам. А большинство людей, у которых есть деньги, они стейкать не будут. То есть люди, у которых деньги, они любят, чтобы у них циферки шли вперед и вверх. Чтобы им работать было, они не любят. То есть чтобы ноду была запустить, следить за ней и так далее. Они хотят кому-нибудь делегировать это дело, как можно меньше риска взять, как можно больше APR получить.
+(00:07:30) Василий Шаповалов: Почему? Потому что он был заточен под людей, которые будут стейкать свои, у тебя дома, 32 эфира, без встроенных в протокол механизмов делегации стейкинга операторам. А большинство людей, у которых есть деньги, они стейкать не будут.
 ```
 
-Output (readable):
+→ readable (three blocks, same timestamps):
+
 ```markdown
-(00:06:28) Василий Шаповалов: Если быть совсем честным, идея ликвидного стейкинга была не новой, когда появился Lido. Впервые я прочитал о ней в коммьюнити Космоса, где это была большая тема. Космос много сделал для развития стейкинга как коммьюнити нод-операторов — это была мощная сетка для запуска стейкинга в индустрию после Тезоса. В начале 2020 года я стал CTO в P2P-валидаторе, проекте Кости. В первые две недели я определил три ключевые темы года — объекты в зеркале ближе, чем кажется. Эфир был заточен под людей, которые будут стейкать свои 32 эфира дома, без механизмов делегации операторам. А большинство держателей капитала не хотят этим заниматься. Они любят, когда циферки растут, но не любят работать — запускать ноду, следить за ней. Они хотят делегировать это дело, взяв минимум риска и получив максимум APR.
+(00:06:28) Василий Шаповалов: Если быть совсем честным, идея ликвидного стейкинга была не новой, когда появился Lido. Впервые я прочитал о ней в коммьюнити Космоса, где это была большая тема.
+
+(00:06:53) Василий Шаповалов: В начале 2020 года я в середине февраля начал работать CTO в P2P-валидаторе, тоже один из проектов Кости. Буквально в первые две недели я посмотрел, какие будут важные темы, что мне нужно сделать в этом году.
+
+(00:07:30) Василий Шаповалов: Почему? Потому что он был заточен под людей, которые будут стейкать свои 32 эфира дома, без механизмов делегации стейкинга операторам. А большинство людей, у которых есть деньги, они стейкать не будут.
 ```
 
 ## Usage
 
-1. Ensure the transcript has `status: edited` in frontmatter
-2. Run this skill with the transcript file open
-3. The skill infers episode number from filename and creates `NNN-readable.md`
-4. Review the readable version for accuracy and flow
-5. Update frontmatter status if satisfied (e.g., to `reviewed`)
-
-## Context Reference
-
-The skill reads technical terms from `.agents/dictionary.md` to ensure correct spelling in the output.
-
-See `../../../podcast-info.md` for podcast metadata and host information.
-
-Follow repository editing standards from `.agents/editing-standards.md` for year formatting and other common rules.
+Run on `NNN-transcript.md` with `status: edited` → `NNN-readable.md`; review; optionally set `reviewed` in frontmatter.

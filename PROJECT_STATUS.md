@@ -1,38 +1,28 @@
 # Project Status
 
-## 2026-05-20
+Current episode processing workflow.
+Full layout and status fields are in README.md.
 
-### Current Workflow (Active)
+## Pipeline
 
-Four-step pipeline for episode processing:
+1. Generate SRT with Whisper (`medium`, Russian) → `NNN-raw.srt`
+2. Pass 1: `srt-to-transcript` on SRT → `NNN-transcript.md` (paragraph boundaries, fillers, spelling; `status: raw`)
+3. Human review of transcript → `status: edited`
+4. Pass 2: `transcript-to-readable` on same blocks → `NNN-readable.md` (prose only, no merge/split; `status: readable`). Long episodes: `scripts/` split → per-chunk pass → merge.
+5. Human review of readable → `status: reviewed`
+6. Show notes from readable (manual today; `generate-shownotes` skill planned)
 
-1. Generate SRT: `whisper audio.mp3 --model medium --language ru`
-2. Edit transcript: `edit-transcript` skill → `NNN-transcript.md`
-3. Manual review: Verify and update `status: edited`
-4. Create readable: `transcript-to-readable` skill → `NNN-readable.md`
-5. Review readable: Verify and update `status: reviewed`
+## Agent skills
 
-### New Skills Added
+- `srt-to-transcript` — pass 1: SRT to transcript; topic-based blocks; fillers and spelling; structure is final
+- `transcript-to-readable` — pass 2: one line per transcript line; assertive within-block copy-edit; no merge or split
 
-- `transcript-to-readable`: Aggressively polishes edited transcript by removing fillers, merging segments by topic, restructuring sentences for flow
-- `.agents/editing-standards.md`: Repository-wide editing rules (year formatting, etc.)
+## Reference files for agents
 
-### Updated Dictionary
+- `.agents/dictionary.md` — terms and names
+- `.agents/editing-standards.md` — shared rules
+- `podcast-info.md` — hosts, format, tone
 
-- Added Cosmos vs космос distinction (Cosmos for blockchain, космос for space)
+## Planned
 
-### Dual Transcript Approach - ON PAUSE
-
-The dual-transcript comparison workflow was attempted but abandoned.
-
-- Tested on episode 219 with `medium` + `distill-large-v3` models
-- Issue: `distill-large-v3` produced English translation instead of Russian transcription
-
-Status: Not pursuing further. Single-transcript AI skill workflow is working well.
-
-### Next Steps
-
-- [x] Document final workflow in README
-- [x] Create `transcript-to-readable` skill
-- [x] Create `editing-standards.md`
-- [ ] Create `generate-shownotes` skill (future)
+- `generate-shownotes` skill
