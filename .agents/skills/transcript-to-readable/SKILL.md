@@ -16,8 +16,8 @@ Sponsor reads: primary cleanup belongs in `srt-to-transcript` (`sponsors/current
 
 ## Files
 
-- Input: `episodes/NNN/NNN-transcript.md` (`status: edited` when ready). Episode number from filename.
-- Output: `episodes/NNN/NNN-readable.md` — frontmatter like source (field order per `episodes/templates/transcript-template.md`), only `status` set to `readable`, same line format:
+- Input: `episodes/NNN/NNN-transcript.md` (after human review). Episode number from filename.
+- Output: `episodes/NNN/NNN-readable.md` — frontmatter copied from the transcript (field order per `episodes/templates/transcript-template.md`), same line format:
 
 ```
 (00:06:28) Speaker Name: Text...
@@ -120,7 +120,7 @@ Otherwise a single full-file pass is fine.
 1. Read `NNN-transcript.md` line by line (each timestamped speaker line is one block).
 2. For each block: copy-edit per Prose and Fillers above (expect visible improvement, not near-verbatim output); keep same timestamp and speaker; do not merge with adjacent blocks.
 3. Verify output block count and timestamps match input.
-4. Write `NNN-readable.md` with frontmatter copied from the transcript (`episodes/templates/transcript-template.md` field order), `status: readable`; use `.agents/dictionary.md`, `podcast-info.md`, `.agents/editing-standards.md`.
+4. Write `NNN-readable.md` with frontmatter copied from the transcript (`episodes/templates/transcript-template.md` field order); use `.agents/dictionary.md`, `podcast-info.md`, `.agents/editing-standards.md`.
 
 ### Chunked mode (long episodes)
 
@@ -167,6 +167,6 @@ Input (three blocks — boundaries unchanged):
 
 ## Usage
 
-Run on `NNN-transcript.md` with `status: edited` → `NNN-readable.md`; review; optionally set `reviewed` in frontmatter.
+Run on a reviewed `NNN-transcript.md` → `NNN-readable.md`; human-review the readable before show notes.
 
 Do not convert SRT or build `NNN-transcript.md` in the same run unless the user explicitly asks for that work separately.

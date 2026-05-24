@@ -1,8 +1,11 @@
 ---
 episode: 220
-source: 220-transcript.md
 guest: Михаил Кудинов
-status: draft
+hosts:
+  - Сергей Тихомиров
+  - Александр Селезнев
+recording_date: 2025-05-12
+source: 220-transcript.md
 ---
 
 Дословные фрагменты из транскрипта; `<...>` — место монтажного выреза.

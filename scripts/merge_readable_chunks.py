@@ -16,23 +16,16 @@ from transcript_io import (
     load_document,
 )
 
-READABLE_STATUS_RE = re.compile(
-    r"^(\s*status:\s*)(\S+)(.*)$",
-    re.MULTILINE,
-)
+STATUS_LINE_RE = re.compile(r"^\s*status:.*(?:\n|$)", re.MULTILINE | re.IGNORECASE)
 
 
-def readable_frontmatter_from_transcript(fm: str, status: str = "readable") -> str:
+def readable_frontmatter_from_transcript(fm: str) -> str:
     if not fm.strip():
-        return f"---\nstatus: {status}\n---\n"
-    if READABLE_STATUS_RE.search(fm):
-        return READABLE_STATUS_RE.sub(rf"\1{status}\3", fm, count=1)
-    lines = fm.splitlines()
-    if lines and lines[-1].strip() == "---":
-        insert_at = len(lines) - 1
-        lines.insert(insert_at, f"status: {status}")
-        return "\n".join(lines) + ("\n" if fm.endswith("\n") else "")
-    return fm + f"\nstatus: {status}\n"
+        return "---\n---\n"
+    cleaned = STATUS_LINE_RE.sub("", fm)
+    if not cleaned.endswith("\n"):
+        cleaned += "\n"
+    return cleaned
 
 
 def load_blocks_from_chunk(path: Path) -> list:

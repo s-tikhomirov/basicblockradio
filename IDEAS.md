@@ -2,9 +2,9 @@
 
 Things to try, implement, or explore in this directory.
 
+License: how to license repository with content and code (scripts)? CC-BY is not well suited for code? Add a separate license for scripts if needed.
 
-License: how to license repository with content and code (scripts)? CC-BY is not well suited for code? Shall we add another license for scripts specifically?
+Scripts: clarify if runs must start from a fixed directory. Prefer invocations from repo root or any cwd with repo root resolved in one place.
 
-Script: clarify if it's important to run them from a particular directory. Ideally, make scripts launchable from any place with both `cd scripts; ./script.py` as well as `/.scripts/script.py` - introduce repo root as some constant somewhere?
 
-Sponsor messages: copy verbatim from provided text files (TODO: find and paste in this repo).
+Shorts: optional `episodes/templates/shorts-template.md` mirroring the skill frontmatter if editors want a file scaffold beside shownotes.

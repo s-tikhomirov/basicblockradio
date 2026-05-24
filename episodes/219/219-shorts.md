@@ -1,8 +1,11 @@
 ---
 episode: 219
-source: 219-transcript.md
 guest: Василий Шаповалов
-status: draft
+hosts:
+  - Александр Селезнев
+  - Иван Иваницкий
+recording_date: 2026-04-27
+source: 219-transcript.md
 ---
 
 Дословные фрагменты из транскрипта; `<...>` — место монтажного выреза.

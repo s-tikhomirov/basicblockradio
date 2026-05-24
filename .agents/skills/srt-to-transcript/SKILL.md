@@ -56,7 +56,6 @@ New transcript file `episodes/NNN/NNN-transcript.md` containing:
   - guest: guest name (from user input)
   - hosts: host names (from user input)
   - recording_date: if available from podcast-info.md or user input (omit key only if unknown)
-  - status: raw
 - Transcript content only — no chapter headers, no summarization
 - Format: `(HH:MM:SS) Speaker Name: text of speech`
 - Timestamp format: parentheses, not bold — `(00:15:30)`
@@ -137,8 +136,7 @@ You do not need to catch every disfluency; remove obvious noise only. Do not cop
    - Identify speakers using provided names and heuristics
    - Apply dictionary spellings, sponsor-file fixes in sponsor segments, and fillers per Fillers
    - Create transcript file (e.g., `episodes/219/219-transcript.md`)
-6. Review the created transcript
-7. Update frontmatter status to edited when satisfied
+6. Review the created transcript before running downstream skills.
 
 Do not continue with any other skill or script in the same run unless the user explicitly asks.
 

@@ -21,4 +21,6 @@ Spell years fully using 4-digit format (2020, 2021, etc).
 | в 17-м году я начал | в 2017 году я начал |
 | между 2020 и текущим | между 2020 и текущим (keep as-is) |
 
-This applies to all markdown files: transcripts, readable versions, show notes, documentation.
+This applies to all markdown files: transcripts, readable versions, show notes, shorts clip maps, documentation.
+
+Short-form files (`NNN-shorts.md`) use Russian editor fields and verbatim transcript lines only. Do not copy-edit guest speech inside kept spans; montage is marked with `<...>` per `transcript-to-shorts` skill.

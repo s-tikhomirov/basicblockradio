@@ -2,93 +2,158 @@
 
 Knowledge base for the Basic Block Radio podcast — deep technical interviews about blockchain technologies in Russian.
 
-## Repository Structure
+## Repository structure
 
 ```
-├── README.md                          # This file
-├── podcast-info.md                    # Podcast metadata
-├── PROJECT_STATUS.md                  # Workflow notes and history
+├── README.md
+├── podcast-info.md
+├── PROJECT_STATUS.md
+├── IDEAS.md
 ├── scripts/
-│   ├── split_transcript_chunks.py     # Pass 2: mechanical chunk split
-│   ├── merge_readable_chunks.py       # Pass 2: concatenate chunk readables
-│   └── transcript_io.py               # Shared parser (structure only)
+│   ├── split_transcript_chunks.py
+│   ├── merge_readable_chunks.py
+│   └── transcript_io.py
+├── sponsors/
+│   ├── sponsor-template.md
+│   └── current/                    # Active sponsor read copy (episode ranges in frontmatter)
 ├── .agents/
 │   ├── skills/
-│   │   ├── srt-to-transcript/         # Convert SRT to transcript
-│   │   ├── transcript-to-readable/    # Transcript → readable direct speech
-│   │   └── readable-to-shownotes/     # Readable → show notes (title, intro, timecodes)
-│   ├── dictionary.md                  # Technical terms and spellings
-│   └── editing-standards.md           # Common editing rules (years, etc)
+│   │   ├── srt-to-transcript/
+│   │   ├── transcript-to-readable/
+│   │   ├── transcript-to-shorts/
+│   │   └── readable-to-shownotes/
+│   ├── dictionary.md
+│   └── editing-standards.md
 └── episodes/
     ├── templates/
-    │   ├── transcript-template.md     # Transcript and readable frontmatter
-    │   └── shownotes-template.md      # Show notes file scaffold
-    └── 001/
-        ├── 001-raw.srt                # Whisper output (optional in repo)
-        ├── 001-transcript.md          # Edited transcript
-        ├── 001-readable.md            # Readable version (canonical)
-        └── NNN-shownotes.md           # Show notes (summary, timecodes, links)
+    │   ├── transcript-template.md
+    │   └── shownotes-template.md
+    └── NNN/
+        ├── NNN-raw.srt             # Whisper output (optional in repo)
+        ├── NNN-transcript.md       # Edited transcript (verbatim speech)
+        ├── NNN-readable.md         # Readable version (same blocks, polished prose)
+        ├── NNN-shownotes.md        # Publication show notes
+        ├── NNN-shorts.md           # Short-form clip map (optional)
+        └── .chunks/                # Pass-2 chunk artifacts (gitignored)
 ```
 
-## Workflow
+## Workflow overview
 
-### Full Pipeline
+Two deliverable tracks share the same transcript. Long-form publication uses readable + show notes. Short-form clips use the transcript only (verbatim excerpts with montage elisions).
 
-1. Generate SRT: Run Whisper on audio to get `NNN-raw.srt`
-   - Model: `medium` for best speed/quality balance on CPU
-   - Use VAD filter with max duration 20s for stability
+```mermaid
+flowchart LR
+  SRT[NNN-raw.srt]
+  T[NNN-transcript.md]
+  R[NNN-readable.md]
+  SN[NNN-shownotes.md]
+  SH[NNN-shorts.md]
+  SRT -->|srt-to-transcript| T
+  T -->|human review| T
+  T -->|transcript-to-readable| R
+  R -->|human review| R
+  R -->|readable-to-shownotes| SN
+  T -->|transcript-to-shorts| SH
+```
 
-2. Run `srt-to-transcript` skill on the SRT file (pass 1 — structure)
-   - Builds timestamped paragraphs from SRT (topic and turn boundaries; soft duration guide, not a hard cap)
-   - Speaker labels, dictionary spellings, noise filler removal
-   - Does not do readable-style sentence rewriting
-   - Output: `episodes/NNN/NNN-transcript.md` (frontmatter `status: raw`)
+Run one agent skill per step unless the user asks to combine steps. Each skill file under `.agents/skills/` defines scope, inputs, and stop conditions.
 
-3. Review and edit the transcript
-   - Verify speaker labels and block boundaries
-   - Confirm technical term spellings (see `.agents/dictionary.md`)
-   - Set frontmatter `status` to `edited` when the transcript is finalized
+## Step by step
 
-4. Run `transcript-to-readable` skill on `NNN-transcript.md` (pass 2 — prose)
-   - Input should be reviewed transcript (`status: edited`)
-   - One output line per input line (same timestamps and speakers; no merging or splitting blocks)
-   - Copy-edit within each block (flow, grammar, leftover fillers and speech redundancy); same timestamps, no merge/split
-   - Long episodes (roughly more than 50 blocks or 45 minutes span): use chunked mode — `scripts/split_transcript_chunks.py` → polish each chunk → `scripts/merge_readable_chunks.py`; no hand-picked line ranges
-   - Chunk artifacts live under `episodes/NNN/.chunks/` (gitignored)
-   - Output: `episodes/NNN/NNN-readable.md` (frontmatter `status: readable`)
-   - Skill details: `.agents/skills/transcript-to-readable/SKILL.md`
+### 1. Subtitles
 
-5. Review the readable version
-   - Check that meaning is preserved
-   - Verify years per `.agents/editing-standards.md` (2020, not 20)
-   - Set frontmatter `status` to `reviewed` when satisfied
+Generate `NNN-raw.srt` with Whisper on the episode audio.
 
-### Show Notes Creation
+- Model `medium` is a practical CPU choice for Russian.
+- VAD filter with max segment duration around 20s improves stability.
 
-1. Ensure `NNN-readable.md` is reviewed (`status: reviewed` recommended).
-2. Run `readable-to-shownotes` on the readable file → `episodes/NNN/NNN-shownotes.md`
-3. Human review. Pass a raw URL list into `readable-to-shownotes` for `Ссылки:` (or complete links in a follow-up run). `Спасибо нашим спонсорам!` comes from `sponsors/current/` (shuffled).
-4. Skill: `.agents/skills/readable-to-shownotes/SKILL.md`
+### 2. Transcript (pass 1)
 
-## Episodes
+Run the `srt-to-transcript` skill on the SRT file.
 
-Each episode lives in a numbered directory. Standard artifacts:
+- Timestamped paragraphs, speaker labels, dictionary spellings, light filler cleanup.
+- Does not rewrite for readable prose.
+- Output `episodes/NNN/NNN-transcript.md`.
+- Sponsor lines in the recording can be aligned with `sponsors/current/` when building the transcript.
 
-- `NNN-raw.srt` — Whisper subtitles (optional to keep in repo)
-- `NNN-transcript.md` — Transcript with timestamps and speaker labels
-- `NNN-readable.md` — Canonical readable version (same blocks as transcript, cleaner prose)
-- `NNN-shownotes.md` — Summary, timecodes, and links (from readable version)
+Skill: `.agents/skills/srt-to-transcript/SKILL.md`
 
-Use one canonical `NNN-readable.md` per episode after review. Extra readable drafts, if kept for comparison, are outside the pipeline and not required.
+### 3. Transcript review
 
-## Status Key
+Human review of `NNN-transcript.md`.
 
-Transcript file (`NNN-transcript.md`):
+- Speakers, boundaries, technical terms (`.agents/dictionary.md`).
+- When satisfied, run downstream skills on this file.
 
-- `raw` — Produced from SRT; not yet fully reviewed
-- `edited` — Human-reviewed; ready for `transcript-to-readable`
+### 4. Readable (pass 2)
 
-Readable file (`NNN-readable.md`):
+Run `transcript-to-readable` on the reviewed `NNN-transcript.md`.
 
-- `readable` — Generated from transcript; awaiting review
-- `reviewed` — Checked and approved for show notes and publication use
+- One output line per input line (same timestamps and speakers; no merge or split).
+- Copy-edit inside each block only.
+- Long episodes: `scripts/split_transcript_chunks.py`, polish each chunk, then `scripts/merge_readable_chunks.py`. Chunk dirs live under `episodes/NNN/.chunks/` (gitignored).
+- Output `NNN-readable.md` with the same YAML frontmatter as the transcript.
+
+Skill: `.agents/skills/transcript-to-readable/SKILL.md`
+
+### 5. Readable review
+
+Check meaning, years (`.agents/editing-standards.md`), and flow before show notes.
+
+### 6. Show notes
+
+Run `readable-to-shownotes` on `NNN-readable.md`.
+
+- Output `NNN-shownotes.md` (title, intro, timecodes, sponsors from `sponsors/current/`, episode `Ссылки:` from a URL list the user provides).
+- Human review before publish.
+
+Skill: `.agents/skills/readable-to-shownotes/SKILL.md`  
+Template: `episodes/templates/shownotes-template.md`
+
+### 7. Shorts (optional)
+
+Run `transcript-to-shorts` on the reviewed `NNN-transcript.md`.
+
+- Independent of readable and show notes. Do not source clip text from `NNN-readable.md`.
+- Output `NNN-shorts.md`: frontmatter copied from the transcript plus `source: NNN-transcript.md`; Russian titles and editor notes; timestamp lines verbatim from the transcript with `<...>` for montage cuts.
+- Typical target about 30s per clip after edit (up to about 60s when needed). Elide rhetorical repetition on a line when the same idea is stated twice.
+- Invoke with episode number `NNN` or path to `NNN-transcript.md`.
+
+Skill: `.agents/skills/transcript-to-shorts/SKILL.md`
+
+Shorts can be produced in parallel with pass 2 (readable) once the transcript is reviewed.
+
+## Agent skills
+
+| Skill | Input | Output |
+|-------|--------|--------|
+| `srt-to-transcript` | `NNN-raw.srt` | `NNN-transcript.md` |
+| `transcript-to-readable` | `NNN-transcript.md` | `NNN-readable.md` |
+| `readable-to-shownotes` | `NNN-readable.md` + URL list | `NNN-shownotes.md` |
+| `transcript-to-shorts` | `NNN-transcript.md` | `NNN-shorts.md` |
+
+Shared references: `.agents/dictionary.md`, `.agents/editing-standards.md`, `podcast-info.md`.
+
+Scripts under `scripts/` are only for mechanical transcript chunking and merge during `transcript-to-readable`. Skills that process Russian episode text do not call those scripts unless the skill explicitly says so (`transcript-to-readable` chunked mode only).
+
+## Episode artifacts
+
+| File | Role |
+|------|------|
+| `NNN-raw.srt` | Whisper subtitles |
+| `NNN-transcript.md` | Canonical spoken wording and timestamps |
+| `NNN-readable.md` | Canonical long-form reading text |
+| `NNN-shownotes.md` | Site / platform show notes |
+| `NNN-shorts.md` | Editor map for Shorts, Reels, or clip cuts |
+
+Use one reviewed `NNN-readable.md` per episode for publication. Extra drafts, if kept, are outside the pipeline.
+
+## Frontmatter
+
+Episode YAML uses `episodes/templates/transcript-template.md` (`episode`, `guest`, `hosts`, `recording_date`). No `status` field.
+
+- `NNN-readable.md` copies that frontmatter from the transcript.
+- `NNN-shorts.md` copies the same fields and adds `source: NNN-transcript.md`.
+- `NNN-shownotes.md` uses `episodes/templates/shownotes-template.md` (episode metadata plus publication body).
+
+Review gates are human workflow steps in this README, not frontmatter values.

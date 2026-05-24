@@ -16,7 +16,7 @@ Find shareable ideas in a long episode and point editors to verbatim transcript 
 
 When this skill is invoked, complete only the work described here and stop.
 
-- Input: `episodes/NNN/NNN-transcript.md` (prefer `status: edited` or later; use whatever exists if the user asks)
+- Input: `episodes/NNN/NNN-transcript.md` (use a human-reviewed transcript when possible; otherwise use whatever exists if the user asks)
 - Output: `episodes/NNN/NNN-shorts.md`
 - Read: episode frontmatter, `.agents/dictionary.md` (spelling for Russian titles, hooks, and terms)
 
@@ -38,7 +38,7 @@ Verbatim rule: every character outside `<...>` must match the transcript in orde
 ## Language
 
 - This skill file: English (except literal Russian inside transcript examples).
-- `NNN-shorts.md`: Russian throughout the body — intro line, segment titles (`##`), editor summaries, field labels, and timestamp lines. YAML frontmatter keys stay as in the template (`episode`, `source`, `guest`, `status`); values follow transcript conventions.
+- `NNN-shorts.md`: Russian throughout the body — intro line, segment titles (`##`), editor summaries, field labels, and timestamp lines. YAML frontmatter: copy from the source transcript (`episodes/templates/transcript-template.md` fields) and add `source: NNN-transcript.md`.
 - Write titles and hooks for the podcast Russian-speaking editors and social audience. Keep established English terms when the episode uses them (NIST, RSA, Harvest Now Decrypt Later, hash-based, and entries in `.agents/dictionary.md`).
 - Do not write segment titles or hooks in English unless the user explicitly asks for an English deliverable.
 
@@ -214,13 +214,15 @@ Path: `episodes/NNN/NNN-shorts.md`
 ```yaml
 ---
 episode: NNN
-source: NNN-transcript.md
 guest: …
-status: draft
+hosts:
+  - …
+recording_date: …
+source: NNN-transcript.md
 ---
 ```
 
-Copy `guest` from the transcript frontmatter when present.
+Copy frontmatter from `NNN-transcript.md` (field order per `episodes/templates/transcript-template.md`). Add `source: NNN-transcript.md`. Do not add a `status` field.
 
 ### Body structure
 

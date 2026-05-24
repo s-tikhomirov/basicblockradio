@@ -16,7 +16,7 @@ Output title, intro, timecodes, episode `Ссылки:` (from a user-supplied UR
 
 When this skill is invoked, complete only the work described here and stop.
 
-- Input: `episodes/NNN/NNN-readable.md` (prefer `status: reviewed` or `readable` in frontmatter)
+- Input: `episodes/NNN/NNN-readable.md` (after human review of the readable)
 - Output: `episodes/NNN/NNN-shownotes.md` (same numbering as `NNN-readable.md`, `NNN-transcript.md`; body structure per `episodes/templates/shownotes-template.md`)
 - Read: episode frontmatter, `podcast-info.md`, `.agents/dictionary.md`, active files in `sponsors/current/`
 
