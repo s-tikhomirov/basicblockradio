@@ -1,6 +1,6 @@
 # srt-to-transcript
 
-Turn Whisper SRT into a structured transcript file. Establishes speakers, timestamped paragraphs, spelling, and light cleanup. Does not rewrite blocks for readable prose.
+Turn Whisper SRT into a structured transcript file. Establishes speakers, timestamped paragraphs, dictionary spellings, and minimal cleanup (fillers and false starts only). Preserves spoken wording cue-by-cue. Readable copy-editing belongs in `transcript-to-readable`, not here.
 
 ## Scope (this skill only)
 
@@ -16,12 +16,12 @@ When this skill is invoked, complete only the work described here and stop.
 
 Clean up Whisper output and freeze episode structure:
 
-- Fix spelling in technical terms, names, and projects (`.agents/dictionary.md`)
-- Correct obvious mistranscriptions
-- Merge SRT cues into paragraphs with one timestamp per paragraph (see Paragraph boundaries)
+- Fix spelling in technical terms, names, and projects (`.agents/dictionary.md`) — token swaps in place, not sentence rewrites
+- Fix obvious ASR mistranscriptions (wrong word heard for a word clearly intended), without paraphrasing
+- Group consecutive SRT cues from the same speaker into paragraph lines with one timestamp per paragraph (see Paragraph boundaries and Speech fidelity)
 - Standardize speaker labels and timestamp format
-- Remove obvious noise fillers and false starts without changing meaning
-- Do not merge or split paragraphs for readable prose; only structural boundaries per rules below
+- Remove obvious noise fillers and false starts per Fillers — without shortening or polishing sentences
+- Do not copy-edit for flow, clarity, or compression; that is `transcript-to-readable`
 
 ## Input
 
@@ -31,6 +31,10 @@ Required in user prompt when invoking skill:
 - Guest name (who is being interviewed)
 - Host names (who is asking questions)
 
+Optional in user prompt (or from pre-flight metadata passed by the coordinator):
+
+- `recording_date` — ISO date (`YYYY-MM-DD`) when the user or coordinator supplies it explicitly
+
 Content being edited:
 
 - Raw SRT file with timestamped segments (the AI reads this directly)
@@ -38,13 +42,13 @@ Content being edited:
 Context sources (read by the skill):
 
 - Technical terms from `.agents/dictionary.md`
-- Podcast metadata from `podcast-info.md`
+- Podcast metadata from `podcast-info.md` (including episode-level `recording_date` only if that file lists a date for this episode number — not inferred from anything else; patron support URLs in the same file)
 - Active sponsor copy for the episode from `sponsors/current/` (see Sponsor read segments)
 
 Processing approach:
 
 - The AI reads and parses the SRT file directly
-- Builds paragraphs from consecutive SRT cues (same speaker, within duration limits)
+- For each paragraph block: take SRT cue text in time order from the same speaker, join with spaces, then apply only Speech fidelity allowed edits
 - Agent-driven from SRT only — no parser or batch scripts in this workflow
 
 ## Output
@@ -55,7 +59,7 @@ New transcript file `episodes/NNN/NNN-transcript.md` containing:
   - episode: episode number
   - guest: guest name (from user input)
   - hosts: host names (from user input)
-  - recording_date: if available from podcast-info.md or user input (omit key only if unknown)
+  - recording_date: exact date from user prompt, pre-flight metadata, or an explicit episode-level entry in `podcast-info.md` for this episode; if none of those apply, use `unknown` (always include this key)
 - Transcript content only — no chapter headers, no summarization
 - Format: `(HH:MM:SS) Speaker Name: text of speech`
 - Timestamp format: parentheses, not bold — `(00:15:30)`
@@ -66,43 +70,131 @@ New transcript file `episodes/NNN/NNN-transcript.md` containing:
 
 Note: The output filename starts with episode number (e.g., `219-transcript.md`).
 
+## Speech fidelity (mandatory)
+
+The transcript is not a readable article. It is labeled, timestamped speech with Whisper fixes and filler cleanup only.
+
+### Allowed edits inside a block
+
+- Join consecutive cues from the same speaker with spaces; keep cue order and keep each sentence the speaker said (you may fix obvious punctuation only where SRT left none and a period or comma was clearly spoken)
+- Replace or capitalize terms per `.agents/dictionary.md` and sponsor-file spelling fixes (same slot in the sentence — do not rephrase around them)
+- Swap an obvious ASR garbage word for the intended word when context and audio meaning are clear
+- Remove items listed under Fillers and obvious false starts (aborted phrase immediately restarted)
+- Apply `.agents/editing-standards.md` year formatting where a year appears
+
+### Forbidden edits (copy-editing)
+
+- Paraphrasing, summarizing, or “tightening” across cues or sentences
+- Dropping clauses, sentences, hedges, or examples because they feel redundant
+- Merging several spoken sentences into one shorter sentence
+- Changing word order or substituting synonyms for flow
+- Replacing spoken connectives (“Так что давай”, “Я думаю, что”) with shorter equivalents unless they are pure filler per Fillers
+- Dash chains or list compression that the speaker did not use
+- Anything `transcript-to-readable` describes as copy-editing
+
+When unsure whether a change is cleanup or copy-editing, keep the SRT wording.
+
+### Anti-pattern (do not produce this)
+
+SRT cues (same speaker, one thread):
+
+```text
+Хорошо, давай. Я подумал, стоит ли углубляться еще глубже именно в этот конкретный вопрос, который меня, безусловно, интересует.
+Но я думаю, что, наверное, логичнее это сделать в контексте разговора про какую-то конкретику.
+Так что давай, наверное, перейдем к разговору про zkSync Era, собственно, роллап, с которого начинался zkSync.
+```
+
+Wrong (rewritten):
+
+```text
+Я подумал, стоит ли углубляться ещё в этот конкретный вопрос, но логичнее сделать это в контексте конкретики. Давай перейдём к разговору про zkSync Era — роллап, с которого начинался zkSync.
+```
+
+Right (joined + dictionary/filler only; «собственно» dropped as filler; «Ethereum» from dictionary if applicable):
+
+```text
+Хорошо, давай. Я подумал, стоит ли углубляться еще глубже именно в этот конкретный вопрос, который меня, безусловно, интересует. Но я думаю, что, наверное, логичнее это сделать в контексте разговора про какую-то конкретику. Так что давай, наверное, перейдем к разговору про zkSync Era, роллап, с которого начинался zkSync.
+```
+
+Keep «наверное» when it qualifies the speaker’s judgment (as above). Do not strip it to shorten the block.
+
 ## Paragraph boundaries
 
-Each output line is one paragraph block. The timestamp on the line is the start time of that block (time of the first SRT cue merged into it).
+Each output line is one paragraph block. The timestamp on the line is the start time of that block (time of the first SRT cue grouped into it).
 
-Priority: group SRT cues into one block while a single speaker continues one coherent topic or answer. Split on topic and turn boundaries first; use duration only as a soft guardrail.
+Grouping cues into one line is structural only: concatenate their text per Speech fidelity. It does not permit rewriting the combined passage into fewer or smoother sentences.
 
-Always start a new paragraph when:
+### Priority (mandatory)
 
-- The speaker changes
-- The guest’s answer clearly ends and the host asks a new question (host question often gets its own block)
-- The conversation shifts to a new topic (new question, new sub-question, sponsor read, intro or outro segment)
-- A long pause in the SRT (clear break in recording) suggests a natural boundary
+Question–answer semantics override paragraph length. Never merge cues from different speakers into one block, even when the exchange is short or the SRT has no long pause between turns.
 
-Prefer to keep one block when:
+When in doubt, split at a speaker change rather than keep one long block.
 
-- The same speaker is still developing the same answer or thread, even past about two minutes, if there is no clean topic break
+### Always start a new paragraph when
 
-Soft duration guideline (not a hard cap):
+- The speaker changes (including host follow-up questions, clarification checks, and brief guest replies such as «Именно так»)
+- The host asks a new question or reframes the prior answer («Правильно ли я понял…», «То есть…», «Получается…») — the host turn gets its own block even if it immediately follows the guest’s last cue
+- The guest’s answer clearly ends and the host takes the floor
+- The conversation shifts to a new topic (new question, new sub-question, intro or outro segment)
+- Each sponsor in the opening sponsor segment (see Sponsor read segments — one block per sponsor, mandatory)
+- A long pause in the SRT (clear break in recording) suggests a natural boundary and the same speaker continues
 
-- Rough guide: many blocks fall in the one-to-three minute range; about two minutes is typical, not a maximum
-- Measure span from the block start timestamp to the end of the last SRT cue in that block
+### One speaker, multiple cues
+
+Group consecutive SRT cues from the same speaker into one block only while that speaker continues the same turn (one answer, one sponsor read, one uninterrupted host question).
+
+Do not extend a guest block across a host question or a host block across a guest answer, regardless of topic continuity.
+
+Paragraphs may be very short: a single host question, a single-sentence guest confirmation, or one clarifying exchange each get separate blocks when speakers alternate.
+
+### Duration (secondary)
+
+Length guidelines apply only within a single speaker’s turn. They must not justify merging host and guest speech.
+
+- Rough guide: many single-speaker blocks fall in the one-to-three minute range; about two minutes is typical, not a target
 - If the same speaker continues one topic well beyond about three to four minutes with no natural break, consider splitting at the nearest SRT gap or sentence boundary so later copy-editing is not faced with one enormous paragraph — but do not split mid-thought just to satisfy a timer
 - If a block is very long because the topic is long, that is acceptable
 
-Do not merge cues across different speakers.
+### Anti-pattern (merged Q&A)
+
+Wrong — guest answer, host check, and guest reply in one block:
+
+```text
+(00:36:47) Иван Богатый: …защита от цензурирования…
+
+Правильно ли я понял, что разница здесь с оптимистическими роллапами…
+
+Именно так. Потому что это доказано в зике…
+```
+
+Right — three blocks, three timestamps:
+
+```text
+(00:36:47) Иван Богатый: …защита от цензурирования…
+
+(00:37:47) Сергей Тихомиров: Правильно ли я понял, что разница здесь…
+
+(00:38:04) Иван Богатый: Именно так. Потому что это доказано…
+```
 
 Paragraph boundaries in the transcript file are the canonical structure for the episode. Do not merge or split blocks for style in this skill.
 
+Self-check before finishing:
+
+- Spot-read several multi-cue blocks against the SRT. If whole sentences or distinct clauses disappeared, restore them from the SRT.
+- Scan for host questions or guest confirmations embedded inside another speaker’s block (missing `(timestamp) Name:` line). Split any you find.
+
 ## Fillers (bulk cleanup)
 
-Remove when clearly noise only, without changing meaning: ну, значит, короче, типа, вот (standalone), так что (sentence start), вот как-то / так вот / вот именно, знаешь, понимаешь, слышишь, как бы, собственно, типа того, получается (pause), по-моему / не знаю / наверное (empty hedge), кстати (empty), там / вот там, false starts.
+Remove when clearly noise only, without changing meaning: ну, значит, короче, типа, вот (standalone), так что (sentence start only when followed by a new action and the connective adds no meaning), вот как-то / так вот / вот именно, знаешь, понимаешь, слышишь, как бы, собственно, типа того, получается (pause), по-моему / не знаю (empty hedge only), кстати (empty), там / вот там, false starts.
 
 Context-dependent: и так далее, и все такое, короче говоря, все такое — keep if they narrow a list or sum up; drop if trailing off. точно-точно / ну-ну / вот-вот — drop as backchannel agreement; keep if emphatic or part of the thought (вот-вот, в этом суть).
 
 «типа» is always a filler. «это» only when clearly empty pause-filler, not when grammatically needed.
 
 You do not need to catch every disfluency; remove obvious noise only. Do not copy-edit for readable flow or cut redundancy inside blocks beyond filler cleanup.
+
+If a word might be filler or might carry meaning (e.g. «наверное», «я думаю, что»), keep it.
 
 ## Constraints
 
@@ -111,9 +203,13 @@ You do not need to catch every disfluency; remove obvious noise only. Do not cop
 - DO NOT create `NNN-readable.md` or perform readable-style rewriting
 - DO NOT soften direct statements
 - DO NOT add transition phrases or corporate speak
-- DO NOT restructure sentences for style (fix obvious errors and fillers only)
+- DO NOT restructure, merge, condense, or paraphrase sentences for style or readability (fix obvious ASR/dictionary tokens and fillers only)
+- DO NOT drop spoken sentences, clauses, or examples when grouping SRT cues into one paragraph line
 - DO NOT remove personality or informal constructions
 - DO NOT add chapter headers, section titles, or summarization
+- DO NOT invent or guess `recording_date`
+- DO NOT derive `recording_date` from SRT headers or cue text, raw or mix filenames, export paths, git history, file modification times, or any other file or path metadata
+- DO set `recording_date` to `unknown` when no explicit user or coordinator value and no explicit episode-level date for this episode in `podcast-info.md`
 - DO NOT use bold formatting for timestamps or speaker names
 - DO change only what is necessary for accuracy, structure rules above, and filler removal
 - DO read and process SRT content directly to produce the transcript
@@ -130,9 +226,10 @@ You do not need to catch every disfluency; remove obvious noise only. Do not cop
    - Episode number (e.g., 219)
    - Guest name
    - Host names with context (who asks questions, who gives answers)
+   - Optional `recording_date` when known (otherwise the skill writes `unknown`)
 5. The skill will:
    - Read the SRT file directly
-   - Build timestamped paragraphs per Paragraph boundaries
+   - Build timestamped paragraphs by grouping cues per Paragraph boundaries and joining text verbatim per Speech fidelity
    - Identify speakers using provided names and heuristics
    - Apply dictionary spellings, sponsor-file fixes in sponsor segments, and fillers per Fillers
    - Create transcript file (e.g., `episodes/219/219-transcript.md`)
@@ -145,7 +242,7 @@ Do not continue with any other skill or script in the same run unless the user e
 - Transcript text remains in Russian — do not translate content
 - Preserve the direct, no-nonsense tone — avoid softening statements or adding filler
 - Keep technical depth intact — do not simplify technical explanations
-- Preserve a friendly but technically demanding tone: conversational and rigorous, with precise questions and answers intact
+- Wording should stay close to the SRT: spoken, sometimes repetitive. Clarity edits wait for `transcript-to-readable`
 
 ## Speaker Identification
 
@@ -205,7 +302,7 @@ Source for correct spellings:
   - Equivalent Terms (alternative forms that should be normalized)
   - Abbreviations and their expansions
 
-Apply these spellings consistently throughout the transcript.
+Apply these spellings consistently throughout the transcript. Change only the term token; do not rewrite the sentence for grammar around English names unless the SRT form is clearly wrong ASR.
 
 ## Sponsor read segments
 
@@ -221,7 +318,7 @@ If no file matches, use `.agents/dictionary.md` and context from the SRT only.
 
 ### How to use sponsor copy (important)
 
-The host is not reading the sponsor file verbatim. They may follow one variant closely, paraphrase, merge sponsors in one breath, or skip lines. The transcript must reflect what was said, not the approved script.
+The host is not reading the sponsor file verbatim. They may follow one variant closely, paraphrase, or skip lines within a single sponsor read. The transcript must reflect what was said for each sponsor, not the approved script. Structural split (one block per sponsor at start/end) is required even when the host flows from one sponsor to the next without a long pause.
 
 Consult sponsor files only when needed to fix:
 
@@ -237,12 +334,32 @@ Do not:
 
 When the host’s meaning is clear but phrasing differs from every variant, keep the host’s phrasing and fix spelling only.
 
+### Opening sponsor segment (start of episode)
+
+After the intro, when the host reads start-of-episode sponsors (`Episode read: start` in applicable sponsor files):
+
+- One paragraph block per sponsor that is actually read for this episode, in the order read on the show.
+- Do not merge two sponsors into one transcript block, even if the same host speaks through both without a long SRT gap or the cues look like one continuous turn.
+- Start each block at the timestamp of the first SRT cue for that sponsor’s read.
+- Text inside each block still follows Speech fidelity (join cues for that sponsor only; no copy-editing).
+- If a sponsor that applies to this episode number was skipped in the recording, do not invent a block for it.
+
+Use sponsor file names and copy to recognize where one sponsor read ends and the next begins (brand mention, product pivot, typical CTA). When uncertain, split at the clearest sponsor boundary rather than keeping one long combined block.
+
+End-of-episode sponsor reads (`Episode read: end`): same one-block-per-sponsor rule when multiple sponsors are read back-to-back.
+
 ### Boundaries
 
-Sponsor blocks are still normal paragraph blocks (often one block per sponsor or per beat). Apply paragraph and filler rules as elsewhere. Patreon/Boosty thanks are not sponsor-file content unless a matching sponsor file exists.
+Apply paragraph and filler rules as elsewhere in sponsor segments. Patreon/Boosty thanks are not sponsor-file content unless a matching sponsor file exists.
+
+### Patron URLs
+
+Read the Patron support section in `podcast-info.md` for this show’s canonical patron URLs.
+
+When the host mentions Patreon, Boosty, or reads a patron link (including spoken «slash», dotted domains, or garbled path segments from ASR), recognize the reference and write the matching URL from `podcast-info.md` in normal slash form. Do not invent URLs or copy ASR literally when the intent is clearly the show’s patron link.
 
 ## Context Reference
 
-See `../../../podcast-info.md` for podcast metadata, hosts, and goals.
-Read episode frontmatter for guest name and recording date.
+See `../../../podcast-info.md` for podcast metadata, hosts, goals, and patron URLs.
+For `recording_date`, use only explicit user or coordinator input or an episode-level date in `podcast-info.md` — never infer from files on disk.
 Follow `.agents/editing-standards.md` for year formatting and other common editing rules.

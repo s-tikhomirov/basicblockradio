@@ -40,7 +40,7 @@ Episode links (for `Ссылки:`):
 
 Write `episodes/NNN/NNN-shownotes.md` (not `shownotes.md`):
 
-1. YAML frontmatter — same fields and order as `episodes/templates/shownotes-template.md` (copy from readable; fill missing `recording_date` only if user provides it).
+1. YAML frontmatter — same fields and order as `episodes/templates/shownotes-template.md` (copy from readable, including `recording_date` verbatim). Do not invent or derive `recording_date`; if missing in readable, use `unknown`. Change it only when the user explicitly provides a date in the prompt.
 2. Body in publication order (plain text, Russian):
    - Title line
    - Blank line

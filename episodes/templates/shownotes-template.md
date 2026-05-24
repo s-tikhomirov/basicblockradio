@@ -3,7 +3,7 @@ episode:
 guest:
 hosts:
   -
-recording_date:
+recording_date: unknown
 ---
 
 ББ-NNN: [Title under 100 characters]

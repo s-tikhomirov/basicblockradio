@@ -1,6 +1,6 @@
 # transcript-to-readable
 
-Copy-edit each transcript block into readable direct speech — clearer sentences and flow inside the paragraph, while keeping the same boundaries and facts. Expect input already structured with speakers, timestamps, paragraph lines, and dictionary spellings.
+Copy-edit each transcript block into readable direct speech — clearer sentences and flow inside the paragraph, while keeping the same boundaries and facts. Expect input already structured with speakers, timestamps, paragraph lines, and dictionary spellings — with spoken wording preserved from `srt-to-transcript` (not pre-edited for flow).
 
 ## Scope (this skill only)
 
@@ -17,7 +17,7 @@ Sponsor reads: primary cleanup belongs in `srt-to-transcript` (`sponsors/current
 ## Files
 
 - Input: `episodes/NNN/NNN-transcript.md` (after human review). Episode number from filename.
-- Output: `episodes/NNN/NNN-readable.md` — frontmatter copied from the transcript (field order per `episodes/templates/transcript-template.md`), same line format:
+- Output: `episodes/NNN/NNN-readable.md` — frontmatter copied verbatim from the transcript (field order per `episodes/templates/transcript-template.md`), including `recording_date`; do not invent or change dates. Same line format:
 
 ```
 (00:06:28) Speaker Name: Text...

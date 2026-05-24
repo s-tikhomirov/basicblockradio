@@ -14,7 +14,11 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - Amper Computing
 - Arbitrum
 - Binance
+- Boosty
 - Chainlink
+- Citrea
+- Celestia
+- Sophon
 - Cloudflare
 - Coinbase
 - Cosmos
@@ -37,8 +41,10 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - Marinade
 - Mellow
 - Merkle Tree Certificates
+- Messari
 - Morpho
 - Polkadot
+- Pudgy Penguins
 - QApp
 - Renzo
 - Rocket Pool
@@ -56,6 +62,17 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - WhatsApp
 - Zerion
 - iMessage
+- zkSync Era
+- ZK Stack
+- Shared Bridge
+- Caldera
+- Zeeve
+- Conduit
+- QuickNode
+- Alchemy
+- Solidity
+- SolC
+- SolX
 
 ### Technical Terms
 - AML
@@ -83,6 +100,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - Wi-Fi
 - code-based
 - delegation
+- double-spend
 - governance
 - hash-based
 - isogeny-based
@@ -101,17 +119,29 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - treasury
 - vault
 - withdrawal queue
+- data availability
+- opcode
+- precompile
+- sequencing
+- sequencer
+- light client
+- fraud proof
+- batch
+- paymaster
 
 ### People and Organizations
 - 21Shares
 - Dan Boneh
 - Eindhoven University
 - Ethereum Foundation
+- Matter Labs
+- Justin Drake
 - Lazarus Group
 - Leslie Lamport
 - NIST
 - NSA
 - Oracle (в значении компании)
+- Patreon
 - Russian Quantum Center
 - SEC
 - Tanja Lange
@@ -152,6 +182,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - хакатон
 - шифропанк
 - эллиптические кривые
+- он-чейн
 
 ### Common Phrases
 - Виталик
@@ -191,6 +222,9 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 | PKI | Public Key Infrastructure | Certificate management system |
 | STARK | Scalable Transparent Argument of Knowledge | Post-quantum zero-knowledge proof |
 | CRQC | Cryptographically Relevant Quantum Computer | Квантовый компьютер, релевантный для взлома криптографии; in show notes and transcripts use «CRQC» when context is clearly crypto (threat to PKI, signatures, migration), otherwise «квантовый компьютер» |
+| EIP-4337 | Ethereum account abstraction (ERC-4337) | Spoken «EIP-4337», not «4337» or «IP 4337» alone |
+| EIP-7702 | Set EOA code for one transaction | Spoken «EIP-7702», not «IP 7702» |
+| OP_CAT | Bitcoin opcode (Cat) | Proposed for verifying proofs on Bitcoin; not «OPCAT» |
 
 ---
 
@@ -203,6 +237,21 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 - байнэнс = Binance
 - бикончейн = beacon chain
 - Виталик = Виталик Бутерин
+- Vitalik = Виталик
+- Pudgey Penguins = Pudgy Penguins
+- Citria = Citrea
+- OPCAT = OP_CAT
+- Миссари = Messari
+- дабл спенд = double-spend
+- IP 7702 = EIP-7702
+- IP 4337 = EIP-4337
+- Джастин Рейком = Justin Drake
+- Эра = Era
+- Эру = Era
+- Эры = Era
+- Эре = Era
+- пич = питч
+- трансляций в секунду = транзакций в секунду
 - волт = vault
 - гovernance = governance
 - капитал-эффективность = capital efficiency
@@ -247,6 +296,45 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 - решетка = lattice
 - изогения = isogeny
 - пост-квантовый = post-quantum
+- on-чейн = он-чейн
+- ончейн = он-чейн
+- обкодов = opcode
+- обкод = opcode
+- прикомпайл = precompile
+- прикомпайлы = precompiles
+- сиквинсинг = sequencing
+- сиквинсингом = sequencing
+- сиквенсер = sequencer
+- сиквенсера = sequencer
+- Matterlapse = Matter Labs
+- light-клайент = light client
+- light-клайенты = light client
+- фрод-пруф = fraud proof
+- фрод-пруфа = fraud proof
+- фродпруф = fraud proof
+- бачи = batches
+- батч = batch
+- батчи = batches
+- Serg Bridge = Shared Bridge
+- Толдера = Caldera
+- Изиев = Zeeve
+- Алкими = Alchemy
+- роллап из-за сервис = rollup-as-a-service
+- пеймастер = paymaster
+- пеймастера = paymaster
+- пеймастерам = paymasters
+- Сафон = Sophon
+- Сафоном = Sophon
+- Сафоне = Sophon
+- MatterLabs = Matter Labs
+- Ethereum фаундейшн = Ethereum Foundation
+- селестией = Celestia
+- селестия = Celestia
+- л1 = L1
+- Л1 = L1
+- эсэсол = SolX
+- эсэсл = SolC
+- эсэсо = ZK Stack
 
 ---
 
@@ -257,3 +345,4 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 3. Technical abbreviations stay in English: MEV, KYC, AML, stETH
 4. Consistency within a transcript is more important than strict rules
 5. During SRT comparison, terms in the Equivalent Terms section are considered identical
+6. zkSync rollup product name: use Era (Latin), not Russian Эра/Эру/Эры/Эре, when referring to zkSync Era

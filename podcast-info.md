@@ -13,6 +13,13 @@ Static information about the podcast, used by AI agents when editing transcripts
 - Goal: Understand how things work
 - Not adversarial: Do not roast guests or present them unfavorably
 
+## Patron support (URLs)
+
+When hosts read patron links aloud, normalize to these URLs in transcripts (not spoken «slash»):
+
+- Patreon: `patreon.com/basicblockradio`
+- Boosty: `boosty.to/basicblockradio`
+
 ## Hosts
 
 People who appear in most episodes.

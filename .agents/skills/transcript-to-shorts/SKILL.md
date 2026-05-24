@@ -222,7 +222,7 @@ source: NNN-transcript.md
 ---
 ```
 
-Copy frontmatter from `NNN-transcript.md` (field order per `episodes/templates/transcript-template.md`). Add `source: NNN-transcript.md`. Do not add a `status` field.
+Copy frontmatter from `NNN-transcript.md` (field order per `episodes/templates/transcript-template.md`), including `recording_date` verbatim. Do not invent, change, or derive `recording_date`. Add `source: NNN-transcript.md`. Do not add a `status` field.
 
 ### Body structure
 
