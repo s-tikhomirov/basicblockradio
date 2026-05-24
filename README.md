@@ -15,17 +15,19 @@ Knowledge base for the Basic Block Radio podcast — deep technical interviews a
 ├── .agents/
 │   ├── skills/
 │   │   ├── srt-to-transcript/         # Convert SRT to transcript
-│   │   └── transcript-to-readable/    # Transcript → readable direct speech
+│   │   ├── transcript-to-readable/    # Transcript → readable direct speech
+│   │   └── readable-to-shownotes/     # Readable → show notes (title, intro, timecodes)
 │   ├── dictionary.md                  # Technical terms and spellings
 │   └── editing-standards.md           # Common editing rules (years, etc)
 └── episodes/
-    ├── transcript-template.md         # Template for transcript files
-    ├── shownotes-template.md          # Template for show notes files
+    ├── templates/
+    │   ├── transcript-template.md     # Transcript and readable frontmatter
+    │   └── shownotes-template.md      # Show notes file scaffold
     └── 001/
         ├── 001-raw.srt                # Whisper output (optional in repo)
         ├── 001-transcript.md          # Edited transcript
         ├── 001-readable.md            # Readable version (canonical)
-        └── shownotes.md               # Show notes (summary, timecodes, links)
+        └── NNN-shownotes.md           # Show notes (summary, timecodes, links)
 ```
 
 ## Workflow
@@ -61,11 +63,12 @@ Knowledge base for the Basic Block Radio podcast — deep technical interviews a
    - Verify years per `.agents/editing-standards.md` (2020, not 20)
    - Set frontmatter `status` to `reviewed` when satisfied
 
-### Show Notes Creation (manual or TBD skill)
+### Show Notes Creation
 
-1. Copy `episodes/shownotes-template.md` to `episodes/NNN/shownotes.md`
-2. Fill in summary, timecodes, and links based on the readable transcript
-3. AI assistance available via future skill (TBD)
+1. Ensure `NNN-readable.md` is reviewed (`status: reviewed` recommended).
+2. Run `readable-to-shownotes` on the readable file → `episodes/NNN/NNN-shownotes.md`
+3. Human review. Pass a raw URL list into `readable-to-shownotes` for `Ссылки:` (or complete links in a follow-up run). `Спасибо нашим спонсорам!` comes from `sponsors/current/` (shuffled).
+4. Skill: `.agents/skills/readable-to-shownotes/SKILL.md`
 
 ## Episodes
 
@@ -74,7 +77,7 @@ Each episode lives in a numbered directory. Standard artifacts:
 - `NNN-raw.srt` — Whisper subtitles (optional to keep in repo)
 - `NNN-transcript.md` — Transcript with timestamps and speaker labels
 - `NNN-readable.md` — Canonical readable version (same blocks as transcript, cleaner prose)
-- `shownotes.md` — Summary, timecodes, and links (from readable version)
+- `NNN-shownotes.md` — Summary, timecodes, and links (from readable version)
 
 Use one canonical `NNN-readable.md` per episode after review. Extra readable drafts, if kept for comparison, are outside the pipeline and not required.
 

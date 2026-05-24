@@ -39,6 +39,7 @@ Context sources (read by the skill):
 
 - Technical terms from `.agents/dictionary.md`
 - Podcast metadata from `podcast-info.md`
+- Active sponsor copy for the episode from `sponsors/current/` (see Sponsor read segments)
 
 Processing approach:
 
@@ -50,11 +51,11 @@ Processing approach:
 
 New transcript file `episodes/NNN/NNN-transcript.md` containing:
 
-- Frontmatter with episode context:
+- Frontmatter: same fields and order as `episodes/templates/transcript-template.md`
   - episode: episode number
   - guest: guest name (from user input)
   - hosts: host names (from user input)
-  - recording_date: if available from podcast-info.md
+  - recording_date: if available from podcast-info.md or user input (omit key only if unknown)
   - status: raw
 - Transcript content only — no chapter headers, no summarization
 - Format: `(HH:MM:SS) Speaker Name: text of speech`
@@ -134,7 +135,7 @@ You do not need to catch every disfluency; remove obvious noise only. Do not cop
    - Read the SRT file directly
    - Build timestamped paragraphs per Paragraph boundaries
    - Identify speakers using provided names and heuristics
-   - Apply correct spellings from dictionary.md and fillers per Fillers
+   - Apply dictionary spellings, sponsor-file fixes in sponsor segments, and fillers per Fillers
    - Create transcript file (e.g., `episodes/219/219-transcript.md`)
 6. Review the created transcript
 7. Update frontmatter status to edited when satisfied
@@ -207,6 +208,40 @@ Source for correct spellings:
   - Abbreviations and their expansions
 
 Apply these spellings consistently throughout the transcript.
+
+## Sponsor read segments
+
+At the start (and sometimes end) of the episode the host reads sponsor messages. Whisper often garbles names, numbers, and product terms in these blocks.
+
+### Which sponsor files apply
+
+1. Take episode number `NNN` from the job.
+2. In `sponsors/current/`, open every `sponsor-*.md` whose frontmatter has `first_episode` ≤ `NNN` ≤ `last_episode`.
+3. Use `name` and the bodies under `Episode read: start` and `Episode read: end` as reference only (including numbered variants under `### Вариант …` if present).
+
+If no file matches, use `.agents/dictionary.md` and context from the SRT only.
+
+### How to use sponsor copy (important)
+
+The host is not reading the sponsor file verbatim. They may follow one variant closely, paraphrase, merge sponsors in one breath, or skip lines. The transcript must reflect what was said, not the approved script.
+
+Consult sponsor files only when needed to fix:
+
+- obvious ASR or spelling errors (бренд, продукт, URL, метрики),
+- unclear wording where the sponsor text makes the intended fact unambiguous,
+- inconsistent capitalization or naming (1inch, Zerion API, GOSH, Acki Nacki, Fluence, MEV, DeFi Llama, etc.).
+
+Do not:
+
+- replace the host’s wording with a variant from the sponsor file,
+- add claims, metrics, or CTAs that the host did not say,
+- pick one `### Вариант` and treat it as the only correct text.
+
+When the host’s meaning is clear but phrasing differs from every variant, keep the host’s phrasing and fix spelling only.
+
+### Boundaries
+
+Sponsor blocks are still normal paragraph blocks (often one block per sponsor or per beat). Apply paragraph and filler rules as elsewhere. Patreon/Boosty thanks are not sponsor-file content unless a matching sponsor file exists.
 
 ## Context Reference
 

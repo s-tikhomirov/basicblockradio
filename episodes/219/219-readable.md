@@ -1,10 +1,10 @@
 ---
 episode: 219
-publication_date: 2026-04-27
 guest: Василий Шаповалов
 hosts:
   - Александр Селезнев
   - Иван Иваницкий
+recording_date: 2026-04-27
 status: readable
 ---
 

@@ -94,6 +94,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - market share
 - multisig
 - post-quantum
+- CRQC
 - restaking
 - side-channel
 - slashing
@@ -189,6 +190,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 | KPI | Key Performance Indicator | Performance metric |
 | PKI | Public Key Infrastructure | Certificate management system |
 | STARK | Scalable Transparent Argument of Knowledge | Post-quantum zero-knowledge proof |
+| CRQC | Cryptographically Relevant Quantum Computer | Квантовый компьютер, релевантный для взлома криптографии; in show notes and transcripts use «CRQC» when context is clearly crypto (threat to PKI, signatures, migration), otherwise «квантовый компьютер» |
 
 ---
 

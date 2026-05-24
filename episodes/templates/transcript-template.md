@@ -1,9 +1,9 @@
 ---
 episode:
-publication_date:
 guest:
 hosts:
   -
+recording_date:
 status: raw
 ---
 

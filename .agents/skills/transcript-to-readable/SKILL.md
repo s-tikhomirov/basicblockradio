@@ -12,10 +12,12 @@ When this skill is invoked, complete only the work described here.
 
 Do not convert raw SRT in this skill. If the user only has `NNN-raw.srt`, ask them to produce `NNN-transcript.md` from the SRT in a separate chat invocation before running this skill.
 
+Sponsor reads: primary cleanup belongs in `srt-to-transcript` (`sponsors/current/`). In this skill, only touch sponsor blocks if something is still unclear or misspelled after pass 1 — same rules (no rewriting to match sponsor script; fix names, numbers, clarity only). See that skill’s «Sponsor read segments».
+
 ## Files
 
 - Input: `episodes/NNN/NNN-transcript.md` (`status: edited` when ready). Episode number from filename.
-- Output: `episodes/NNN/NNN-readable.md` — frontmatter like source, `status: readable`, same line format:
+- Output: `episodes/NNN/NNN-readable.md` — frontmatter like source (field order per `episodes/templates/transcript-template.md`), only `status` set to `readable`, same line format:
 
 ```
 (00:06:28) Speaker Name: Text...
@@ -118,7 +120,7 @@ Otherwise a single full-file pass is fine.
 1. Read `NNN-transcript.md` line by line (each timestamped speaker line is one block).
 2. For each block: copy-edit per Prose and Fillers above (expect visible improvement, not near-verbatim output); keep same timestamp and speaker; do not merge with adjacent blocks.
 3. Verify output block count and timestamps match input.
-4. Write `NNN-readable.md` with frontmatter like the source and `status: readable`; use `.agents/dictionary.md`, `podcast-info.md`, `.agents/editing-standards.md`.
+4. Write `NNN-readable.md` with frontmatter copied from the transcript (`episodes/templates/transcript-template.md` field order), `status: readable`; use `.agents/dictionary.md`, `podcast-info.md`, `.agents/editing-standards.md`.
 
 ### Chunked mode (long episodes)
 
