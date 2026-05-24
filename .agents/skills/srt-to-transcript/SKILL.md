@@ -136,7 +136,8 @@ When in doubt, split at a speaker change rather than keep one long block.
 - The host asks a new question or reframes the prior answer («Правильно ли я понял…», «То есть…», «Получается…») — the host turn gets its own block even if it immediately follows the guest’s last cue
 - The guest’s answer clearly ends and the host takes the floor
 - The conversation shifts to a new topic (new question, new sub-question, intro or outro segment)
-- Each sponsor in the opening sponsor segment (see Sponsor read segments — one block per sponsor, mandatory)
+- Each sponsor in the opening sponsor segment (see Sponsor read segments — one block per sponsor at start, mandatory)
+- Do not split the closing sponsor segment into one block per sponsor (see Sponsor read segments — one combined block at end, mandatory)
 - A long pause in the SRT (clear break in recording) suggests a natural boundary and the same speaker continues
 
 ### One speaker, multiple cues
@@ -183,6 +184,7 @@ Self-check before finishing:
 
 - Spot-read several multi-cue blocks against the SRT. If whole sentences or distinct clauses disappeared, restore them from the SRT.
 - Scan for host questions or guest confirmations embedded inside another speaker’s block (missing `(timestamp) Name:` line). Split any you find.
+- Opening sponsor reads: one block per sponsor; closing sponsor roll call: one block for all end mentions (not one block per sponsor at the end).
 
 ## Fillers (bulk cleanup)
 
@@ -267,7 +269,7 @@ Use these patterns to distinguish speakers when the raw SRT lacks diarization:
 - Hosts typically:
   - Ask questions (sentences ending with `?`)
   - Introduce the episode topic at the beginning
-  - Read sponsor messages at the start and end of the episode
+  - Read sponsor messages at the start (one block per sponsor) and at the end (one combined block for all closing sponsor mentions)
   - Manage topic transitions and wrap up discussions
   - Speak less overall compared to guests
 
@@ -318,7 +320,7 @@ If no file matches, use `.agents/dictionary.md` and context from the SRT only.
 
 ### How to use sponsor copy (important)
 
-The host is not reading the sponsor file verbatim. They may follow one variant closely, paraphrase, or skip lines within a single sponsor read. The transcript must reflect what was said for each sponsor, not the approved script. Structural split (one block per sponsor at start/end) is required even when the host flows from one sponsor to the next without a long pause.
+The host is not reading the sponsor file verbatim. They may follow one variant closely, paraphrase, or skip lines within a single sponsor read. The transcript must reflect what was said for each sponsor, not the approved script. Structural rules for sponsor blocks differ at the start vs the end of the episode (see below); apply them even when the host flows from one sponsor to the next without a long SRT gap.
 
 Consult sponsor files only when needed to fix:
 
@@ -346,7 +348,16 @@ After the intro, when the host reads start-of-episode sponsors (`Episode read: s
 
 Use sponsor file names and copy to recognize where one sponsor read ends and the next begins (brand mention, product pivot, typical CTA). When uncertain, split at the clearest sponsor boundary rather than keeping one long combined block.
 
-End-of-episode sponsor reads (`Episode read: end`): same one-block-per-sponsor rule when multiple sponsors are read back-to-back.
+### Closing sponsor segment (end of episode)
+
+When the host reads end-of-episode sponsors (`Episode read: end` in applicable sponsor files), typically after patron thanks and before the sign-off:
+
+- One paragraph block for the entire closing sponsor segment, in the order read on the show.
+- Do not split closing sponsors into separate transcript blocks, even if the SRT has a new cue per sponsor or per brand name.
+- Start the block at the timestamp of the first SRT cue of that segment (often the line that introduces sponsors after patron thanks).
+- Join all consecutive cues from the same host that belong to the closing sponsor roll call into that single block per Speech fidelity.
+- On the show, each sponsor at the end is usually a one-sentence (or one short clause) mention; preserve that rhythm in the joined text — do not expand from sponsor-file long reads, and do not drop a sponsor the host actually named.
+- Patron thanks immediately before the closing sponsor list may stay in the preceding block if it is a separate thought; once the host begins naming end sponsors, keep those names in the one closing sponsor block through the last sponsor mention before the final sign-off.
 
 ### Boundaries
 
