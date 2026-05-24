@@ -61,7 +61,7 @@ Time and words: The host block must be a minority of the edited clip (rough guid
 
 Prefer guest-only when:
 
-- The guest names the topic in the opening of their answer (e.g. «Когда мы говорим про пост-квантовую криптографию…»), or
+- The guest names the topic in the opening of their answer (e.g. "Когда мы говорим про пост-квантовую криптографию…"), or
 - The guest block is self-contained after montage without a setup question.
 
 When you do keep a host opener: one line (or one tight elided line) that states the topic and asks the question; then maximize guest material within the segment duration budget.
@@ -104,12 +104,12 @@ If the full host line is too long for the target duration, drop the host and ope
 
 ### Guest answer openers (yes/no without the question)
 
-Do not open a clip on a guest line that only reacts to a question the viewer did not hear («Да,», «Прав.», «Именно.», «Верно,» and similar), unless the same segment includes a short host question that makes the reaction intelligible.
+Do not open a clip on a guest line that only reacts to a question the viewer did not hear ("Да,", "Прав.", "Именно.", "Верно," and similar), unless the same segment includes a short host question that makes the reaction intelligible.
 
 Either:
 
-- Include a tight excerpt of the host question (topic + ask), then the guest answer (including «Да» / «Прав» if it follows immediately in the transcript), or
-- Omit the host line and start the guest on substantive content using `<...>` at the start of that timestamp line (e.g. elide «Прав.» and begin at «На самом деле…»).
+- Include a tight excerpt of the host question (topic + ask), then the guest answer (including "Да" / "Прав" if it follows immediately in the transcript), or
+- Omit the host line and start the guest on substantive content using `<...>` at the start of that timestamp line (e.g. elide "Прав." and begin at "На самом деле…").
 
 Bad (reaction without setup):
 
@@ -161,12 +161,47 @@ Rough guide for edited Russian speech at podcast pace (count only words outside 
 
 Per segment, include a line: `Ориентировочная длина после монтажа: ~NN с (~WW слов)` (word count excludes `<...>`; count Russian words in kept spans).
 
+## Tighten repetition (same line, still verbatim)
+
+Spoken Russian often stacks the same idea three ways (anaphora, triads, immediate restatement). For shorts, the clip should not sound like the guest is circling one point. After the listener has heard the idea once, elide later repetitions on the same timestamp line with `<...>`. Do not rephrase; only omit intervening words that repeat what is already clear.
+
+Typical patterns to cut:
+
+- Parallel clauses with the same structure and rising specificity (keep the sharpest clause, elide the rest)
+- The same noun or phrase twice in a row (e.g. a hook on "liquidity", then "maximum liquidity" again — keep the hook, elide the bridge; see examples below)
+- Rhetorical lists where one item already carries the meaning (keep one representative item or the list ends, plus `<...>`)
+- The same claim restated in the next sentence when montage already established it (elide the weaker repeat, keep the payoff)
+
+Good:
+
+```
+мы не были первым ликвидным стейкингом на эфире, <...> мы не придумали ликвидный стейкинг.
+```
+
+```
+правильная ставка на ликвидность <...> А максимальная ликвидность, это такая вещь, что она что-то вроде moat
+```
+
+Bad (sounds like a listicle, wastes seconds):
+
+```
+мы не были первым ликвидным стейкингом на эфире, мы не были первым ликвидным стейкингом вообще, мы не придумали ликвидный стейкинг.
+```
+
+Bad (paraphrase or synonym swap — never):
+
+```
+мы не изобретали liquid staking
+```
+
+When in doubt: one clear formulation per sub-idea inside the segment; use `<...>` for the rhetorical echo, not for facts the clip still needs.
+
 ## Workflow
 
 1. Read full `NNN-transcript.md`. Note guest name(s) from frontmatter.
 2. Scan for strong guest moments (contrasts, myth-busting, concrete stories, stakes for listeners).
 3. For each candidate, pick one shareable idea and a short title for the clip.
-4. Select contiguous transcript lines (timestamps in order). Trim with `<...>` inside lines; drop filler lines entirely. For host openers, follow Host setup lines; for guest-first segments, follow Guest answer openers.
+4. Select contiguous transcript lines (timestamps in order). Trim with `<...>` inside lines; drop filler lines entirely; elide rhetorical repetition on a line (see Tighten repetition). For host openers, follow Host setup lines; for guest-first segments, follow Guest answer openers.
 5. Write `NNN-shorts.md` (format below). Aim for 5–10 segments, best first.
 6. Self-check each segment (checklist below).
 
@@ -205,6 +240,7 @@ Rules for the excerpt block:
 - Keep `(HH:MM:SS) Speaker Name:` prefix on every included line exactly as in the transcript.
 - `<...>` marks removed audio/text; no spaces required inside the marker.
 - Elisions may start or end a line; they may replace a middle clause.
+- Use elisions to remove stacked repetitions of the same thought on one line (see Tighten repetition).
 - Blank line between timestamp lines, same as transcript habit.
 - Do not add chapter markers inside a segment except the `##` title.
 - The `Зацепка:` line is editor meta in Russian. Everything under the timestamp lines is literal extraction only.
@@ -216,7 +252,7 @@ Literal output excerpt (Russian meta and Russian timestamp lines):
 ```
 ## Что такое квантовый компьютер
 
-Зацепка: Гость отвергает интуицию «и 0, и 1 одновременно» и в конце разбивает миф, что квантовый компьютер «просто быстрее считает».
+Зацепка: Гость отвергает интуицию "и 0, и 1 одновременно" и в конце разбивает миф, что квантовый компьютер "просто быстрее считает".
 
 Ориентировочная длина после монтажа: ~30 с (~70 слов)
 
@@ -234,13 +270,14 @@ For each `##` segment:
 - [ ] Guest delivers the core idea; host lines are setup only (if any)
 - [ ] No wording taken from `NNN-readable.md`
 - [ ] Every kept substring appears in `NNN-transcript.md` in the same order (no paraphrase)
+- [ ] No rhetorical triads or immediate restatements left intact when one formulation is enough (repetition elided with `<...>`)
 - [ ] Timestamps monotonic; speakers match transcript
 - [ ] Word count outside `<...>` fits the stated duration (~55–85 words for ~30 s, ~100–170 for ~60 s when justified; note in `Ориентировочная длина после монтажа` if intentionally shorter or longer)
 - [ ] `Зацепка:` line is in Russian and explains why the clip works for someone who has not heard the episode
 - [ ] Segment title (`##`) is in Russian
-- [ ] If a host line opens the clip, the first kept words name the topic (not only «объясни разницу», «в чем фишка», «или нужно…» after `<...>`)
+- [ ] If a host line opens the clip, the first kept words name the topic (not only "объясни разницу", "в чем фишка", "или нужно…" after `<...>`)
 - [ ] If a host line is present, guest speech is the majority of kept words and runtime; otherwise omit the host
-- [ ] Guest line does not open with «Да»/«Прав»/similar unless a host question is included in the same segment, or the acknowledgment is elided with `<...>`
+- [ ] Guest line does not open with "Да"/"Прав"/similar unless a host question is included in the same segment, or the acknowledgment is elided with `<...>`
 - [ ] Segment is not mostly sponsor or housekeeping
 
 ## Input when invoking
