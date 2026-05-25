@@ -306,6 +306,14 @@ Source for correct spellings:
 
 Apply these spellings consistently throughout the transcript. Change only the term token; do not rewrite the sentence for grammar around English names unless the SRT form is clearly wrong ASR.
 
+### 1inch (mandatory)
+
+Whisper often outputs `oneinch`, `Oneinch`, or spelled-out «one inch» for the sponsor and its domains.
+
+- Always write the brand as `1inch` (digit `1`, no space) — never `oneinch`, `Oneinch`, or `One inch`.
+- Always write URLs and hostnames as `1inch.io`, `1inch.dev`, `1inch.com`, `link.1inch.com`, and other official `1inch.*` forms — never `oneinch.io`, `oneinch.dev`, `oneinch.com`, or similar.
+- Applies in sponsor reads, guest mentions, and any other cue; not limited to sponsor segments.
+
 ## Sponsor read segments
 
 At the start (and sometimes end) of the episode the host reads sponsor messages. Whisper often garbles names, numbers, and product terms in these blocks.
@@ -326,7 +334,7 @@ Consult sponsor files only when needed to fix:
 
 - obvious ASR or spelling errors (бренд, продукт, URL, метрики),
 - unclear wording where the sponsor text makes the intended fact unambiguous,
-- inconsistent capitalization or naming (1inch, Zerion API, GOSH, Acki Nacki, Fluence, MEV, DeFi Llama, etc.).
+- inconsistent capitalization or naming (see 1inch (mandatory) under Terms and Corrections — never `oneinch` in brand or URLs; also Zerion API, GOSH, Acki Nacki, Fluence, MEV, DeFi Llama, etc.).
 
 Do not:
 
