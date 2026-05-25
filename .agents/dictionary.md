@@ -8,12 +8,14 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 
 ### Protocols and Platforms
 - 1inch
+- a16z
 - AAVE
 - Aave
 - Acki Nacki
 - Amper Computing
 - Arbitrum
 - Binance
+- BitFury
 - Boosty
 - Chainlink
 - Citrea
@@ -21,7 +23,10 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - Sophon
 - Cloudflare
 - Coinbase
+- Cursor
+- CybOS
 - Cosmos
+- CowSwap
 - C.R.E.A.M. Finance
 - Curve
 - DeFi Llama
@@ -36,6 +41,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - Kelp
 - Kyber
 - Lido
+- Lovable
 - Mainnet
 - Maker
 - Marinade
@@ -61,6 +67,16 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - Tornado Cash
 - WhatsApp
 - Zerion
+- Cyber.Fund
+- LangChain
+- LlamaIndex
+- Qdrant
+- Nous Research
+- OneBalance
+- Pluralis
+- Gensyn
+- Prime Intellect
+- Pump.fun
 - iMessage
 - zkSync Era
 - ZK Stack
@@ -124,8 +140,11 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - precompile
 - sequencing
 - sequencer
+- self-play
 - light client
 - fraud proof
+- proof-of-work
+- proof-of-stake
 - batch
 - paymaster
 
@@ -136,6 +155,8 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - Ethereum Foundation
 - Matter Labs
 - Justin Drake
+- Илья Суцкевер
+- Алан Тьюринг
 - Lazarus Group
 - Leslie Lamport
 - NIST
@@ -171,11 +192,14 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - оракул
 - период группы
 - рестейкинг
+- сайд-проект
+- чат-бот
 - решетки
 - слэшинг
 - стейк
 - стейкинг
 - стратегия
+- тим-лид
 - факторизация
 - форк
 - группы
@@ -183,6 +207,8 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - шифропанк
 - эллиптические кривые
 - он-чейн
+- вайбкодить
+- Киберфонд
 
 ### Common Phrases
 - Виталик
@@ -281,10 +307,56 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 - синтетикс = Synthetix
 - слэшинг = slashing
 - смарт-контракт = smart contract
+- smart contract = смарт-контракт
+- Smart Contract = смарт-контракт
 - стейк = stake
 - стейкинг = staking
 - токен = token
 - трейдинг = trading
+- вайп кодил = вайбкодил
+- вайп кодить = вайбкодить
+- вайпкодил = вайбкодил
+- вайпкодить = вайбкодить
+- киберфонд = Киберфонд
+- A16Z = a16z
+- AmbitFury = BitFury
+- AVI = AAVE
+- PumptotFan = Pump.fun
+- pump.fun = Pump.fun
+- Chatbot = чат-бот
+- Co-Swap = CowSwap
+- CYBOS = CybOS
+- Cybose = CybOS
+- One Balance = OneBalance
+- лавабл = Lovable
+- chatbot = чат-бот
+- чатбот = чат-бот
+- чатботов = чат-ботов
+- сайт-проект = сайд-проект
+- сайт-проекта = сайд-проекта
+- сайт-проектам = сайд-проектам
+- тем лед = тим-лид
+- тем леду = тим-лиду
+- тем лид = тим-лид
+- тем лиду = тим-лиду
+- киберфонда = Киберфонда
+- киберфонду = Киберфонду
+- киберфондов = Киберфонда
+- Cyber Fund = Cyber.Fund
+- Cyberfund = Cyber.Fund
+- Cyber fund = Cyber.Fund
+- Line = LangChain
+- Leto = LlamaIndex
+- Quadrant = Qdrant
+- Nus Research = Nous Research
+- Jensen = Gensyn
+- Илья Sutskever = Илья Суцкевер
+- Sutskever = Суцкевер
+- Судсковер = Суцкевер
+- Суцкий = Суцкевер
+- Turing = Тьюринг
+- тест Turing = тест Тьюринга
+- Turing test = тест Тьюринга
 - тестнет = testnet
 - холд = hold
 - эфир = Ethereum
@@ -292,6 +364,8 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 - АМЛ = AML
 - КУС = KYC
 - Сатоши = Satoshi
+- Сатоша Накамото = Сатоши Накамото
+- Сатоша = Сатоши
 - кубит = qubit
 - решетка = lattice
 - изогения = isogeny
@@ -312,6 +386,8 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 - фрод-пруф = fraud proof
 - фрод-пруфа = fraud proof
 - фродпруф = fraud proof
+- proof of work = proof-of-work
+- proof of stake = proof-of-stake
 - бачи = batches
 - батч = batch
 - батчи = batches
