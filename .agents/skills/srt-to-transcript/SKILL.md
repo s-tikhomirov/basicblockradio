@@ -45,10 +45,48 @@ Context sources (read by the skill):
 - Podcast metadata from `podcast-info.md` (including episode-level `recording_date` only if that file lists a date for this episode number — not inferred from anything else; patron support URLs in the same file)
 - Active sponsor copy for the episode from `sponsors/current/` (see Sponsor read segments)
 
+### Input formats
+
+The skill accepts two raw SRT formats. The skill auto-detects the format by examining the first non-empty line of the file.
+
+Format A — Standard Whisper SubRip (default)
+- Numbered cue blocks: `1`, `2`, `3`...
+- Time line: `HH:MM:SS,mmm --> HH:MM:SS,mmm` (comma before milliseconds)
+- Text follows on subsequent lines
+- No speaker labels inside cues (one speaker per cue, determined by sequence)
+
+Format B — Diarized bracket format
+- Time range in brackets: `[HH:MM:SS:ff - HH:MM:SS:ff]` (four colon-separated fields)
+- Optional speaker label on first line of text block: `Speaker N`, `Speaker 1`, `Speaker 2`, `Speaker 3`
+- Text may follow on same line (after speaker) or subsequent lines
+- Blocks may contain placeholder content: `(Music)`, `Transcription Pending`
+
+### Timestamp normalization
+
+Both formats convert to output `(HH:MM:SS)` with second-level precision:
+
+- Format A: Truncate milliseconds (`00:15:30,450` → `(00:15:30)`)
+- Format B: Drop fourth field (frames/centiseconds): `00:03:30:13` → `(00:03:30)`
+
+Use floor (truncate), not round, for consistency.
+
+### Placeholder handling
+
+Some exports contain non-speech markers. Handle as follows:
+
+| Marker | Action |
+|--------|--------|
+| `(Music)` | Omit entirely — do not create transcript line |
+| `Transcription Pending` | Flag — needs manual resolution |
+| Empty text after timestamp | Skip block |
+
+Do not emit transcript lines for content not yet transcribed.
+
 Processing approach:
 
-- The AI reads and parses the SRT file directly
-- For each paragraph block: take SRT cue text in time order from the same speaker, join with spaces, then apply only Speech fidelity allowed edits
+- Detect format by first non-empty line: numbered cues (Format A) vs bracket timestamp (Format B)
+- Parse accordingly: arrow-delimited SubRip cues (A) or bracket ranges with optional speaker labels (B)
+- For each paragraph block: take cue text in time order from the same speaker, join with spaces (Format A) or split bracket blocks per boundary rules (Format B), then apply only Speech fidelity allowed edits
 - Agent-driven from SRT only — no parser or batch scripts in this workflow
 
 ## Output
@@ -142,7 +180,12 @@ When in doubt, split at a speaker change rather than keep one long block.
 
 ### One speaker, multiple cues
 
-Group consecutive SRT cues from the same speaker into one block only while that speaker continues the same turn (one answer, one sponsor read, one uninterrupted host question).
+Both formats: Group consecutive cues from the same speaker into one block only while that speaker continues the same turn (one answer, one sponsor read, one uninterrupted host question).
+
+Format A cues are SubRip entries. Format B bracket blocks are cues — even if some are short (one line or a few words), they are not pre-grouped into meaningful paragraphs. Apply the same grouping logic to both:
+- Join consecutive blocks from the same speaker into one transcript paragraph
+- Split at speaker changes, host reframes/clarifications, or topic shifts
+- Do not assume Format B blocks are already editorially grouped
 
 Do not extend a guest block across a host question or a host block across a guest answer, regardless of topic continuity.
 
@@ -228,11 +271,13 @@ If a word might be filler or might carry meaning (e.g. «наверное», «�
    - Episode number (e.g., 219)
    - Guest name
    - Host names with context (who asks questions, who gives answers)
+   - For Format B (diarized with `Speaker N` labels): `speaker_map` mapping each speaker number to a full name (see Format B speaker mapping)
    - Optional `recording_date` when known (otherwise the skill writes `unknown`)
 5. The skill will:
    - Read the SRT file directly
+   - Detect format (A or B) automatically
    - Build timestamped paragraphs by grouping cues per Paragraph boundaries and joining text verbatim per Speech fidelity
-   - Identify speakers using provided names and heuristics
+   - Identify speakers using provided names and heuristics (Format A) or the provided `speaker_map` (Format B)
    - Apply dictionary spellings, sponsor-file fixes in sponsor segments, and fillers per Fillers
    - Create transcript file (e.g., `episodes/219/219-transcript.md`)
 6. Review the created transcript before running downstream skills.
@@ -285,6 +330,28 @@ Use these patterns to distinguish speakers when the raw SRT lacks diarization:
 - Example: `(00:15:30) Александр Селезнев: Добро пожаловать на подкаст`
 - Timestamp in parentheses, no bold formatting
 - If uncertain about speaker identity, mark as `(неясно) (timestamp): text`
+
+### Format B speaker mapping (required when labels present)
+
+When the input contains `Speaker N` labels (`Speaker 1`, `Speaker 2`, `Speaker 3`, etc.), the user must provide a `speaker_map` in the prompt when invoking the skill:
+
+```
+speaker_map:
+  Speaker 1: Александр Селезнев
+  Speaker 2: Сергей Тихомиров
+  Speaker 3: [Guest Name]
+```
+
+Why required: Format B exports only provide generic numbers. The skill cannot reliably infer which number maps to which person without explicit mapping.
+
+How to apply:
+1. Read the SRT file first to identify which speaker numbers appear
+2. Ask the user for the mapping if not provided
+3. Replace every `Speaker N` label with the mapped full name in the transcript output
+
+If no map provided: Ask the user before proceeding. Do not guess based on heuristics alone when explicit speaker labels exist in the source.
+
+For blocks without speaker labels (opening intros, music, pending transcription): Apply standard heuristics (hosts ask questions, guests answer) or mark as `[неясно]` if uncertain.
 
 ## Terms and Corrections
 
