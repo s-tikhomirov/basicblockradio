@@ -234,7 +234,7 @@ Copy frontmatter from `NNN-transcript.md` (field order per `episodes/templates/t
 | `## …` | Short clip title in Russian (cover line for Shorts/Reels) |
 | `Зацепка:` | One sentence in Russian: which guest idea you surface and why it might interest someone who has not heard the episode |
 | `Ориентировочная длина после монтажа:` | `~NN с (~WW слов)` |
-| `Диапазон в выпуске:` | First and last timestamp, e.g. `(00:18:41)–(00:20:05)` |
+| `Диапазон в выпуске:` | First timestamp of the segment and end bound for editors: `(HH:MM:SS)–(HH:MM:SS)` (see below) |
 | Timestamp lines | Verbatim extraction with `<...>` (see rules) |
 
 Rules for the excerpt block:
@@ -246,6 +246,14 @@ Rules for the excerpt block:
 - Blank line between timestamp lines, same as transcript habit.
 - Do not add chapter markers inside a segment except the `##` title.
 - The `Зацепка:` line is editor meta in Russian. Everything under the timestamp lines is literal extraction only.
+
+`Диапазон в выпуске` (from–to):
+
+- **From:** timestamp on the first line included in the segment.
+- **To:** timestamp on the **first transcript block after the last included line** (the next `(HH:MM:SS)` block in `NNN-transcript.md`, even if that block is not quoted in the segment).
+- If all excerpt lines share one transcript block, **from and to must still differ** — use that block’s time as from and the next block’s time as to.
+- If the segment spans several blocks, to is the start of the block immediately after the last quoted line’s block (same rule).
+- Never write identical from and to (e.g. `(00:13:16)–(00:13:16)`).
 
 ### Canonical example (episode 220)
 
@@ -274,6 +282,7 @@ For each `##` segment:
 - [ ] Every kept substring appears in `NNN-transcript.md` in the same order (no paraphrase)
 - [ ] No rhetorical triads or immediate restatements left intact when one formulation is enough (repetition elided with `<...>`)
 - [ ] Timestamps monotonic; speakers match transcript
+- [ ] `Диапазон в выпуске`: from = first included line; to = start of next transcript block after the last included line; from ≠ to
 - [ ] Word count outside `<...>` fits the stated duration (~55–85 words for ~30 s, ~100–170 for ~60 s when justified; note in `Ориентировочная длина после монтажа` if intentionally shorter or longer)
 - [ ] `Зацепка:` line is in Russian and explains why the clip works for someone who has not heard the episode
 - [ ] Segment title (`##`) is in Russian
