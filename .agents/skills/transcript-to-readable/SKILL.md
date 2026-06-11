@@ -8,7 +8,7 @@ When this skill is invoked, complete only the work described here.
 
 - Input: `episodes/NNN/NNN-transcript.md`
 - Output: `episodes/NNN/NNN-readable.md`
-- Chunk orchestration scripts (split/merge only) are allowed in chunked mode; they must not rewrite Russian prose.
+- Chunk orchestration scripts (split/merge only) and `disclose_foreign_names.py` (English parentheticals only) are allowed; they must not copy-edit Russian prose.
 
 Do not convert raw SRT in this skill. If the user only has `NNN-raw.srt`, ask them to produce `NNN-transcript.md` from the SRT in a separate chat invocation before running this skill.
 
@@ -25,7 +25,7 @@ Sponsor reads: primary cleanup belongs in `srt-to-transcript` (`sponsors/current
 
 ## Hard limits
 
-Do not: third-person narrative; editorial commentary; drop or change timestamps; add or remove paragraph blocks; merge two input lines into one; split one input line into two; change speaker labels; change facts, numbers, or technical claims; soften or sharpen tone; telegraphic compression (dropping pronouns, objects, or examples the speaker clearly expressed); “fix” gender or pronouns when referent is ambiguous; strip pronouns or objects that carry meaning (ты/вы/она/он/это/в ней/мне and similar) only to sound tighter; compress a block into headline-style dash chains; use scripts or tools that rewrite Russian prose or auto-edit wording (orchestration split/merge under `scripts/` is allowed in chunked mode only).
+Do not: third-person narrative; editorial commentary; drop or change timestamps; add or remove paragraph blocks; merge two input lines into one; split one input line into two; change speaker labels; change facts, numbers, or technical claims; soften or sharpen tone; telegraphic compression (dropping pronouns, objects, or examples the speaker clearly expressed); “fix” gender or pronouns when referent is ambiguous; strip pronouns or objects that carry meaning (ты/вы/она/он/это/в ней/мне and similar) only to sound tighter; compress a block into headline-style dash chains; use scripts or tools that rewrite Russian prose or auto-edit wording (orchestration split/merge under `scripts/` is allowed in chunked mode; `disclose_foreign_names.py` only after the readable body is finished — see Foreign names).
 
 Do: copy-edit every block so it reads clearly as written Russian, not as raw transcript pasted verbatim; keep first person and speaker on every block; one output line per input line (same timestamp and speaker); restore implied subjects when written Russian needs them; fix Russian endings when context is clear (section Russian grammar).
 
@@ -104,6 +104,23 @@ Read each block as written Russian. Use `podcast-info.md` and episode frontmatte
 - Subject–verb: verb agrees with grammatical subject (Северная Корея … начнет, not начнут).
 - Skip fixes that need facts not in the transcript.
 
+## Foreign names
+
+Policy: `.agents/dictionary.md` (People names) and `.agents/foreign-persons.json`.
+
+During copy-edit (single-file or per chunk):
+
+- Use **Russian** forms for foreign persons, with **correct case** in each block (`Джастином Дрейком`, `с Дэном Боне`). Russian hosts and guests: Cyrillic only, no English parenthetical.
+- **Do not** add `(English Name)` during chunk work or the main copy-edit pass — parallel chunks cannot know episode-wide first mention.
+
+After the full `NNN-readable.md` exists (always run, including single-file mode):
+
+```bash
+python3 scripts/disclose_foreign_names.py episodes/NNN/NNN-readable.md
+```
+
+The script inserts ` (English canonical)` once per foreign person per episode, immediately after the first matched Russian name span. Case mismatch is OK (`с Джастином Дрейком (Justin Drake)`). It does not change block count, timestamps, or speakers. Use `--dry-run` to preview.
+
 ## Workflow
 
 ### When to use chunked mode
@@ -121,6 +138,7 @@ Otherwise a single full-file pass is fine.
 2. For each block: copy-edit per Prose and Fillers above (expect visible improvement, not near-verbatim output); keep same timestamp and speaker; do not merge with adjacent blocks.
 3. Verify output block count and timestamps match input.
 4. Write `NNN-readable.md` with frontmatter copied from the transcript (`episodes/templates/transcript-template.md` field order); use `.agents/dictionary.md`, `podcast-info.md`, `.agents/editing-standards.md`.
+5. Run `python3 scripts/disclose_foreign_names.py episodes/NNN/NNN-readable.md`.
 
 ### Chunked mode (long episodes)
 
@@ -137,9 +155,10 @@ Orchestration only — run repo scripts from `knowledge-bases/basicblockradio/sc
    `python3 merge_readable_chunks.py --transcript episodes/NNN/NNN-transcript.md --chunks-dir episodes/NNN/.chunks -o episodes/NNN/NNN-readable.md`  
    Optional: `--qc` warns on blocks where readable text is much shorter than transcript (ratio heuristic).
 5. Verify merged block count equals the transcript; spot-check timestamps monotonic.
-6. Remove the chunk working directory after a successful merge — do not leave split/readable chunk files on disk. Delete `episodes/NNN/.chunks/` entirely (e.g. `rm -rf episodes/NNN/.chunks`). Only keep `NNN-readable.md` as the artifact for this skill.
+6. Run `python3 scripts/disclose_foreign_names.py episodes/NNN/NNN-readable.md`.
+7. Remove the chunk working directory after a successful merge — do not leave split/readable chunk files on disk. Delete `episodes/NNN/.chunks/` entirely (e.g. `rm -rf episodes/NNN/.chunks`). Only keep `NNN-readable.md` as the artifact for this skill.
 
-For three or more chunks, parallel Task subagents (one per chunk) are reasonable; each subagent gets one chunk path and the same hard limits above. The orchestrating agent still runs merge and step 6 cleanup.
+For three or more chunks, parallel Task subagents (one per chunk) are reasonable; each subagent gets one chunk path and the same hard limits above (no English parentheticals in chunks). The orchestrating agent still runs merge, disclose, and step 7 cleanup.
 
 Goal: reads like the podcast in clearly edited written Russian — not a summary, not a near-verbatim transcript. Structure matches the transcript file (whole file or sum of chunks).
 

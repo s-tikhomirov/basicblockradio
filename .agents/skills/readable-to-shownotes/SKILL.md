@@ -183,7 +183,7 @@ Tell the user show notes are incomplete until they provide the raw link list and
 
 1. Normalize to full `https://…` URLs (dedupe).
 2. Open/fetch each URL when possible. Write the markdown link text from the page title or an honest short name.
-3. Language: link text follows the page (English page → English title; Russian page → Russian title). Do not translate paper titles or product names. English names of people, brands, conferences, and projects stay in English inside Russian link text or clarifications (Dan Boneh, ACM CCS, Coinbase, Zero Knowledge).
+3. Language: link text follows the page (English page → English title; Russian page → Russian title). Do not translate paper titles or product names. English names of people, brands, conferences, and projects stay in English inside Russian link text or clarifications (Dan Boneh, ACM CCS, Coinbase, Zero Knowledge). The readable file may contain one-time ` (English Name)` disclosures after Russian foreign names; show-note prose and links still use English canonical from the source page, not a duplicate parenthetical in every mention.
 4. Style: brief; no em dashes, en dashes, or hyphen chains in link text.
 5. Resource type: say what it is either inside the link text or in parentheses after the link, or skip if obvious. Examples: `[Подкаст Zero Knowledge 400: Dan Boneh](url)` needs no extra tag; `[SPHINCS+](url) (Википедия)` when the title alone is unclear.
 6. Parenthetical clarifications are usually in Russian: (личный сайт), (диссертация), (статья), (доклад, 2023), (блог Google). Keep English tokens inside them when they are names (ACM CCS 2019, Coinbase). Omit parentheses when the link text already states the type (reading list, podcast in the title, and similar).

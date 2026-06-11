@@ -151,6 +151,11 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - paymaster
 
 ### People and Organizations
+
+Russian hosts, guests, and researchers who speak Russian on the show: **Cyrillic only** in transcript and readable (no English parenthetical). Examples: `Дмитрий Ховратович`, `Михаил Кудинов`, `Сергей Тихомиров`.
+
+Foreign researchers and guests: **Russian surface forms** in transcript and readable (correct case per line). Canonical Latin spelling from papers lives in `.agents/foreign-persons.json`; readable gets one ` (English Name)` per person per episode via `scripts/disclose_foreign_names.py` (see `transcript-to-readable` skill). Do not put those parentheses in `NNN-transcript.md` (shorts are verbatim from transcript).
+
 - 21Shares
 - Dan Boneh
 - Eindhoven University
@@ -169,6 +174,10 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - SEC
 - Tanja Lange
 - WisdomTree
+
+### Foreign persons (readable disclosure)
+
+Machine-readable list: `.agents/foreign-persons.json`. Each entry has `english`, `given`, `family`, and `family_indeclinable` (when true, only the given name takes case endings in Russian, e.g. `с Дэном Боне`). Add new people there when an episode cites them; map ASR noise in Equivalent Terms below to the Russian nominative pair.
 
 ---
 
@@ -279,7 +288,9 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 - дабл спенд = double-spend
 - IP 7702 = EIP-7702
 - IP 4337 = EIP-4337
-- Джастин Рейком = Justin Drake
+- Джастин Рейком = Джастин Дрейк
+- Джастином Рейком = Джастином Дрейком
+- Виндикт Вагнер = Бенедикт Вагнер
 - Эра = Era
 - Эру = Era
 - Эры = Era

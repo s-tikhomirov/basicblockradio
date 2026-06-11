@@ -252,6 +252,7 @@ If a word might be filler or might carry meaning (e.g. «наверное», «�
 - DO NOT drop spoken sentences, clauses, or examples when grouping SRT cues into one paragraph line
 - DO NOT remove personality or informal constructions
 - DO NOT add chapter headers, section titles, or summarization
+- DO NOT add `(English Name)` parentheticals for foreign persons (readable disclosure pass only)
 - DO NOT invent or guess `recording_date`
 - DO NOT derive `recording_date` from SRT headers or cue text, raw or mix filenames, export paths, git history, file modification times, or any other file or path metadata
 - DO set `recording_date` to `unknown` when no explicit user or coordinator value and no explicit episode-level date for this episode in `podcast-info.md`
@@ -372,6 +373,13 @@ Source for correct spellings:
   - Abbreviations and their expansions
 
 Apply these spellings consistently throughout the transcript. Change only the term token; do not rewrite the sentence for grammar around English names unless the SRT form is clearly wrong ASR.
+
+### People names (mandatory)
+
+- **Russian persons** (hosts, Russian-speaking guests): Cyrillic in speaker labels and body. Use names from user input and frontmatter; fix ASR only.
+- **Foreign persons** (see `.agents/foreign-persons.json` and Equivalent Terms): write **Russian** given + family in the text (`Джастин Дрейк`, `Бенедикт Вагнер`, `Дэн Боне`), with case matching speech (`с Джастином Дрейком`, `с Дэном Боне` when the surname is indeclinable). Normalize ASR variants via Equivalent Terms (e.g. `Джастин Рейком` → `Джастин Дрейк`, `Виндикт Вагнер` → `Бенедикт Вагнер`).
+- **Do not** insert `(English Name)` parentheticals in `NNN-transcript.md`. English canonical spellings are added later in `NNN-readable.md` only (`disclose_foreign_names.py`).
+- **Do not** leave foreign researchers in Latin in the transcript body unless the speaker clearly cites a written English form letter-by-letter (rare).
 
 ### 1inch (mandatory)
 

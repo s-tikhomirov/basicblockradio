@@ -1,0 +1,39 @@
+{
+  "persons": [
+    {
+      "id": "justin_drake",
+      "english": "Justin Drake",
+      "given": "Джастин",
+      "family": "Дрейк",
+      "family_indeclinable": false
+    },
+    {
+      "id": "dan_boneh",
+      "english": "Dan Boneh",
+      "given": "Дэн",
+      "family": "Боне",
+      "family_indeclinable": true
+    },
+    {
+      "id": "benedikt_wagner",
+      "english": "Benedikt Wagner",
+      "given": "Бенедикт",
+      "family": "Вагнер",
+      "family_indeclinable": false
+    },
+    {
+      "id": "tanja_lange",
+      "english": "Tanja Lange",
+      "given": "Таня",
+      "family": "Ланге",
+      "family_indeclinable": true
+    },
+    {
+      "id": "leslie_lamport",
+      "english": "Leslie Lamport",
+      "given": "Лесли",
+      "family": "Лэмпорт",
+      "family_indeclinable": false
+    }
+  ]
+}
