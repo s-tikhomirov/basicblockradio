@@ -1,7 +1,8 @@
 # Project status
 
 Current episode processing workflow.
-Repository layout is in README.md.
+Repository layout and step-by-step instructions are in README.md.
+Per-skill rules live only under `.agents/skills/*/SKILL.md`.
 
 ## Pipeline
 
@@ -11,14 +12,20 @@ Repository layout is in README.md.
 4. `transcript-to-readable` → `NNN-readable.md`. Long episodes: `scripts/` split → per-chunk skill pass → merge.
 5. Human readable review
 6. `readable-to-shownotes` → `NNN-shownotes.md` (user URL list for `Ссылки:`; sponsors from `sponsors/current/`)
-7. Optional: `transcript-to-shorts` → `NNN-shorts.md` (after step 3; can run in parallel with 4–6)
+7. Optional: `transcript-to-shorts` → `NNN-shorts.md` (after step 3; can run in parallel with 4–6). Segment format and `Диапазон в выпуске` rules are in the shorts skill only.
+
+## Batch runs
+
+Multi-episode coordinator flow: `pipeline-launch.md` (pre-flight, worker layout). Top-of-file hold applies until diarization is solved; readable and shorts still need reviewed speaker labels in the transcript.
 
 ## Agent skills
 
+One-line pointers only — invoke the matching `SKILL.md` for scope, inputs, and checklists.
+
 - `srt-to-transcript` — SRT to transcript; structure and spelling; no readable rewrite
 - `transcript-to-readable` — one line per transcript line; in-block copy-edit; chunked mode uses `scripts/`
-- `readable-to-shownotes` — title, intro, timecodes, links, sponsors
-- `transcript-to-shorts` — clip segments from transcript; frontmatter from transcript plus `source`
+- `readable-to-shownotes` — title, intro, timecodes, user URL list for `Ссылки:`, sponsors
+- `transcript-to-shorts` — verbatim clip map from transcript; not from readable
 
 ## Reference files
 
@@ -31,8 +38,9 @@ Repository layout is in README.md.
 
 ## In repo today
 
-- Episodes with full long-form chain through show notes include 220 (and earlier pipeline work as committed).
-- `transcript-to-shorts` used for 219 and 220 (`NNN-shorts.md`).
+- Show notes on disk: 220, 221.
+- Latest full pass (transcript, readable, shownotes, shorts): 221.
+- `NNN-shorts.md` present for 200, 211, 219, 220, 221 (older files may predate current `Диапазон в выпуске` rules; regenerate or fix when re-editing clips).
 
 ## Planned
 

@@ -242,6 +242,7 @@ Rules for the excerpt block:
 - Keep `(HH:MM:SS) Speaker Name:` prefix on every included line exactly as in the transcript.
 - `<...>` marks removed audio/text; no spaces required inside the marker.
 - Elisions may start or end a line; they may replace a middle clause.
+- Do not open the first kept line of a segment with `<...>` if the audible result would start mid-phrase (broken hook). Keep from the first word of a complete opening clause or sentence on that line. Exception: guest-only segments may elide a short acknowledgment at the line start (see Guest answer openers).
 - Use elisions to remove stacked repetitions of the same thought on one line (see Tighten repetition).
 - Blank line between timestamp lines, same as transcript habit.
 - Do not add chapter markers inside a segment except the `##` title.
@@ -266,7 +267,7 @@ Literal output excerpt (Russian meta and Russian timestamp lines):
 
 Ориентировочная длина после монтажа: ~30 с (~70 слов)
 
-Диапазон в выпуске: (00:18:41)–(00:20:05)
+Диапазон в выпуске: (00:18:41)–(00:20:40)
 
 (00:18:41) Сергей Тихомиров: Что вообще такое квантовый компьютер <...>?
 
@@ -286,6 +287,7 @@ For each `##` segment:
 - [ ] Word count outside `<...>` fits the stated duration (~55–85 words for ~30 s, ~100–170 for ~60 s when justified; note in `Ориентировочная длина после монтажа` if intentionally shorter or longer)
 - [ ] `Зацепка:` line is in Russian and explains why the clip works for someone who has not heard the episode
 - [ ] Segment title (`##`) is in Russian
+- [ ] First kept line of the segment does not open mid-phrase with `<...>` (unless eliding only a guest acknowledgment per Guest answer openers)
 - [ ] If a host line opens the clip, the first kept words name the topic (not only "объясни разницу", "в чем фишка", "или нужно…" after `<...>`)
 - [ ] If a host line is present, guest speech is the majority of kept words and runtime; otherwise omit the host
 - [ ] Guest line does not open with "Да"/"Прав"/similar unless a host question is included in the same segment, or the acknowledgment is elided with `<...>`

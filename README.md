@@ -8,6 +8,7 @@ Knowledge base for the Basic Block Radio podcast — deep technical interviews a
 ├── README.md
 ├── podcast-info.md
 ├── PROJECT_STATUS.md
+├── pipeline-launch.md              # Batch coordinator (pre-flight; see hold at top)
 ├── IDEAS.md
 ├── scripts/
 │   ├── split_transcript_chunks.py
@@ -112,16 +113,12 @@ Template: `episodes/templates/shownotes-template.md`
 
 ### 7. Shorts (optional)
 
-Run `transcript-to-shorts` on the reviewed `NNN-transcript.md`.
+Run `transcript-to-shorts` on the reviewed `NNN-transcript.md` (parallel with readable once the transcript is reviewed).
 
-- Independent of readable and show notes. Do not source clip text from `NNN-readable.md`.
-- Output `NNN-shorts.md`: frontmatter copied from the transcript plus `source: NNN-transcript.md`; Russian titles and editor notes; timestamp lines verbatim from the transcript with `<...>` for montage cuts.
-- Typical target about 30s per clip after edit (up to about 60s when needed). Elide rhetorical repetition on a line when the same idea is stated twice.
-- Invoke with episode number `NNN` or path to `NNN-transcript.md`.
+- Output `NNN-shorts.md`. Clip text is verbatim from the transcript only, not from `NNN-readable.md`.
+- Segment layout, montage rules, `Диапазон в выпуске`, and the pre-finish checklist are defined in the skill, not duplicated here.
 
 Skill: `.agents/skills/transcript-to-shorts/SKILL.md`
-
-Shorts can be produced in parallel with pass 2 (readable) once the transcript is reviewed.
 
 ## Agent skills
 
