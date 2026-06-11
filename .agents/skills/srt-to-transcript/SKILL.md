@@ -381,6 +381,25 @@ Whisper often outputs `oneinch`, `Oneinch`, or spelled-out «one inch» for the 
 - Always write URLs and hostnames as `1inch.io`, `1inch.dev`, `1inch.com`, `link.1inch.com`, and other official `1inch.*` forms — never `oneinch.io`, `oneinch.dev`, `oneinch.com`, or similar.
 - Applies in sponsor reads, guest mentions, and any other cue; not limited to sponsor segments.
 
+### Bitcoin vs биткоин (mandatory in Russian speech)
+
+When the transcript is in Russian, distinguish the protocol or network from units of the asset.
+
+- Use `Bitcoin` for the network, protocol, ecosystem, product name, and fixed English phrases (Bitcoin Conference, Bitcoin Improvement Proposal, paper titles such as «Bitcoin and quantum computing», comparisons «Ethereum и Bitcoin», «на Bitcoin», «подход Bitcoin», «обновления Bitcoin», «supply Bitcoin» as the protocol cap, «security budget Bitcoin», «Bitcoin-разработчики»).
+- Use russified forms for amounts and countable units of the currency: `биткоин`, `биткоины`, `биткоинов` (and other cases as grammar requires), e.g. «6–9 миллионов биткоинов», «количество биткоинов», «перевести биткоины», «лимитированное количество биткоинов», «холдишь биткоин».
+- Do not write «миллионов Bitcoin» or «количество Bitcoin» when meaning coins; Whisper may output «биткоин» — keep or normalize to the correct Russian case, do not replace with `Bitcoin` unless the speaker clearly means the network.
+
+### Data sizes (mandatory in Russian speech)
+
+When the transcript is in Russian, write units of data size in Russian, with correct grammar after numbers.
+
+- `байт`, `байта`, `байтов`; `килобайт`, `килобайта`, `килобайтов`; `мегабайт`, … (not `byte`, `bytes`, `kilobyte`, `KB` in spoken-size phrases such as «600 байт», «несколько килобайт», «в байтах считать»).
+- Keep English only in fixed proper names or spec labels if the speaker cites them verbatim (rare); default for sizes is Russian.
+
+### use case (mandatory in Russian speech)
+
+Write `юз-кейс`, `юз-кейса`, `юз-кейсы`, `юз-кейсов` (hyphenated) instead of English `use case` / `use cases` / `use-case` in Russian transcript lines; inflect for grammar.
+
 ## Sponsor read segments
 
 At the start (and sometimes end) of the episode the host reads sponsor messages. Whisper often garbles names, numbers, and product terms in these blocks.

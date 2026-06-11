@@ -60,6 +60,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - Spark
 - SPHINCS
 - SPHINCS+
+- SHRINCS
 - Stakehound
 - stETH
 - Tezos
@@ -111,6 +112,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - PKI
 - Provable Security
 - Rage Quit
+- SNARKs
 - STARKs
 - Web3
 - Wi-Fi
@@ -173,6 +175,8 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 ## Spelled in Russian
 
 ### Technical Concepts
+- байт
+- билдер
 - блокчейн
 - валидатор
 - делегация
@@ -184,6 +188,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - курация
 - куратор
 - квантовый компьютер
+- килобайт
 - лендинг
 - ликвидность
 - ликвидный стейкинг
@@ -205,6 +210,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - группы
 - хакатон
 - шифропанк
+- юз-кейс
 - эллиптические кривые
 - он-чейн
 - вайбкодить
@@ -246,6 +252,8 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 | HSM | Hardware Security Module | Physical device for key storage |
 | KPI | Key Performance Indicator | Performance metric |
 | PKI | Public Key Infrastructure | Certificate management system |
+| SNARK | Succinct Non-interactive Argument of Knowledge | Zero-knowledge proof; plural SNARKs |
+| SHRINCS | — | Blockstream hash-based signature combo (stateful + stateless fallback); name from SPHINCS and shrink; not «Shrinks» |
 | STARK | Scalable Transparent Argument of Knowledge | Post-quantum zero-knowledge proof |
 | CRQC | Cryptographically Relevant Quantum Computer | Квантовый компьютер, релевантный для взлома криптографии; in show notes and transcripts use «CRQC» when context is clearly crypto (threat to PKI, signatures, migration), otherwise «квантовый компьютер» |
 | EIP-4337 | Ethereum account abstraction (ERC-4337) | Spoken «EIP-4337», not «4337» or «IP 4337» alone |
@@ -258,7 +266,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 
 Terms that are equivalent and should not be flagged as discrepancies during SRT comparison. Format: `alternative form = canonical form`
 
-- биткоин = Bitcoin
+- биткоин = Bitcoin (ASR equivalent only; in Russian transcript output use `биткоин` / `биткоины` / `биткоинов` for currency amounts, and `Bitcoin` for network or protocol — see srt-to-transcript skill, Bitcoin vs биткоин)
 - биткойн = Bitcoin
 - байнэнс = Binance
 - бикончейн = beacon chain
@@ -306,6 +314,21 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 - рестейкинг = restaking
 - синтетикс = Synthetix
 - слэшинг = slashing
+- snark = SNARK
+- snarks = SNARKs
+- снарки = SNARKs
+- Shrinks = SHRINCS
+- shrinks = SHRINCS
+- byte = байт
+- bytes = байт
+- Byte = байт
+- kilobyte = килобайт
+- kilobytes = килобайт
+- builder = билдер (Ethereum proof-of-stake block builder; PBS, MEV pipeline)
+- builders = билдеры
+- use case = юз-кейс
+- use cases = юз-кейсы
+- use-case = юз-кейс
 - смарт-контракт = smart contract
 - smart contract = смарт-контракт
 - Smart Contract = смарт-контракт
