@@ -34,6 +34,13 @@
       "given": "Лесли",
       "family": "Лэмпорт",
       "family_indeclinable": false
+    },
+    {
+      "id": "nic_carter",
+      "english": "Nic Carter",
+      "given": "Ник",
+      "family": "Картер",
+      "family_indeclinable": false
     }
   ]
 }

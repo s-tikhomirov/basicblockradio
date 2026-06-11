@@ -161,6 +161,7 @@ Foreign researchers and guests: **Russian surface forms** in transcript and read
 - Eindhoven University
 - Ethereum Foundation
 - Matter Labs
+- Nic Carter
 - Justin Drake
 - Илья Суцкевер
 - Алан Тьюринг
@@ -231,6 +232,17 @@ Machine-readable list: `.agents/foreign-persons.json`. Each entry has `english`,
 - проаудированный
 - вход рубль, выход два = вход рубль, выход два (idiom for expensive entry/exit)
 
+### Show notes and episode description (приложить / добавить)
+
+When hosts mean they will put a link or reference in show notes or the episode description (YouTube, podcast platforms):
+
+- Prefer приложить when normalizing mistaken wording (especially «предложить ссылку в описании» and similar — see Equivalent Terms).
+- If the speaker clearly said добавить (`добавим в описание`, `добавим в шоуноты`, `добавим ссылку в описание`), keep добавить; do not swap to приложить in transcript or readable.
+- приложить and добавить in this sense are both fine editorially; choose by what was spoken.
+
+- `приложим ссылку в описании`, `приложим в шоуноты`, `приложим в шоуноты ссылку`, `приложим к шоунотам` — both `в шоуноты` and `к шоунотам` are fine; keep whichever the speaker used
+- `описание` / `описании` = episode description field; `шоуноты` = written show notes
+
 ---
 
 ## Context-Dependent
@@ -288,6 +300,7 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 - дабл спенд = double-spend
 - IP 7702 = EIP-7702
 - IP 4337 = EIP-4337
+- Ник Карткр = Ник Картер
 - Джастин Рейком = Джастин Дрейк
 - Джастином Рейком = Джастином Дрейком
 - Виндикт Вагнер = Бенедикт Вагнер
@@ -295,6 +308,8 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 - Эру = Era
 - Эры = Era
 - Эре = Era
+- предложим ссылку в описании = приложим ссылку в описании
+- предложим в описании = приложим в описании
 - пич = питч
 - трансляций в секунду = транзакций в секунду
 - волт = vault
