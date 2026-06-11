@@ -11,8 +11,9 @@ recording_date: unknown
 [Intro: 1–3 paragraphs, conversational, open questions where appropriate.]
 
 Таймкоды:
-00:00 — [Short topic label]
-00:00 — [Short topic label]
+
+- 00:00 — [Short topic label]
+- 00:00 — [Short topic label]
 
 # If guest is affiliated with an episode sponsor, add before timecodes:
 # Дисклеймер: {Организация} – спонсоры нашего подкаста. ...

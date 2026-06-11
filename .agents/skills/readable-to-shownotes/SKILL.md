@@ -136,8 +136,8 @@ Cover major arcs (~20–30 lines per ~1.5 h is typical). You do not need a line 
 
 ### Line format
 
-- Header: `Таймкоды:`
-- `{time} — {label}` (em dash)
+- Header: `Таймкоды:` then a blank line.
+- One bullet per topic: `- {time} — {label}` (markdown list item; em dash between time and label).
 - Convert time: `HH == 00` → `MM:SS`; `HH >= 01` → `H:MM:SS` (e.g. `03:45`, `1:03:00`)
 
 ### Label style
@@ -265,7 +265,7 @@ Use episode number `NNN` as the shuffle seed so the same episode gets the same o
 - [ ] Output file is `episodes/NNN/NNN-shownotes.md`
 - [ ] Title under 100 characters, `ББ-NNN:`
 - [ ] Intro: short sentences, correct terms, concrete guest facts, preview matches readable weight; no «без булшита» / «без магии»
-- [ ] Timecodes: labels on topic intro blocks (usually question), not guest-answer starts; timestamps valid
+- [ ] Timecodes: each line is `- {time} — {label}`; labels on topic intro blocks (usually question), not guest-answer starts; timestamps valid
 - [ ] `Ссылки:` one URL per bullet; related URLs consecutive; types in link text or Russian `(уточнение)`; English names preserved
 - [ ] Link order: main guest/topic first, then logical/mention-based order
 - [ ] Sponsor bullets match `Shownotes line`; order shuffled (seed `NNN`)
