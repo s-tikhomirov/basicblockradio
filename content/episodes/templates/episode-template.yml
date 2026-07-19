@@ -11,9 +11,5 @@ guests:
   - slug: guest-slug
     # organization: org-slug
 
-links: {}
-# links:
-#   audio: https://…
-#   youtube: https://…
-#   libsyn_embed: https://…
-#   old_wordpress: https://basicblockradio.com/eNNN/
+# Canonical public webpage for this episode (required when status: ready).
+# url: https://basicblockradio.com/eNNN/

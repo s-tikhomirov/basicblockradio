@@ -1,6 +1,6 @@
 episode: 200
-title: "ББ-200: Иван Богатый"
-status: draft
+title: "ББ-200: Иван Богатый (Matter Labs) о zkSync Era, Elastic Network и RWA"
+status: ready
 
 recording_date: unknown
 
@@ -12,4 +12,4 @@ guests:
   - slug: ivan-bogatiy
     organization: matter-labs
 
-links: {}
+url: https://basicblockradio.com/e200/

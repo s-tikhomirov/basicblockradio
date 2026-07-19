@@ -1,9 +1,6 @@
 ---
 name: readable-to-shownotes
-description: >-
-  Draft Basic Block Radio show notes from NNN-readable.md (title, intro,
-  timecodes, Ссылки from a user URL list, sponsors from content/sponsorships).
-  Use when the user asks for shownotes, show notes, таймкоды, or episode links.
+description: Draft Basic Block Radio show notes from NNN-readable.md (title, intro, timecodes, Ссылки from a user URL list, sponsors from content/sponsorships). Use when the user asks for shownotes, show notes, таймкоды, or episode links.
 disable-model-invocation: true
 ---
 

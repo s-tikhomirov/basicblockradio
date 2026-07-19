@@ -60,7 +60,7 @@ flowchart LR
   R -->|human review| R
   R -->|readable-to-shownotes| SN
   T -->|transcript-to-shorts| SH
-  Y -.->|title status hosts guests links| SN
+  Y -.->|title status hosts guests url| SN
 ```
 
 Run one agent skill per step unless the user asks to combine steps. Each skill file under `.agents/skills/` defines scope, inputs, and stop conditions.
@@ -140,13 +140,18 @@ Skill: `.agents/skills/transcript-to-shorts/SKILL.md`
 
 Shared references: `.agents/dictionary.md`, `.agents/editing-standards.md`, `podcast-info.md`.
 
-Scripts under `scripts/` are only for mechanical transcript chunking and merge during `transcript-to-readable`. Skills that process Russian episode text do not call those scripts unless the skill explicitly says so (`transcript-to-readable` chunked mode only).
+Scripts under `scripts/`:
+
+- `check_content.py` — deterministic content-model checks (run from repo root).
+- Transcript chunking / merge helpers for `transcript-to-readable` only.
+
+Skills that process Russian episode text do not call those scripts unless the skill explicitly says so (`transcript-to-readable` chunked mode only).
 
 ## Episode artifacts
 
 | File | Role |
 |------|------|
-| `NNN-episode.yml` | Canonical metadata (title, status, hosts/guests, links) |
+| `NNN-episode.yml` | Canonical metadata (title, status, hosts/guests, url) |
 | `NNN-raw.srt` | Whisper subtitles |
 | `NNN-transcript.md` | Canonical spoken wording and timestamps |
 | `NNN-readable.md` | Canonical long-form reading text |

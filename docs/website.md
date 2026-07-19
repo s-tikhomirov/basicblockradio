@@ -26,6 +26,16 @@ Today most community activity lives in Telegram and players.
 The site does not need to replace that hangout.
 It should win on explore and read, with clear listen and watch links.
 
+Trust and simplicity (decided attitude)
+
+- No tracking pixels, analytics SDKs, or marketing cookies on the public site for v1.
+  We do not need them for the archive job; omit rather than “consent banner then track.”
+- Prefer static HTML with little or no client-side JavaScript.
+- Prefer fewer build-time dependencies and third-party runtime includes
+  (fonts, embeds, tag managers) so maintenance and supply-chain risk stay low.
+- This matches an audience that cares about privacy and decentralization;
+  it is also plain operational hygiene for a small long-lived archive.
+
 ## Scope
 
 In scope for the website track in this repository:
@@ -92,7 +102,7 @@ Source completeness (repo)
 - Canonical metadata in `NNN-episode.yml`; public narrative in show notes
 - Identity: episode number, full-string `title`, guests, hosts, recording date
 - Body: intro or summary, timecodes, links, usual CTAs and sponsors as today
-- Listen and watch URLs in episode metadata
+- Canonical episode page `url` in episode metadata
 - Transcript and readable are deeper artifacts from the editorial pipeline;
   they complete the deep archive but are not required for every catalog stub
 
@@ -101,11 +111,18 @@ Public episode page
 - Article body comes from `NNN-shownotes.md` (same order/shape as the public article;
   may duplicate person/org/sponsor/CTA lines already known elsewhere — that is OK)
 - Page chrome and structured data come from `NNN-episode.yml`
-  (title, status, media URLs, appearances → person/org pages)
+  (title, status, url, appearances → person/org pages)
 - Optional extra section from `NNN-readable.md` (and/or transcript) when present
+- Never publish `NNN-shorts.md` or `NNN-raw.srt` (editorial / pipeline only)
 - Compose/fill of repeatable show-notes blocks is a content-side step
   (`scripts/` or editorial workflow), not the website generator’s job to invent prose
   by joining many sources at HTML build time
+
+Build projection
+
+- Accept thin glue: select public-facing episode files (and people/orgs) into a
+  gitignored staging area or an in-memory model, then run the static generator
+- Canonical files remain only under `content/`; staging is disposable
 
 Layout and widget mapping are not fixed in this brief.
 
@@ -117,15 +134,15 @@ Site inclusion
 
 - Public build includes episodes with `status: ready`
 - `status: draft` stays out of the public build (optional local/preview flag may include them)
+- `ready` requires `NNN-shownotes.md` and `url` (enforced by the checker)
 
 Richness (no stored depth level)
 
 - Whatever files exist are what the page can show
-  (show notes, transcript, readable, shorts, listen links, …)
+  (show notes, transcript, readable, shorts, …)
 - Checker uses implication rules (e.g. readable implies transcript), not a level matrix
-- Migrated catalog stubs can be `ready` with little more than `NNN-episode.yml`
-  (+ short show notes when you have them)
-- Newer episodes add artifacts over time; person cross-links work across stub and full pages
+- Catalog stubs stay `draft` until they have show notes (and `url`)
+- Newer episodes add deeper artifacts over time; person cross-links work across stub and full pages
 - Prefer quiet absence of missing sections over undated «coming soon» on many pages
 
 ## Homepage
@@ -136,11 +153,10 @@ Job of the first screen (decided)
 - Offer paths into recent or deep episodes and into the archive / people
 - Avoid feeling like only a blog post dump with a sidebar
 
-Exact composition (open)
+Exact composition
 
-- Both a short positioning block then recent episodes (ZK-like)
-  and a hero latest episode then recent then about (Epicenter-like) are acceptable
-- Refine during actual design iterations
+- Start with a simple layout (positioning + recent episodes + paths into archive/people)
+- Refine against real episode content during design iterations; no need to freeze ZK- vs Epicenter-like up front
 
 ## Browse model (v1)
 
@@ -151,7 +167,7 @@ Exact composition (open)
 Not in v1 browse
 
 - Topics / tag filters
-- Organization pages (records may exist for joins before pages ship)
+- Organization pages (org YAML is data for guest joins only; no public org routes in v1)
 - Format rubrics as the main map
 - In-site command palette search (see `docs/IDEAS.md`)
 
@@ -164,9 +180,68 @@ Website direction docs live under `docs/`.
 Agent skills and pipeline docs stay where they are;
 they are author tooling, not public site pages.
 
+## Episode `url` (v1)
+
+One field: the canonical public webpage for the episode.
+
+```yaml
+url: https://basicblockradio.com/e221/
+```
+
+Platform-agnostic: old WordPress, the new archive site, or whatever hosts the page.
+No separate audio / YouTube / embed fields in episode YAML for v1 —
+platform listen/watch links stay in show notes (or elsewhere) when needed.
+Required when `status: ready`; optional while `draft`.
+
+## Sequencing
+
+Near-term: shape and build the new site against episodes already in this repo
+(especially recent ones with transcripts / show notes), preview locally, and agree
+on structure and design.
+
+WordPress stays the live public site for now, in parallel.
+Migration of the historical catalog, redirects, and import tooling come later —
+after the new site’s look and content contracts feel settled.
+Do not let WP import details drive v1 schema or MVP scope.
+
+## Site stack (open)
+
+Not chosen yet. Bake-off recipe and shortlist: `docs/site-stack-bakeoff.md`.
+Work tree: `site/bakeoff/` (keep until explicitly removed).
+
+Shortlist for the bake-off:
+
+1. Hugo + thin Python adapter (gitignored staging)
+2. Zola + thin Python adapter
+3. Pelican + custom reader
+4. Custom Python + Jinja
+
+Bake-off contract
+
+- Stacks: Hugo + adapter, Zola + adapter, Pelican + reader, custom Python + Jinja
+  (under `site/bakeoff/`; keep until explicitly removed)
+- Episodes: `200`, `219`, `220`, `221` only (`ready`; skip fake `222`)
+- Sort: reverse episode number — 221, 220, 219, 200
+- URLs: `/eNNN/` for episodes; list page 1 at `/`, page 2 at `/page/2/`
+  (2 episodes per page → home shows 221+220; `/page/2/` shows 219+200)
+- No separate `/episodes/` index; home is the feed
+- No RSS in the spike
+- Episode page: show notes, then native `<details>` with summary
+  `Полная расшифровка` revealing `NNN-readable.md` (keep timestamps; no extra JS)
+- People: pages only for people who appear in these four episodes;
+  hosts/guests link to person pages; no organization pages
+- Shared minimal CSS; no tracking; no third-party font/analytics CDNs
+- Preview: prefer opening built `index.html` (relative links); add a tiny
+  static file server only if `file://` breaks something
+- Scoring: decide after seeing the four previews
+
+Decision criteria (unchanged): content-layout fit, static/privacy, OSS/non-commercial,
+small supply-chain surface, local preview, glue vs batteries.
+
+Episode artwork stays outside the site build (see below).
+
 ## Open for Phase B
 
-- Listen/watch URL conventions in `NNN-episode.yml`
 - Content-side compose helper for repeatable show-notes blocks (optional)
-- How thin historical stubs are imported from the current WordPress site
-- Whether organization pages ship in the first public site or only as data for joins
+- Public organization pages after v1 (records stay data-only until then)
+- WordPress → repo import and `/eNNN/` cutover (after site MVP is agreed)

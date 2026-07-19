@@ -10,5 +10,3 @@ hosts:
 
 guests:
   - slug: stepan-gershuni
-
-links: {}

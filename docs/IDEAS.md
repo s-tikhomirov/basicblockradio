@@ -19,24 +19,39 @@ to search episodes, people, and later topics.
 Build-time index over repo content is enough;
 not required for the first website iteration.
 
+RSS: after the archive site exists, generate a podcast RSS feed from repo content
+(episode metadata + enclosure URLs) so the textual site and the feed share one source.
+Not required for the first website iteration.
+
+Privacy-preserving metrics (only if ever needed): server log aggregates or a
+self-hosted, cookieless counter — never third-party analytics on the public pages.
+Default remains no metrics (see `docs/website.md`).
+
+Self-hosted audio (explore later): store MP3s on our own object storage / CDN
+and point RSS enclosures there, reducing or dropping reliance on Libsyn.
+Feasible technically; trade-offs are bandwidth, CDN cost, Apple/Spotify/etc. directory
+updates, and keeping analytics/redirects that a host like Libsyn provides today.
+
+Episode artwork automation (sibling track, not the site generator): today a human
+makes wide YouTube and square podcast covers from a template + guest photo + title;
+square art is embedded in the MP3 for Spotify/Libsyn/etc. Later: scripts or agent
+skills to speed that pipeline. Keep out of `site/` static HTML build.
+
 Topics: after v1, add a curated topic vocabulary and episode filters
 (subject labels, not old format rubrics or auto tag clouds).
 Omit from the first website schema on purpose.
 
-Episode file naming: every file in an episode folder carries the episode number
-in its name (e.g. `222-shownotes.md`, `222-episode.yml`).
-Deterministic checker must validate that the number is present and well-formed,
-matches the parent directory name, and matches `episode:` inside `NNN-episode.yml`.
-
-Title canon: full string `title` in `NNN-episode.yml` is authoritative for the site.
-Checker should require show-notes first line to equal `title`,
-and `title` to start with `ББ-{N}:` for that episode number.
+Episode file naming and title canon: enforced by `scripts/check_content.py`
+(see `docs/content-model.md`).
 
 People bios auto-injected into show notes or about pages: rejected for v1 as too rigid;
 keep episode- and podcast-level prose hand-written.
 
 Related episodes (`related_episodes` field or derived “also appeared in”): postpone past v1;
 person pages can still list episodes by scanning appearances later.
+
+WordPress historical import and domain cutover: after the new site MVP is agreed;
+until then WP and this repo’s site track run in parallel (see `docs/website.md`).
 
 Website track (separate projects if ever, not this brief’s design work):
 internal CMS or multi-platform publisher;

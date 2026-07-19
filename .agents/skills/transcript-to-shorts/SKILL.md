@@ -1,10 +1,6 @@
 ---
 name: transcript-to-shorts
-description: >-
-  Extract literal guest-voice clip candidates from NNN-transcript.md for short-form
-  video or audio (Shorts, Reels), typically ~30 s after edit, up to ~60 s when the
-  idea needs it. Writes NNN-shorts.md with elided verbatim quotes using <...>. Use when
-  the user asks for shorts, clips, reels, or short-form cuts from an episode.
+description: Extract literal guest-voice clip candidates from NNN-transcript.md for short-form video or audio (Shorts, Reels), typically ~30 s after edit, up to ~60 s when the idea needs it. Writes NNN-shorts.md with elided verbatim quotes using <...>. Use when the user asks for shorts, clips, reels, or short-form cuts from an episode.
 disable-model-invocation: true
 ---
 

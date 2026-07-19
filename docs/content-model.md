@@ -26,17 +26,36 @@ podcast-info.md
 
 Episode — `content/episodes/NNN/`
 
-- `NNN-episode.yml` — canonical metadata (title, status, dates, hosts/guests, media links)
-- `NNN-shownotes.md` — full public article (same order/shape as on the website)
-- `NNN-transcript.md` / `NNN-readable.md` / `NNN-shorts.md` / `NNN-raw.srt` — optional
-- Every file name in the folder carries the episode number `NNN`
-- No `depth` field; richness = which files exist
-- `status`: `draft` | `ready` (`ready` = include in the public site build)
+Keep one episode folder (do not split into `public/` vs `internal/` subfolders).
+Classify artifacts by role; the site build selects what may go live.
+
+Public-facing (eligible for the site when `status: ready`)
+
+- `NNN-episode.yml` — canonical metadata (title, status, dates, hosts/guests, url)
+- `NNN-shownotes.md` — full public article (required for `ready`)
+- `NNN-transcript.md` / `NNN-readable.md` — optional deep archive on the episode page
+
+Editorial / non-public (stay in git; never copied into the public site output)
+
+- `NNN-shorts.md` — editor map for Shorts/Reels (not a public page)
+- `NNN-raw.srt` — Whisper input
+- `.chunks/` — temporary readable-pipeline chunks (gitignored)
+
+Every file name in the folder carries the episode number `NNN`.
+No `depth` field; richness = which files exist.
+`status`: `draft` | `ready` (`ready` = include in the public site build;
+requires `NNN-shownotes.md` and `url`).
+
+Site build may use a two-stage flow: (1) project only public-facing inputs into a
+gitignored staging tree shaped for the SSG, or load them in memory; (2) generate HTML.
+Staging is derived output, not a second source of truth — do not maintain duplicate
+readable/shownotes under `content/` for the site.
 
 Person — `content/people/<slug>.md`
 
 - Hosts and guests share one type
 - Slugs are chosen manually; ASCII `a-z0-9` with hyphens; unique
+- Frontmatter: `slug`, `name`, optional `links` (`website`, `x`, `github`, `telegram`, `linkedin`)
 - Bios are not auto-injected into show notes in v1
 
 Organization — `content/organizations/<slug>.yml`
@@ -67,13 +86,17 @@ guests:
   - slug: mikhail-kudinov
     organization: blockstream # optional
 
-links:
-  audio: https://…
-  youtube: https://…
+url: https://basicblockradio.com/e221/   # canonical episode webpage
 ```
+
+`url` is the only publication link in episode YAML (see `docs/website.md`).
+When `status: ready`: `url` and `NNN-shownotes.md` are required; both optional while `draft`.
 
 Billed roles: `hosts` / `guests` match how the episode credits people (intro/title),
 not a permanent staff roster. Zero guests allowed.
+Optional `organization` only on guest entries.
+
+Organization records exist for joins; public org pages are not in v1 browse.
 
 ## Show notes and the site
 
@@ -94,15 +117,23 @@ episode: 221
 
 Shorts may add `source: 221-transcript.md`.
 
-## Checker (planned)
+## Checker
+
+Run from repo root: `python3 scripts/check_content.py`
 
 - Filename episode number matches folder and `episode:` in `NNN-episode.yml`
 - Show-notes first line equals `title`
 - `title` starts with `ББ-{N}:`
 - Appearance slugs resolve under `people/` / `organizations/`
+- `url` is an http(s) page URL; required when `status: ready`
+- `NNN-shownotes.md` required when `status: ready`
 - Implication rules (e.g. readable implies transcript)
 
 ## Prototype
 
 `content/episodes/222/` is a fake structure sample (lorem ipsum), not a real publish package.
+`status: draft` so it stays out of the public site build.
 See `content/episodes/222/STRUCTURE.md`.
+
+Golden real packages (full YAML + show notes + `url`, `status: ready`):
+`content/episodes/220/`, `content/episodes/221/`.
