@@ -20,6 +20,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - Chainlink
 - Citrea
 - Celestia
+- cp0x
 - Sophon
 - Cloudflare
 - Coinbase
@@ -288,6 +289,9 @@ When hosts mean they will put a link or reference in show notes or the episode d
 
 Terms that are equivalent and should not be flagged as discrepancies during SRT comparison. Format: `alternative form = canonical form`
 
+- CP0X = cp0x
+- Cp.RX = cp0x
+- MCP-0X = cp0x
 - Базовый блок = Базовый Блок
 - базовый блок = Базовый Блок
 - Базового блока = Базового Блока
