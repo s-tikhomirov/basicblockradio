@@ -136,7 +136,7 @@ Run workers in parallel or sequentially as you judge best for reliability and co
 - Do not edit any files except newly created output files for this batch.
 - While this pipeline run is active, do not modify `pipeline-launch.md` at this knowledge base root — read it only. No coordinator or worker may change that file during pre-flight, while waiting for start, or while workers are running.
 - Read-only access to inputs, skill files, and reference episodes only as each skill requires.
-- Do not modify `IDEAS.md` or other repo metadata.
+- Do not modify `docs/IDEAS.md` or other repo metadata.
 - Do not create git commits unless the user asks separately in another message.
 
 ## Per-worker instructions (template)

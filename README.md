@@ -2,6 +2,9 @@
 
 Knowledge base for the Basic Block Radio podcast — deep technical interviews about blockchain technologies in Russian.
 
+Public website product decisions live in `docs/website.md`.
+Parked one-line ideas live in `docs/IDEAS.md`.
+
 ## Repository structure
 
 ```
@@ -9,7 +12,9 @@ Knowledge base for the Basic Block Radio podcast — deep technical interviews a
 ├── podcast-info.md
 ├── PROJECT_STATUS.md
 ├── pipeline-launch.md              # Batch coordinator (pre-flight; see hold at top)
-├── IDEAS.md
+├── docs/
+│   ├── website.md                  # Public archive / website product brief
+│   └── IDEAS.md                    # Parked one-line ideas
 ├── scripts/
 │   ├── split_transcript_chunks.py
 │   ├── merge_readable_chunks.py

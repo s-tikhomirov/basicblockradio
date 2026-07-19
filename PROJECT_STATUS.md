@@ -44,5 +44,5 @@ One-line pointers only — invoke the matching `SKILL.md` for scope, inputs, and
 
 ## Planned
 
-- License split for content vs scripts (see IDEAS.md)
+- License split for content vs scripts (see `docs/IDEAS.md`)
 - Scripts runnable from any working directory with stable repo-root resolution
