@@ -70,6 +70,8 @@ Register: avoid podcast slang («база», «разнос», «отжать т
 
 Guest credentials: concrete facts from the readable (разработал…, соавтор…, участвовал в стандартизации…, PhD, компания). Do not pad with empty praise («с академической и прикладной стороны», «уникальный эксперт», «глубоко разбирается»).
 
+Subjects and pronouns (soft rule for «мы»): if «мы» is exclusive (hosts only — inviting, choosing the guest, editorial framing), keep the subject: «Мы позвали Василия, чтобы…», not bare «Позвали, чтобы…». If «мы» is inclusive (hosts + guest in the conversation), pro-drop is fine: «Обсуждаем…», «В этом выпуске обсуждаем…», «Разбираем…». Guest bio lines still need a clear subject after the full name («Раньше Василий был CTO…», not «Раньше был CTO…»); joint third-person actions too («вместе с X они запустили…»).
+
 What to promise in the intro: include only topics that have real weight in `NNN-readable.md` — sustained discussion, not a passing name-drop. Scan the readable for depth (several blocks, back-and-forth, explanations). Do not tease a deep dive («как устроены алгоритмы X») if the episode only mentions X in passing.
 
 Wording: prefer positive statements. Avoid negations, «без …», «а не …», «не X, а Y» unless essential for accuracy. Never use podcast-meta phrases like «без булшита», «без паники», «без магии» in show notes (including timecode labels).
@@ -89,8 +91,8 @@ Length: usually 2–4 short paragraphs; deep architecture episodes may stack bri
 Order of ideas (pick what fits):
 
 1. Hook — see «Hook and guest voice»; prefer guest-backed or technical stakes over host-only rhetoric.
-2. Why this episode — «чтобы разобраться…», «позвали», «пригласили».
-3. Guest(s) — role, employer, concrete credits (standards, papers, products); for Messari — co-reader of the report.
+2. Why this episode — with subject: «Мы позвали {Имя}, чтобы разобраться…» / «Мы пригласили…» (not bare «Позвали…»).
+3. Guest(s) — role, employer, concrete credits (standards, papers, products); keep the guest’s name or another clear subject in follow-on bio sentences; for Messari — co-reader of the report.
 4. Preview — only substantive arcs from the readable (see Prose style); open questions OK. Messari: tradition + invite listener (ББ-214); optional topic list after critical hook (ББ-215).
 5. Sponsor disclaimer — before `Таймкоды:` if guest ↔ sponsor (below).
 
@@ -262,7 +264,7 @@ Use episode number `NNN` as the shuffle seed so the same episode gets the same o
 
 - [ ] Output file is `content/episodes/NNN/NNN-shownotes.md` (no YAML frontmatter)
 - [ ] First line equals `title` in `NNN-episode.yml`; under 100 characters, `ББ-NNN:`
-- [ ] Intro: short sentences, correct terms, concrete guest facts, preview matches readable weight; no «без булшита» / «без магии»
+- [ ] Intro: short sentences, correct terms, concrete guest facts, preview matches readable weight; exclusive «мы» kept («Мы позвали…»), inclusive may drop («Обсуждаем…»); bio subjects clear («Раньше Имя был…»); no «без булшита» / «без магии»
 - [ ] Timecodes: each line is `- {time} — {label}`; labels on topic intro blocks (usually question), not guest-answer starts; timestamps valid
 - [ ] `Ссылки:` one URL per bullet; related URLs consecutive; types in link text or Russian `(уточнение)`; English names preserved
 - [ ] Link order: main guest/topic first, then logical/mention-based order
