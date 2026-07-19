@@ -1,3 +1,4 @@
 Jinja2==3.1.6
 PyYAML==6.0.3
 Markdown==3.10.2
+pelican==4.12.0

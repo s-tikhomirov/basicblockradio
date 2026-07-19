@@ -152,8 +152,11 @@ Header
 Layout
 
 - Main column + right sidebar (stack sidebar under main on narrow viewports)
-- Shared CSS from `site/bakeoff/shared/site.css` (do not invent a second look
-  for the bake-off; tweak the shared file if the recipe needs a style change)
+- Shared CSS is frozen first: `site/bakeoff/shared/site.css`
+  Every stack copies that file to `public/css/site.css`.
+  Do not invent a second look; change the shared file only when this recipe changes.
+  Required class names and chrome skeleton are listed at the top of that CSS file
+  and in “Shared HTML skeleton” below.
 
 Sidebar (every page)
 
@@ -173,6 +176,42 @@ Sidebar (every page)
 Footer
 
 - May note which bake-off stack built the page (e.g. `Bake-off: custom Python + Jinja`)
+
+### Shared HTML skeleton
+
+All stacks must emit this chrome (or equivalent with the same classes) so the
+shared CSS applies without per-stack style forks:
+
+```html
+<div class="wrap">
+  <header class="site">
+    <h1><a href="…">Базовый блок</a></h1>
+    <p>Подкаст про блокчейн</p>
+    <nav class="menu" aria-label="Основное меню">
+      <ul>
+        <li><a href="…">Выпуски</a></li>
+        <!-- Гости, О подкасте, Поддержать, Для спонсоров -->
+      </ul>
+    </nav>
+  </header>
+  <div class="layout">
+    <main class="main"><!-- page body --></main>
+    <aside class="sidebar" aria-label="Слушать подкаст">
+      <h2>Слушать подкаст</h2>
+      <ul class="listen">
+        <li><a class="listen-btn" href="…">Apple Podcasts</a></li>
+        <!-- remaining platforms -->
+      </ul>
+      <p class="listen-note">…и вообще везде, где вы слушаете что-то ещё</p>
+    </aside>
+  </div>
+  <footer class="site">Bake-off: …</footer>
+</div>
+```
+
+Body hooks: `nav.trail`, `ul.episode-list` / `.title` / `.meta`, `nav.pager`,
+`.credits`, `section.embeds` / `.embed-youtube` / `.embed-libsyn`,
+`article.shownotes`, `details.transcript` / `.readable`.
 
 ### Feed pages
 

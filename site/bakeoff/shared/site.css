@@ -1,4 +1,26 @@
-/* Bake-off shared stylesheet: deliberately plain, system fonts only. */
+/*
+  Bake-off shared stylesheet — one look for all four stacks.
+  Copy into each stack's public/css/site.css at build time.
+  Do not fork a second stylesheet for Hugo / Zola / Pelican / custom.
+  Edit this file only when the bake-off recipe changes.
+
+  Required markup hooks (class names):
+
+  .wrap
+  header.site          h1 > a, p (tagline), nav.menu > ul > li > a
+  .layout              > main.main + aside.sidebar
+  aside.sidebar        h2, ul.listen > li > a.listen-btn, p.listen-note
+  footer.site
+
+  Feed / lists:  ul.episode-list > li > .title + .meta
+  Pager:         nav.pager
+  Trail:         nav.trail
+  Credits:       .credits > p
+  Embeds:        section.embeds > .embed.embed-youtube | .embed.embed-libsyn > iframe
+  Show notes:    article.shownotes
+  Readable:      details.transcript > summary + .readable
+  Static pages:  article.shownotes.page (optional .page)
+*/
 
 :root {
   color-scheme: light;
@@ -36,6 +58,8 @@ a:visited {
   padding: 1.25rem 1rem 3rem;
 }
 
+/* Header and top menu */
+
 header.site {
   border-bottom: 1px solid var(--border);
   margin-bottom: 1.5rem;
@@ -72,6 +96,8 @@ nav.menu ul {
   list-style: none;
   font-size: 0.95rem;
 }
+
+/* Main + listen sidebar */
 
 .layout {
   display: grid;
@@ -139,6 +165,8 @@ nav.menu ul {
   }
 }
 
+/* Feed, guests, person lists */
+
 nav.trail {
   margin: 0 0 1.25rem;
   font-size: 0.9rem;
@@ -177,27 +205,14 @@ nav.trail {
   font-size: 0.95rem;
 }
 
+/* Episode page */
+
 .credits {
   margin: 0.75rem 0 1.5rem;
 }
 
 .credits p {
   margin: 0.25rem 0;
-}
-
-.people {
-  margin: 0.75rem 0 1.5rem;
-  padding: 0;
-  list-style: none;
-}
-
-.people li {
-  margin: 0.2rem 0;
-}
-
-.role {
-  color: var(--muted);
-  font-size: 0.9rem;
 }
 
 .embeds {
