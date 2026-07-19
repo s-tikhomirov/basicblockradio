@@ -1,0 +1,11 @@
+---
+description: Commit messages must use Latin script only
+alwaysApply: true
+---
+
+# Git commit messages
+
+Use only Latin script in commit messages (English wording is fine).
+
+Do not put Cyrillic or other non-Latin scripts in the subject or body.
+Transliterate names when needed (e.g. Mitya Goroshevsky, not Митя Горошевский).

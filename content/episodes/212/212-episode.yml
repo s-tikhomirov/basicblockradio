@@ -1,9 +1,12 @@
 episode: 212
-title: "ББ-212:"
+title: "ББ-212: Митя Горошевский (GOSH) о блокчейне Acki Nacki"
 status: draft
 
 recording_date: unknown
 
-hosts: []
-
-guests: []
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: ivan-ivanitskiy
+guests:
+  - slug: mitya-goroshevsky
+    organization: gosh
