@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}
+  {% if page_number == 1 %}Базовый блок{% else %}Базовый блок — страница {{ page_number }}{% endif %}
+{% endblock %}
+{% block body %}
+  {% if page_number > 1 %}
+  <nav class="trail"><a href="{{ rel('') }}">← К началу</a></nav>
+  {% endif %}
+
+  <h2>{% if page_number == 1 %}Выпуски{% else %}Выпуски — страница {{ page_number }}{% endif %}</h2>
+
+  <ul class="episode-list">
+    {% for ep in episodes %}
+    <li>
+      <div class="title"><a href="{{ rel('e' ~ ep.number) }}">{{ ep.title }}</a></div>
+      <div class="meta">
+        {% if ep.publish_date %}{{ ep.publish_date }} · {% elif ep.recording_date and ep.recording_date != 'unknown' %}{{ ep.recording_date }} · {% endif %}
+        {% for p in ep.people %}
+          <a href="{{ rel('people/' ~ p.slug) }}">{{ p.name }}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <nav class="pager">
+    {% if prev_page is not none %}
+      {% if prev_page == 1 %}
+      <a href="{{ rel('') }}">← Новее</a>
+      {% else %}
+      <a href="{{ rel('page/' ~ prev_page) }}">← Новее</a>
+      {% endif %}
+    {% endif %}
+    {% if next_page is not none %}
+    <a href="{{ rel('page/' ~ next_page) }}">Старее →</a>
+    {% endif %}
+  </nav>
+{% endblock %}

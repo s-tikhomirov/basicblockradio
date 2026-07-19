@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Базовый блок{% endblock %}</title>
+  <link rel="stylesheet" href="{{ rel('css/site.css') }}">
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <h1><a href="{{ rel('') }}">Базовый блок</a></h1>
+      <p>Подкаст про блокчейн</p>
+      <nav class="menu" aria-label="Основное меню">
+        <ul>
+          {% for item in nav_items %}
+          <li><a href="{{ nav_href(item) }}">{{ item.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </header>
+
+    <div class="layout">
+      <main class="main">
+        {% block body %}{% endblock %}
+      </main>
+      <aside class="sidebar" aria-label="Слушать подкаст">
+        <h2>Слушать подкаст</h2>
+        <ul class="listen">
+          {% for link in listen_links %}
+          <li><a class="listen-btn" href="{{ link.href }}" rel="noopener noreferrer">{{ link.label }}</a></li>
+          {% endfor %}
+        </ul>
+        <p class="listen-note">…и вообще везде, где вы слушаете что-то ещё</p>
+      </aside>
+    </div>
+
+    <footer class="site">
+      Bake-off: custom Python + Jinja
+    </footer>
+  </div>
+</body>
+</html>

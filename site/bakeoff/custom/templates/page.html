@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }} — Базовый блок{% endblock %}
+{% block body %}
+  <article class="shownotes page">
+    {{ page_html | safe }}
+  </article>
+{% endblock %}

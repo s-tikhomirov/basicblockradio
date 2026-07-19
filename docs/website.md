@@ -218,22 +218,11 @@ Shortlist for the bake-off:
 
 Bake-off contract
 
-- Stacks: Hugo + adapter, Zola + adapter, Pelican + reader, custom Python + Jinja
-  (under `site/bakeoff/`; keep until explicitly removed)
-- Episodes: `200`, `219`, `220`, `221` only (`ready`; skip fake `222`)
-- Sort: reverse episode number — 221, 220, 219, 200
-- URLs: `/eNNN/` for episodes; list page 1 at `/`, page 2 at `/page/2/`
-  (2 episodes per page → home shows 221+220; `/page/2/` shows 219+200)
-- No separate `/episodes/` index; home is the feed
-- No RSS in the spike
-- Episode page: show notes, then native `<details>` with summary
-  `Полная расшифровка` revealing `NNN-readable.md` (keep timestamps; no extra JS)
-- People: pages only for people who appear in these four episodes;
-  hosts/guests link to person pages; no organization pages
-- Shared minimal CSS; no tracking; no third-party font/analytics CDNs
-- Preview: prefer opening built `index.html` (relative links); add a tiny
-  static file server only if `file://` breaks something
-- Scoring: decide after seeing the four previews
+Full site structure (routes, chrome, page shapes, listen sidebar, static pages)
+is defined only in `docs/site-stack-bakeoff.md`.
+All four stacks under `site/bakeoff/` must follow that recipe;
+`site/bakeoff/custom/` is the reference build.
+Scoring: decide after seeing the four previews.
 
 Decision criteria (unchanged): content-layout fit, static/privacy, OSS/non-commercial,
 small supply-chain surface, local preview, glue vs batteries.

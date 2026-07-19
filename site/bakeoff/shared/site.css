@@ -1,0 +1,260 @@
+/* Bake-off shared stylesheet: deliberately plain, system fonts only. */
+
+:root {
+  color-scheme: light;
+  --fg: #1a1a1a;
+  --muted: #555;
+  --border: #ccc;
+  --link: #0645ad;
+  --bg: #fff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+a {
+  color: var(--link);
+}
+
+a:visited {
+  color: #551a8b;
+}
+
+.wrap {
+  max-width: 58rem;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 3rem;
+}
+
+header.site {
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+}
+
+header.site h1 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 650;
+}
+
+header.site h1 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+header.site p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+nav.menu {
+  margin-top: 0.85rem;
+}
+
+nav.menu ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.95rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 12.5rem;
+  gap: 2rem;
+  align-items: start;
+}
+
+.sidebar {
+  border-left: 1px solid var(--border);
+  padding-left: 1.25rem;
+}
+
+.sidebar h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.listen {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.listen li {
+  margin: 0 0 0.45rem;
+}
+
+.listen-btn {
+  display: block;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--fg);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.listen-btn:visited {
+  color: var(--fg);
+}
+
+.listen-btn:hover {
+  border-color: var(--fg);
+}
+
+.listen-note {
+  margin: 0.85rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+@media (max-width: 40rem) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-left: 0;
+    border-top: 1px solid var(--border);
+    padding-left: 0;
+    padding-top: 1.25rem;
+  }
+}
+
+nav.trail {
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+}
+
+.episode-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.episode-list li {
+  border-top: 1px solid var(--border);
+  padding: 1rem 0;
+}
+
+.episode-list li:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.episode-list .title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.episode-list .meta {
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.pager {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.credits {
+  margin: 0.75rem 0 1.5rem;
+}
+
+.credits p {
+  margin: 0.25rem 0;
+}
+
+.people {
+  margin: 0.75rem 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.people li {
+  margin: 0.2rem 0;
+}
+
+.role {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.embeds {
+  margin: 0 0 1.75rem;
+}
+
+.embed {
+  margin: 0 0 0.85rem;
+}
+
+.embed iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: #f3f3f3;
+}
+
+.embed-youtube {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.embed-youtube iframe {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+}
+
+.embed-libsyn iframe {
+  height: 100px;
+}
+
+article.shownotes > :first-child {
+  margin-top: 0;
+}
+
+details.transcript {
+  margin-top: 2rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+
+details.transcript summary {
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.readable p {
+  margin: 0.65rem 0;
+}
+
+footer.site {
+  margin-top: 2.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+}

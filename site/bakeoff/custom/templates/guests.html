@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Гости — Базовый блок{% endblock %}
+{% block body %}
+  <h2>Гости</h2>
+  <ul class="episode-list">
+    {% for person in guests %}
+    <li>
+      <div class="title"><a href="{{ rel('people/' ~ person.slug) }}">{{ person.name }}</a></div>
+      <div class="meta">
+        {% for ep in person.episodes if ep.role == 'гость' %}
+          <a href="{{ rel('e' ~ ep.number) }}">ББ-{{ ep.number }}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

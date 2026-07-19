@@ -48,7 +48,7 @@ Write `content/episodes/NNN/NNN-shownotes.md` (not `shownotes.md`):
    - Timecode lines (see Timecodes)
    - `Ссылки:` (see Episode links) — before sponsors
    - `Спасибо нашим спонсорам!` with sponsor list (see Sponsors in shownotes)
-   - Fixed podcast footer (see Podcast footer) — always last; plain URLs, not markdown
+   - Fixed podcast footer (see Podcast footer) — always last; markdown links (clickable)
 
 ## Title
 
@@ -207,17 +207,19 @@ Do not add URLs that were not in the user’s list (sponsor URLs stay only under
 
 ## Podcast footer (fixed)
 
-After `Спасибо нашим спонсорам!`, append this block verbatim (blank line before it). These three lines are plain text with spelled-out URLs — not markdown links:
+After `Спасибо нашим спонсорам!`, append this block verbatim (blank line before it).
+Each URL must be a markdown link so it is clickable on the website and in other Markdown viewers:
 
 ```
-Поддержите подкаст! https://basicblockradio.com/donate/
+Поддержите подкаст! [https://basicblockradio.com/donate/](https://basicblockradio.com/donate/)
 
-Заходите в наш чат: https://t.me/basicblockradio_chat
+Заходите в наш чат: [https://t.me/basicblockradio_chat](https://t.me/basicblockradio_chat)
 
-Наш сайт: https://basicblockradio.com/
+Наш сайт: [https://basicblockradio.com/](https://basicblockradio.com/)
 ```
 
-Do not rephrase or reorder. Every complete `NNN-shownotes.md` ends with this footer.
+Do not use bare URLs for these three lines. Do not rephrase or reorder.
+Every complete `NNN-shownotes.md` ends with this footer.
 
 ## Sponsors in shownotes
 
@@ -270,4 +272,4 @@ Use episode number `NNN` as the shuffle seed so the same episode gets the same o
 - [ ] Link order: main guest/topic first, then logical/mention-based order
 - [ ] Sponsor bullets match `Shownotes line`; order shuffled (seed `NNN`)
 - [ ] No URLs in `Ссылки:` except from the user’s list
-- [ ] Podcast footer appended verbatim (plain URLs, last block)
+- [ ] Podcast footer appended verbatim (markdown links, last block)

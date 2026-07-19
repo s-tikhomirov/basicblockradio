@@ -1,2 +1,8 @@
 __pycache__/
 *.py[cod]
+
+# Site stack bake-off (isolated tools and build output)
+site/bakeoff/.venv/
+site/bakeoff/.tools/
+site/bakeoff/**/public/
+site/bakeoff/**/.build/

@@ -52,8 +52,8 @@
 - [Fluence](https://www.fluence.network/) – децентрализованная облачная платформа
 - [Zerion](https://zerion.io/api) – Enterprise-grade web3 API
 
-Поддержите подкаст! https://basicblockradio.com/donate/
+Поддержите подкаст! [https://basicblockradio.com/donate/](https://basicblockradio.com/donate/)
 
-Заходите в наш чат: https://t.me/basicblockradio_chat
+Заходите в наш чат: [https://t.me/basicblockradio_chat](https://t.me/basicblockradio_chat)
 
-Наш сайт: https://basicblockradio.com/
+Наш сайт: [https://basicblockradio.com/](https://basicblockradio.com/)
