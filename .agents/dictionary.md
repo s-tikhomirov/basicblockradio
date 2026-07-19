@@ -227,6 +227,7 @@ Machine-readable list: `.agents/foreign-persons.json`. Each entry has `english`,
 - Киберфонд
 
 ### Common Phrases
+- Базовый Блок (podcast name; both words capitalized in all cases: Базового Блока, Базовому Блоку, Базовым Блоком, Базовом Блоке — not «Базовый блок»)
 - Виталик
 - кофаундер
 - проаудированный
@@ -287,6 +288,12 @@ When hosts mean they will put a link or reference in show notes or the episode d
 
 Terms that are equivalent and should not be flagged as discrepancies during SRT comparison. Format: `alternative form = canonical form`
 
+- Базовый блок = Базовый Блок
+- базовый блок = Базовый Блок
+- Базового блока = Базового Блока
+- Базовому блоку = Базовому Блоку
+- Базовым блоком = Базовым Блоком
+- Базовом блоке = Базовом Блоке
 - биткоин = Bitcoin (ASR equivalent only; in Russian transcript output use `биткоин` / `биткоины` / `биткоинов` for currency amounts, and `Bitcoin` for network or protocol — see srt-to-transcript skill, Bitcoin vs биткоин)
 - биткойн = Bitcoin
 - байнэнс = Binance

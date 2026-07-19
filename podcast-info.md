@@ -4,6 +4,7 @@ Static information about the podcast, used by AI agents when editing transcripts
 
 ## Podcast Metadata
 
+- Name (Russian): Базовый Блок (both words capitalized in all cases)
 - Language: Russian with mixed technical terminology
 - Format: Long-form interviews, 1.5 to 2 hours
 - Focus: Technical blockchain topics, not financial speculation or price discussion

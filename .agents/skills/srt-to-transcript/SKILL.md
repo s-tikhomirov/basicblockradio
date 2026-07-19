@@ -381,6 +381,10 @@ Apply these spellings consistently throughout the transcript. Change only the te
 - **Do not** insert `(English Name)` parentheticals in `NNN-transcript.md`. English canonical spellings are added later in `NNN-readable.md` only (`disclose_foreign_names.py`).
 - **Do not** leave foreign researchers in Latin in the transcript body unless the speaker clearly cites a written English form letter-by-letter (rare).
 
+### Базовый Блок (mandatory)
+
+The podcast name is `Базовый Блок` — capitalize both words in every grammatical case (`Базового Блока`, `Базовому Блоку`, `Базовым Блоком`, `Базовом Блоке`). Do not write `Базовый блок` or `базовый блок` when referring to the show. Do not confuse with a generic «базовый блок» meaning a building-block concept in cryptography or systems.
+
 ### 1inch (mandatory)
 
 Whisper often outputs `oneinch`, `Oneinch`, or spelled-out «one inch» for the sponsor and its domains.

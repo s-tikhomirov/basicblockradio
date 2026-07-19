@@ -13,7 +13,7 @@ Transcript and show-notes skills do not need to load it for routine editorial ta
 ## Purpose
 
 The site is a historical archive and learning resource for Basic Block Radio
-(«Базовый блок»), not only a mirror of the podcast feed.
+(«Базовый Блок»), not only a mirror of the podcast feed.
 
 Primary bet: people come for navigation, readable depth, and cross-episode
 exploration that isolated episodes on Telegram, YouTube, or a podcast app
