@@ -2,8 +2,9 @@
 
 Knowledge base for the Basic Block Radio podcast — deep technical interviews about blockchain technologies in Russian.
 
-Public website product decisions live in `docs/website.md`.
-Parked one-line ideas live in `docs/IDEAS.md`.
+- Content model and folder layout: `docs/content-model.md`
+- Public website product brief: `docs/website.md`
+- Parked ideas: `docs/IDEAS.md`
 
 ## Repository structure
 
@@ -11,36 +12,34 @@ Parked one-line ideas live in `docs/IDEAS.md`.
 ├── README.md
 ├── podcast-info.md
 ├── PROJECT_STATUS.md
-├── pipeline-launch.md              # Batch coordinator (pre-flight; see hold at top)
+├── pipeline-launch.md
 ├── docs/
-│   ├── website.md                  # Public archive / website product brief
-│   └── IDEAS.md                    # Parked one-line ideas
+│   ├── content-model.md            # Data model and layout (source of truth)
+│   ├── website.md                  # Public archive product brief
+│   └── IDEAS.md
+├── content/
+│   ├── episodes/
+│   │   ├── templates/
+│   │   │   ├── episode-template.yml
+│   │   │   ├── transcript-template.md
+│   │   │   └── shownotes-template.md
+│   │   └── NNN/
+│   │       ├── NNN-episode.yml     # Canonical episode metadata
+│   │       ├── NNN-raw.srt
+│   │       ├── NNN-transcript.md
+│   │       ├── NNN-readable.md
+│   │       ├── NNN-shownotes.md    # Full public article
+│   │       ├── NNN-shorts.md
+│   │       └── .chunks/
+│   ├── people/
+│   ├── organizations/
+│   └── sponsorships/
+├── site/                           # Website project (not implemented yet)
 ├── scripts/
-│   ├── split_transcript_chunks.py
-│   ├── merge_readable_chunks.py
-│   └── transcript_io.py
-├── sponsors/
-│   ├── sponsor-template.md
-│   └── current/                    # Active sponsor read copy (episode ranges in frontmatter)
-├── .agents/
-│   ├── skills/
-│   │   ├── srt-to-transcript/
-│   │   ├── transcript-to-readable/
-│   │   ├── transcript-to-shorts/
-│   │   └── readable-to-shownotes/
-│   ├── dictionary.md
-│   └── editing-standards.md
-└── episodes/
-    ├── templates/
-    │   ├── transcript-template.md
-    │   └── shownotes-template.md
-    └── NNN/
-        ├── NNN-raw.srt             # Whisper output (optional in repo)
-        ├── NNN-transcript.md       # Edited transcript (verbatim speech)
-        ├── NNN-readable.md         # Readable version (same blocks, polished prose)
-        ├── NNN-shownotes.md        # Publication show notes
-        ├── NNN-shorts.md           # Short-form clip map (optional)
-        └── .chunks/                # Pass-2 chunk artifacts (gitignored)
+└── .agents/
+    ├── skills/
+    ├── dictionary.md
+    └── editing-standards.md
 ```
 
 ## Workflow overview
@@ -54,12 +53,14 @@ flowchart LR
   R[NNN-readable.md]
   SN[NNN-shownotes.md]
   SH[NNN-shorts.md]
+  Y[NNN-episode.yml]
   SRT -->|srt-to-transcript| T
   T -->|human review| T
   T -->|transcript-to-readable| R
   R -->|human review| R
   R -->|readable-to-shownotes| SN
   T -->|transcript-to-shorts| SH
+  Y -.->|title status hosts guests links| SN
 ```
 
 Run one agent skill per step unless the user asks to combine steps. Each skill file under `.agents/skills/` defines scope, inputs, and stop conditions.
@@ -68,7 +69,7 @@ Run one agent skill per step unless the user asks to combine steps. Each skill f
 
 ### 1. Subtitles
 
-Generate `NNN-raw.srt` with Whisper on the episode audio.
+Generate `content/episodes/NNN/NNN-raw.srt` with Whisper on the episode audio.
 
 - Model `medium` is a practical CPU choice for Russian.
 - VAD filter with max segment duration around 20s improves stability.
@@ -79,8 +80,9 @@ Run the `srt-to-transcript` skill on the SRT file.
 
 - Timestamped paragraphs, speaker labels, dictionary spellings, light filler cleanup.
 - Does not rewrite for readable prose.
-- Output `episodes/NNN/NNN-transcript.md`.
-- Sponsor lines in the recording can be aligned with `sponsors/current/` when building the transcript.
+- Output `content/episodes/NNN/NNN-transcript.md` (frontmatter: `episode` only).
+- Create or update `NNN-episode.yml` for identity (hosts/guests slugs, dates, title when known).
+- Sponsor lines in the recording can be aligned with `content/sponsorships/` when building the transcript.
 
 Skill: `.agents/skills/srt-to-transcript/SKILL.md`
 
@@ -97,8 +99,8 @@ Run `transcript-to-readable` on the reviewed `NNN-transcript.md`.
 
 - One output line per input line (same timestamps and speakers; no merge or split).
 - Copy-edit inside each block only.
-- Long episodes: `scripts/split_transcript_chunks.py`, polish each chunk, then `scripts/merge_readable_chunks.py`. Chunk dirs live under `episodes/NNN/.chunks/` (gitignored).
-- Output `NNN-readable.md` with the same YAML frontmatter as the transcript.
+- Long episodes: `scripts/split_transcript_chunks.py`, polish each chunk, then `scripts/merge_readable_chunks.py`. Chunk dirs live under `content/episodes/NNN/.chunks/` (gitignored).
+- Output `NNN-readable.md` with the same minimal frontmatter as the transcript (`episode` only).
 
 Skill: `.agents/skills/transcript-to-readable/SKILL.md`
 
@@ -110,11 +112,13 @@ Check meaning, years (`.agents/editing-standards.md`), and flow before show note
 
 Run `readable-to-shownotes` on `NNN-readable.md`.
 
-- Output `NNN-shownotes.md` (title, intro, timecodes, sponsors from `sponsors/current/`, episode `Ссылки:` from a URL list the user provides).
-- Human review before publish.
+- Output `NNN-shownotes.md` without YAML frontmatter (full article body).
+- Title line must match `title` in `NNN-episode.yml`.
+- Sponsors from `content/sponsorships/` active for this episode number; `Ссылки:` from a URL list the user provides.
+- Human review before setting `status: ready` on the episode YAML.
 
 Skill: `.agents/skills/readable-to-shownotes/SKILL.md`  
-Template: `episodes/templates/shownotes-template.md`
+Template: `content/episodes/templates/shownotes-template.md`
 
 ### 7. Shorts (optional)
 
@@ -129,7 +133,7 @@ Skill: `.agents/skills/transcript-to-shorts/SKILL.md`
 
 | Skill | Input | Output |
 |-------|--------|--------|
-| `srt-to-transcript` | `NNN-raw.srt` | `NNN-transcript.md` |
+| `srt-to-transcript` | `NNN-raw.srt` | `NNN-transcript.md` (+ `NNN-episode.yml` identity) |
 | `transcript-to-readable` | `NNN-transcript.md` | `NNN-readable.md` |
 | `readable-to-shownotes` | `NNN-readable.md` + URL list | `NNN-shownotes.md` |
 | `transcript-to-shorts` | `NNN-transcript.md` | `NNN-shorts.md` |
@@ -142,20 +146,21 @@ Scripts under `scripts/` are only for mechanical transcript chunking and merge d
 
 | File | Role |
 |------|------|
+| `NNN-episode.yml` | Canonical metadata (title, status, hosts/guests, links) |
 | `NNN-raw.srt` | Whisper subtitles |
 | `NNN-transcript.md` | Canonical spoken wording and timestamps |
 | `NNN-readable.md` | Canonical long-form reading text |
-| `NNN-shownotes.md` | Site / platform show notes |
+| `NNN-shownotes.md` | Full public article for site / platforms |
 | `NNN-shorts.md` | Editor map for Shorts, Reels, or clip cuts |
 
 Use one reviewed `NNN-readable.md` per episode for publication. Extra drafts, if kept, are outside the pipeline.
 
-## Frontmatter
+## Frontmatter and metadata
 
-Episode YAML uses `episodes/templates/transcript-template.md` (`episode`, `guest`, `hosts`, `recording_date`). No `status` field.
+- Identity lives in `NNN-episode.yml` (see `content/episodes/templates/episode-template.yml` and `docs/content-model.md`).
+- Speech files use minimal frontmatter: `episode: NNN` only (`content/episodes/templates/transcript-template.md`).
+- `NNN-shorts.md` adds `source: NNN-transcript.md`.
+- `NNN-shownotes.md` has no YAML frontmatter; first line is the title string from `NNN-episode.yml`.
 
-- `NNN-readable.md` copies that frontmatter from the transcript.
-- `NNN-shorts.md` copies the same fields and adds `source: NNN-transcript.md`.
-- `NNN-shownotes.md` uses `episodes/templates/shownotes-template.md` (episode metadata plus publication body).
-
-Review gates are human workflow steps in this README, not frontmatter values.
+Review gates are human workflow steps in this README, not frontmatter values on speech files.
+`status: draft | ready` on `NNN-episode.yml` controls inclusion in the public site build.

@@ -1,0 +1,15 @@
+episode: 200
+title: "ББ-200: Иван Богатый"
+status: draft
+
+recording_date: unknown
+
+hosts:
+  - slug: alexander-seleznev
+  - slug: sergei-tikhomirov
+
+guests:
+  - slug: ivan-bogatiy
+    organization: matter-labs
+
+links: {}

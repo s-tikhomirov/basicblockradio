@@ -1,0 +1,19 @@
+episode: NNN
+title: "ББ-NNN: …"
+status: draft
+
+recording_date: unknown
+# publish_date: YYYY-MM-DD
+
+hosts:
+  - slug: sergei-tikhomirov
+guests:
+  - slug: guest-slug
+    # organization: org-slug
+
+links: {}
+# links:
+#   audio: https://…
+#   youtube: https://…
+#   libsyn_embed: https://…
+#   old_wordpress: https://basicblockradio.com/eNNN/

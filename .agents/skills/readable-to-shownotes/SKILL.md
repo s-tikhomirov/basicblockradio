@@ -2,7 +2,7 @@
 name: readable-to-shownotes
 description: >-
   Draft Basic Block Radio show notes from NNN-readable.md (title, intro,
-  timecodes, Ссылки from a user URL list, sponsors from sponsors/current).
+  timecodes, Ссылки from a user URL list, sponsors from content/sponsorships).
   Use when the user asks for shownotes, show notes, таймкоды, or episode links.
 disable-model-invocation: true
 ---
@@ -10,15 +10,15 @@ disable-model-invocation: true
 # readable-to-shownotes
 
 Produce Russian show notes for publication from a reviewed readable transcript.
-Output title, intro, timecodes, episode `Ссылки:` (from a user-supplied URL list), and sponsor lines from `sponsors/current/`.
+Output title, intro, timecodes, episode `Ссылки:` (from a user-supplied URL list), and sponsor lines from `content/sponsorships/`.
 
 ## Scope (this skill only)
 
 When this skill is invoked, complete only the work described here and stop.
 
-- Input: `episodes/NNN/NNN-readable.md` (after human review of the readable)
-- Output: `episodes/NNN/NNN-shownotes.md` (same numbering as `NNN-readable.md`, `NNN-transcript.md`; body structure per `episodes/templates/shownotes-template.md`)
-- Read: episode frontmatter, `podcast-info.md`, `.agents/dictionary.md`, active files in `sponsors/current/`
+- Input: `content/episodes/NNN/NNN-readable.md` (after human review of the readable)
+- Output: `content/episodes/NNN/NNN-shownotes.md` (same numbering as `NNN-readable.md`, `NNN-transcript.md`; body structure per `content/episodes/templates/shownotes-template.md`)
+- Read: `NNN-episode.yml`, `podcast-info.md`, `.agents/dictionary.md`, active files in `content/sponsorships/`
 
 Do not: edit `NNN-readable.md`; run `scripts/`; invent episode URLs or add links the user did not supply; invent sponsor URLs or rewrite `Shownotes line` text; rewrite the readable line-by-line; translate to English.
 
@@ -29,7 +29,7 @@ Do not continue with transcript or readable skills in the same run unless the us
 Required when invoking:
 
 - Episode number `NNN` (from filename or user prompt)
-- Path to readable if not the default `episodes/NNN/NNN-readable.md`
+- Path to readable if not the default `content/episodes/NNN/NNN-readable.md`
 
 Episode links (for `Ссылки:`):
 
@@ -38,11 +38,12 @@ Episode links (for `Ссылки:`):
 
 ## Output file
 
-Write `episodes/NNN/NNN-shownotes.md` (not `shownotes.md`):
+Write `content/episodes/NNN/NNN-shownotes.md` (not `shownotes.md`):
 
-1. YAML frontmatter — same fields and order as `episodes/templates/shownotes-template.md` (copy from readable, including `recording_date` verbatim). Do not invent or derive `recording_date`; if missing in readable, use `unknown`. Change it only when the user explicitly provides a date in the prompt.
-2. Body in publication order (plain text, Russian):
-   - Title line
+1. No YAML frontmatter on the show-notes file (see `content/episodes/templates/shownotes-template.md`).
+2. Ensure `NNN-episode.yml` has the canonical `title` string; show-notes first line must match it exactly. Update `title` in the YAML when you finalize the title (do not invent `recording_date`; it lives only in `NNN-episode.yml`).
+3. Body in publication order (plain text, Russian):
+   - Title line (same as `title` in `NNN-episode.yml`)
    - Blank line
    - Intro (one or more paragraphs; optional sponsor disclaimer if guest ↔ sponsor)
    - Blank line
@@ -58,7 +59,7 @@ Write `episodes/NNN/NNN-shownotes.md` (not `shownotes.md`):
 - Default — guest interview: `Имя Фамилия (Организация) о …` / `об …` (e.g. ББ-213, ББ-205). Two guests: `Имя и Имя (Org) о …`. Colon instead of «о» when the subtitle is a list: `ББ-219: Василий Шаповалов: Lido, Ethereum и DeFi…`
 - Document-centered (Messari): `Отчёт Messari-YYYY. Часть N. …` + `(feat. Имя Гостя)` when you discuss the report with a guest (ББ-217, ББ-215; `(ft. …)` if the user prefers).
 - Event-centered: `Devcon… Часть 1: …` — guest names usually not in the title.
-- Use о / об, not про, in new titles. First body line after frontmatter, not a markdown heading.
+- Use о / об, not про, in new titles. First line of the file, not a markdown heading.
 
 ## Prose style (intro, preview, timecode labels)
 
@@ -225,7 +226,7 @@ After `Ссылки:`, append the sponsor block from sponsor files (not from the
 
 ### Which sponsors apply
 
-Same rule as `srt-to-transcript`: episode `NNN`, include every `sponsors/current/sponsor-*.md` where `first_episode` ≤ `NNN` ≤ `last_episode`.
+Same rule as `srt-to-transcript`: episode `NNN`, include every `content/sponsorships/*.md` where `first_episode` ≤ `NNN` ≤ `last_episode`.
 
 ### What to insert
 
@@ -246,24 +247,24 @@ Use a markdown bullet list (`- `). Header line exactly `Спасибо наши�
 
 Do not list sponsors in filename order or read order. Shuffle the bullet lines into a random order.
 
-Use episode number `NNN` as the shuffle seed so the same episode gets the same order if show notes are regenerated (e.g. order sponsors by hash of `name` + `NNN`, or a documented deterministic shuffle). Do not always put the same brand first.
+Use episode number `NNN` as the shuffle seed so the same episode gets the same order if show notes are regenerated (e.g. order sponsors by hash of `organization` + `NNN`, or a documented deterministic shuffle). Do not always put the same brand first.
 
 ## Workflow
 
-1. Read `NNN-readable.md`, frontmatter, `podcast-info.md`, `.agents/dictionary.md`, and matching `sponsors/current/sponsor-*.md`.
+1. Read `NNN-readable.md`, `NNN-episode.yml`, `podcast-info.md`, `.agents/dictionary.md`, and matching `content/sponsorships/*.md`.
 2. Outline topics and highlights with timestamps.
-3. Draft title (under 100 characters).
+3. Draft title (under 100 characters); write it to `title` in `NNN-episode.yml` and as the first line of show notes.
 4. Draft intro (+ disclaimer if needed).
 5. Build timecodes (anchor to topic-intro blocks, not answer starts); verify each time against readable blocks.
 6. Build `Ссылки:` from the user’s link list (or placeholder if missing); fetch URLs to label; order logically.
 7. Collect `Shownotes line` from each active sponsor file; shuffle order (seed `NNN`).
-8. Write `NNN-shownotes.md` in publication order; append the podcast footer last.
+8. Write `NNN-shownotes.md` in publication order (no YAML frontmatter); append the podcast footer last.
 9. Report: missing sponsor `Shownotes line`; incomplete `Ссылки:` if no URL list was provided.
 
 ## Quality check
 
-- [ ] Output file is `episodes/NNN/NNN-shownotes.md`
-- [ ] Title under 100 characters, `ББ-NNN:`
+- [ ] Output file is `content/episodes/NNN/NNN-shownotes.md` (no YAML frontmatter)
+- [ ] First line equals `title` in `NNN-episode.yml`; under 100 characters, `ББ-NNN:`
 - [ ] Intro: short sentences, correct terms, concrete guest facts, preview matches readable weight; no «без булшита» / «без магии»
 - [ ] Timecodes: each line is `- {time} — {label}`; labels on topic intro blocks (usually question), not guest-answer starts; timestamps valid
 - [ ] `Ссылки:` one URL per bullet; related URLs consecutive; types in link text or Russian `(уточнение)`; English names preserved

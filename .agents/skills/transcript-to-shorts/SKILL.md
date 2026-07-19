@@ -16,8 +16,8 @@ Find shareable ideas in a long episode and point editors to verbatim transcript 
 
 When this skill is invoked, complete only the work described here and stop.
 
-- Input: `episodes/NNN/NNN-transcript.md` (use a human-reviewed transcript when possible; otherwise use whatever exists if the user asks)
-- Output: `episodes/NNN/NNN-shorts.md`
+- Input: `content/episodes/NNN/NNN-transcript.md` (use a human-reviewed transcript when possible; otherwise use whatever exists if the user asks)
+- Output: `content/episodes/NNN/NNN-shorts.md`
 - Read: episode frontmatter, `.agents/dictionary.md` (spelling for Russian titles, hooks, and terms)
 
 Do not: rephrase, summarize, or copy-edit guest/host lines; merge transcript blocks into one invented paragraph; change speaker labels or timestamps on kept lines; pull wording from `NNN-readable.md` (that file is rephrased — wrong source for literal clips); run `scripts/`; edit `NNN-transcript.md`.
@@ -38,7 +38,7 @@ Verbatim rule: every character outside `<...>` must match the transcript in orde
 ## Language
 
 - This skill file: English (except literal Russian inside transcript examples).
-- `NNN-shorts.md`: Russian throughout the body — intro line, segment titles (`##`), editor summaries, field labels, and timestamp lines. YAML frontmatter: copy from the source transcript (`episodes/templates/transcript-template.md` fields) and add `source: NNN-transcript.md`.
+- `NNN-shorts.md`: Russian throughout the body — intro line, segment titles (`##`), editor summaries, field labels, and timestamp lines. YAML frontmatter: `episode: NNN` and `source: NNN-transcript.md`.
 - Write titles and hooks for the podcast Russian-speaking editors and social audience. Keep established English terms when the episode uses them (NIST, RSA, Harvest Now Decrypt Later, hash-based, and entries in `.agents/dictionary.md`).
 - Do not write segment titles or hooks in English unless the user explicitly asks for an English deliverable.
 
@@ -207,22 +207,18 @@ When in doubt: one clear formulation per sub-idea inside the segment; use `<...>
 
 ## Output file
 
-Path: `episodes/NNN/NNN-shorts.md`
+Path: `content/episodes/NNN/NNN-shorts.md`
 
 ### Frontmatter
 
 ```yaml
 ---
 episode: NNN
-guest: …
-hosts:
-  - …
-recording_date: …
 source: NNN-transcript.md
 ---
 ```
 
-Copy frontmatter from `NNN-transcript.md` (field order per `episodes/templates/transcript-template.md`), including `recording_date` verbatim. Do not invent, change, or derive `recording_date`. Add `source: NNN-transcript.md`. Do not add a `status` field.
+Copy `episode` from `NNN-transcript.md` and add `source: NNN-transcript.md`. Identity fields live in `NNN-episode.yml`, not in shorts frontmatter.
 
 ### Body structure
 

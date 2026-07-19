@@ -6,18 +6,18 @@ Copy-edit each transcript block into readable direct speech — clearer sentence
 
 When this skill is invoked, complete only the work described here.
 
-- Input: `episodes/NNN/NNN-transcript.md`
-- Output: `episodes/NNN/NNN-readable.md`
+- Input: `content/episodes/NNN/NNN-transcript.md`
+- Output: `content/episodes/NNN/NNN-readable.md`
 - Chunk orchestration scripts (split/merge only) and `disclose_foreign_names.py` (English parentheticals only) are allowed; they must not copy-edit Russian prose.
 
 Do not convert raw SRT in this skill. If the user only has `NNN-raw.srt`, ask them to produce `NNN-transcript.md` from the SRT in a separate chat invocation before running this skill.
 
-Sponsor reads: primary cleanup belongs in `srt-to-transcript` (`sponsors/current/`). In this skill, only touch sponsor blocks if something is still unclear or misspelled after pass 1 — same rules (no rewriting to match sponsor script; fix names, numbers, clarity only). See that skill’s «Sponsor read segments».
+Sponsor reads: primary cleanup belongs in `srt-to-transcript` (`content/sponsorships/`). In this skill, only touch sponsor blocks if something is still unclear or misspelled after pass 1 — same rules (no rewriting to match sponsor script; fix names, numbers, clarity only). See that skill’s «Sponsor read segments».
 
 ## Files
 
-- Input: `episodes/NNN/NNN-transcript.md` (after human review). Episode number from filename.
-- Output: `episodes/NNN/NNN-readable.md` — frontmatter copied verbatim from the transcript (field order per `episodes/templates/transcript-template.md`), including `recording_date`; do not invent or change dates. Same line format:
+- Input: `content/episodes/NNN/NNN-transcript.md` (after human review). Episode number from filename.
+- Output: `content/episodes/NNN/NNN-readable.md` — frontmatter copied verbatim from the transcript (`episode: NNN` only per `content/episodes/templates/transcript-template.md`). Same line format:
 
 ```
 (00:06:28) Speaker Name: Text...
@@ -116,7 +116,7 @@ During copy-edit (single-file or per chunk):
 After the full `NNN-readable.md` exists (always run, including single-file mode):
 
 ```bash
-python3 scripts/disclose_foreign_names.py episodes/NNN/NNN-readable.md
+python3 scripts/disclose_foreign_names.py content/episodes/NNN/NNN-readable.md
 ```
 
 The script inserts ` (English canonical)` once per foreign person per episode, immediately after the first matched Russian name span. Case mismatch is OK (`с Джастином Дрейком (Justin Drake)`). It does not change block count, timestamps, or speakers. Use `--dry-run` to preview.
@@ -137,26 +137,26 @@ Otherwise a single full-file pass is fine.
 1. Read `NNN-transcript.md` line by line (each timestamped speaker line is one block).
 2. For each block: copy-edit per Prose and Fillers above (expect visible improvement, not near-verbatim output); keep same timestamp and speaker; do not merge with adjacent blocks.
 3. Verify output block count and timestamps match input.
-4. Write `NNN-readable.md` with frontmatter copied from the transcript (`episodes/templates/transcript-template.md` field order); use `.agents/dictionary.md`, `podcast-info.md`, `.agents/editing-standards.md`.
-5. Run `python3 scripts/disclose_foreign_names.py episodes/NNN/NNN-readable.md`.
+4. Write `NNN-readable.md` with frontmatter copied from the transcript (`episode: NNN` only); use `.agents/dictionary.md`, `podcast-info.md`, `.agents/editing-standards.md`.
+5. Run `python3 scripts/disclose_foreign_names.py content/episodes/NNN/NNN-readable.md`.
 
 ### Chunked mode (long episodes)
 
 Orchestration only — run repo scripts from `knowledge-bases/basicblockradio/scripts/` (they do not edit Russian text):
 
-1. Split: `python3 split_transcript_chunks.py episodes/NNN/NNN-transcript.md`  
-   - Default: writes `episodes/NNN/.chunks/chunk-001.md`, … (gitignored; safe to delete after merge).  
+1. Split: `python3 split_transcript_chunks.py content/episodes/NNN/NNN-transcript.md`  
+   - Default: writes `content/episodes/NNN/.chunks/chunk-001.md`, … (gitignored; safe to delete after merge).  
    - Defaults: about **15 minutes** per chunk (`--max-span-seconds 900`) and `--max-blocks 22` (whichever limit is hit first). Smaller chunks reduce quality drift on long episodes.  
    - Override only when needed, e.g. `--max-span-seconds 1200` for ~20 minutes.  
    - `--dry-run` prints JSON manifest (block counts, line ranges, timestamps, span per chunk) without writing files.
 2. For each chunk file: apply this skill’s rules to every line in that chunk only — exactly one output line per input line; same timestamps and speakers; full within-block copy-edit; no merge/split across chunk boundaries.
-3. Save each result as `episodes/NNN/.chunks/chunk-NNN-readable.md` (same chunk order as split).
+3. Save each result as `content/episodes/NNN/.chunks/chunk-NNN-readable.md` (same chunk order as split).
 4. Merge:  
-   `python3 merge_readable_chunks.py --transcript episodes/NNN/NNN-transcript.md --chunks-dir episodes/NNN/.chunks -o episodes/NNN/NNN-readable.md`  
+   `python3 merge_readable_chunks.py --transcript content/episodes/NNN/NNN-transcript.md --chunks-dir content/episodes/NNN/.chunks -o content/episodes/NNN/NNN-readable.md`  
    Optional: `--qc` warns on blocks where readable text is much shorter than transcript (ratio heuristic).
 5. Verify merged block count equals the transcript; spot-check timestamps monotonic.
-6. Run `python3 scripts/disclose_foreign_names.py episodes/NNN/NNN-readable.md`.
-7. Remove the chunk working directory after a successful merge — do not leave split/readable chunk files on disk. Delete `episodes/NNN/.chunks/` entirely (e.g. `rm -rf episodes/NNN/.chunks`). Only keep `NNN-readable.md` as the artifact for this skill.
+6. Run `python3 scripts/disclose_foreign_names.py content/episodes/NNN/NNN-readable.md`.
+7. Remove the chunk working directory after a successful merge — do not leave split/readable chunk files on disk. Delete `content/episodes/NNN/.chunks/` entirely (e.g. `rm -rf content/episodes/NNN/.chunks`). Only keep `NNN-readable.md` as the artifact for this skill.
 
 For three or more chunks, parallel Task subagents (one per chunk) are reasonable; each subagent gets one chunk path and the same hard limits above (no English parentheticals in chunks). The orchestrating agent still runs merge, disclose, and step 7 cleanup.
 

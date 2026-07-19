@@ -42,11 +42,11 @@ Do not launch srt-to-transcript, transcript-to-readable, or transcript-to-shorts
 3. Build a checklist of everything those skills require from the user (not from files on disk). At minimum for this pipeline, srt-to-transcript requires per episode:
    - guest name (who is interviewed)
    - host names (who asks questions; note who is present if not all hosts)
-   Optional when known: `recording_date` in pre-flight (ISO `YYYY-MM-DD`). If the user does not supply it, the srt-to-transcript worker must write `unknown` in frontmatter — not omit the key, and not infer a date from SRT, filenames, paths, or file metadata. Episode-level dates in `podcast-info.md` count only when that file explicitly lists a date for that episode number.
+   Optional when known: `recording_date` in pre-flight (ISO `YYYY-MM-DD`). If the user does not supply it, the srt-to-transcript worker must write `unknown` in `NNN-episode.yml` — not omit the key, and not infer a date from SRT, filenames, paths, or file metadata. Episode-level dates in `podcast-info.md` count only when that file explicitly lists a date for that episode number.
    transcript-to-readable and transcript-to-shorts rely on transcript frontmatter after step 1; note any optional shorts preferences (segment count, themes) if the shorts skill lists them.
 4. Ask the user in one clear message for all missing items, grouped by episode (table or bullet list). If the same hosts appear on every episode, ask once for hosts and per-episode guests only.
 5. Stop and wait. Do not start workers, read SRT content for processing, or create output files until the user replies with the requested info.
-6. After the user provides answers, record a brief per-episode metadata block (episode, guest, hosts, optional recording_date, optional shorts options). Summarize what will run and stop again.
+6. After the user provides answers, record a brief per-episode metadata block (episode, guest/host names or slugs, optional recording_date, optional shorts options) for `NNN-episode.yml`. Summarize what will run and stop again.
 7. Launch workers only after the user explicitly says to start the pipeline (or an unambiguous equivalent). Supplying metadata alone is not permission to start.
 
 If the user cannot supply required speaker names for an episode, do not start workers for that episode; report which episode is blocked.
@@ -57,7 +57,7 @@ When workers launch, pass the pre-flight metadata slice into each srt-to-transcr
 
 For a single episode `<n>`, the full flow is three separate worker runs in dependency order:
 
-1. srt-to-transcript — reads `episodes/<n>/<n>-raw.srt`, writes a transcript file in that episode directory.
+1. srt-to-transcript — reads `content/episodes/<n>/<n>-raw.srt`, writes a transcript file in that episode directory.
 2. transcript-to-readable — reads that episode's transcript only; writes readable output in the same directory.
 3. transcript-to-shorts — reads the same transcript; writes shorts output in the same directory.
 
@@ -71,7 +71,7 @@ That gives three workers per episode, with a clean context window for each skill
 Running in parallel for multiple episodes means:
 
 - Different episodes are independent. Episode 210's files do not affect episode 211's workers.
-- You may run the same skill on different episodes at the same time (e.g. one srt-to-transcript worker per episode in the batch), because each worker reads and writes only under `episodes/<n>/` for its own `<n>`.
+- You may run the same skill on different episodes at the same time (e.g. one srt-to-transcript worker per episode in the batch), because each worker reads and writes only under `content/episodes/<n>/` for its own `<n>`.
 - You must still respect per-episode dependencies: do not start readable or shorts for `<n>` until `<n>`'s transcript worker has finished and been verified.
 - Parallelism across episodes is optional. You may run episodes one after another; the rule is always one worker per skill invocation, not one worker per episode for the whole pipeline.
 
@@ -100,9 +100,9 @@ For episode number `<n>` (e.g. `210`):
 
 | Step | Skill path | Input | Default output |
 |------|------------|-------|----------------|
-| 1 | `.agents/skills/srt-to-transcript/SKILL.md` | `episodes/<n>/<n>-raw.srt` | `episodes/<n>/<n>-transcript.md` |
-| 2 | `.agents/skills/transcript-to-readable/SKILL.md` | transcript from step 1 | `episodes/<n>/<n>-readable.md` |
-| 3 | `.agents/skills/transcript-to-shorts/SKILL.md` | transcript from step 1 | `episodes/<n>/<n>-shorts.md` |
+| 1 | `.agents/skills/srt-to-transcript/SKILL.md` | `content/episodes/<n>/<n>-raw.srt` | `content/episodes/<n>/<n>-transcript.md` |
+| 2 | `.agents/skills/transcript-to-readable/SKILL.md` | transcript from step 1 | `content/episodes/<n>/<n>-readable.md` |
+| 3 | `.agents/skills/transcript-to-shorts/SKILL.md` | transcript from step 1 | `content/episodes/<n>/<n>-shorts.md` |
 
 Workers must use the skill's default output naming unless the suffix rule below applies.
 
@@ -144,7 +144,7 @@ Run workers in parallel or sequentially as you judge best for reliability and co
 For each background worker, include at minimum:
 
 1. Episode number `<n>` and skill name (srt-to-transcript | transcript-to-readable | transcript-to-shorts).
-2. For srt-to-transcript: guest name, host names, and `recording_date` if provided in pre-flight (exact string for frontmatter). If pre-flight did not include a date, instruct the worker to set `recording_date: unknown` and not to derive a date from files.
+2. For srt-to-transcript: guest name, host names, and `recording_date` if provided in pre-flight (exact string for `NNN-episode.yml`). If pre-flight did not include a date, instruct the worker to set `recording_date: unknown` in the episode YAML and not to derive a date from files.
 3. Path to read only that skill's `SKILL.md` under this knowledge base (`.agents/skills/...`).
 4. Exact input path(s) on disk for that episode.
 5. Output path after applying the no-overwrite / incrementing suffix rule.
@@ -180,7 +180,7 @@ Pre-flight:
 
 For each episode in the user-supplied list (only after the start instruction):
 
-- [ ] srt-to-transcript (input `episodes/<n>/<n>-raw.srt`)
+- [ ] srt-to-transcript (input `content/episodes/<n>/<n>-raw.srt`)
 - [ ] After that transcript is verified, transcript-to-readable
 - [ ] After that transcript is verified, transcript-to-shorts
 

@@ -1,0 +1,15 @@
+episode: 221
+title: "ББ-221: Михаил Кудинов (Blockstream) о пост-квантовой криптографии. Часть 2: Bitcoin и Ethereum"
+status: ready
+
+recording_date: 2026-05-22
+
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: alexander-seleznev
+
+guests:
+  - slug: mikhail-kudinov
+    organization: blockstream
+
+links: {}

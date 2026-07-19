@@ -6,7 +6,7 @@ Turn Whisper SRT into a structured transcript file. Establishes speakers, timest
 
 When this skill is invoked, complete only the work described here and stop.
 
-- Produce `episodes/NNN/NNN-transcript.md` from the raw SRT.
+- Produce `content/episodes/NNN/NNN-transcript.md` from the raw SRT.
 - Do not run `scripts/` under `knowledge-bases/basicblockradio/`.
 - Do not generate Python or shell tools to transform SRT or transcript text.
 - Do not start readable copy-editing or create `NNN-readable.md`.
@@ -43,7 +43,7 @@ Context sources (read by the skill):
 
 - Technical terms from `.agents/dictionary.md`
 - Podcast metadata from `podcast-info.md` (including episode-level `recording_date` only if that file lists a date for this episode number — not inferred from anything else; patron support URLs in the same file)
-- Active sponsor copy for the episode from `sponsors/current/` (see Sponsor read segments)
+- Active sponsor copy for the episode from `content/sponsorships/` (see Sponsor read segments)
 
 ### Input formats
 
@@ -91,13 +91,13 @@ Processing approach:
 
 ## Output
 
-New transcript file `episodes/NNN/NNN-transcript.md` containing:
+New transcript file `content/episodes/NNN/NNN-transcript.md` containing:
 
-- Frontmatter: same fields and order as `episodes/templates/transcript-template.md`
-  - episode: episode number
-  - guest: guest name (from user input)
-  - hosts: host names (from user input)
-  - recording_date: exact date from user prompt, pre-flight metadata, or an explicit episode-level entry in `podcast-info.md` for this episode; if none of those apply, use `unknown` (always include this key)
+- Frontmatter: only `episode: NNN` (see `content/episodes/templates/transcript-template.md`)
+- Also create or update `content/episodes/NNN/NNN-episode.yml` for identity (see `docs/content-model.md` and `content/episodes/templates/episode-template.yml`):
+  - `episode`, `title` when known, `status: draft` until show notes are ready
+  - `hosts` / `guests` as slugs under `content/people/` (create person stubs if new; do not invent slugs without confirming)
+  - `recording_date`: exact date from user prompt, pre-flight metadata, or an explicit episode-level entry in `podcast-info.md` for this episode; if none of those apply, use `unknown`
 - Transcript content only — no chapter headers, no summarization
 - Format: `(HH:MM:SS) Speaker Name: text of speech`
 - Timestamp format: parentheses, not bold — `(00:15:30)`
@@ -280,7 +280,7 @@ If a word might be filler or might carry meaning (e.g. «наверное», «�
    - Build timestamped paragraphs by grouping cues per Paragraph boundaries and joining text verbatim per Speech fidelity
    - Identify speakers using provided names and heuristics (Format A) or the provided `speaker_map` (Format B)
    - Apply dictionary spellings, sponsor-file fixes in sponsor segments, and fillers per Fillers
-   - Create transcript file (e.g., `episodes/219/219-transcript.md`)
+   - Create transcript file (e.g., `content/episodes/219/219-transcript.md`)
 6. Review the created transcript before running downstream skills.
 
 Do not continue with any other skill or script in the same run unless the user explicitly asks.
@@ -376,7 +376,7 @@ Apply these spellings consistently throughout the transcript. Change only the te
 
 ### People names (mandatory)
 
-- **Russian persons** (hosts, Russian-speaking guests): Cyrillic in speaker labels and body. Use names from user input and frontmatter; fix ASR only.
+- **Russian persons** (hosts, Russian-speaking guests): Cyrillic in speaker labels and body. Use names from user input and `NNN-episode.yml` / `content/people/`; fix ASR only.
 - **Foreign persons** (see `.agents/foreign-persons.json` and Equivalent Terms): write **Russian** given + family in the text (`Джастин Дрейк`, `Бенедикт Вагнер`, `Дэн Боне`), with case matching speech (`с Джастином Дрейком`, `с Дэном Боне` when the surname is indeclinable). Normalize ASR variants via Equivalent Terms (e.g. `Джастин Рейком` → `Джастин Дрейк`, `Виндикт Вагнер` → `Бенедикт Вагнер`).
 - **Do not** insert `(English Name)` parentheticals in `NNN-transcript.md`. English canonical spellings are added later in `NNN-readable.md` only (`disclose_foreign_names.py`).
 - **Do not** leave foreign researchers in Latin in the transcript body unless the speaker clearly cites a written English form letter-by-letter (rare).
@@ -415,8 +415,8 @@ At the start (and sometimes end) of the episode the host reads sponsor messages.
 ### Which sponsor files apply
 
 1. Take episode number `NNN` from the job.
-2. In `sponsors/current/`, open every `sponsor-*.md` whose frontmatter has `first_episode` ≤ `NNN` ≤ `last_episode`.
-3. Use `name` and the bodies under `Episode read: start` and `Episode read: end` as reference only (including numbered variants under `### Вариант …` if present).
+2. In `content/sponsorships/`, open every `*.md` (except templates) whose frontmatter has `first_episode` ≤ `NNN` ≤ `last_episode`.
+3. Use `organization` (resolve display name via `content/organizations/<slug>.yml` when needed) and the bodies under `Episode read: start` and `Episode read: end` as reference only (including numbered variants under `### Вариант …` if present).
 
 If no file matches, use `.agents/dictionary.md` and context from the SRT only.
 

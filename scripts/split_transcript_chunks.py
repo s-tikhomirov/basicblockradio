@@ -161,7 +161,7 @@ def main() -> int:
         "--out-dir",
         type=Path,
         default=None,
-        help="Directory for chunk-NNN.md files (default: episodes/NNN/.chunks/)",
+        help="Directory for chunk-NNN.md files (default: content/episodes/NNN/.chunks/)",
     )
     parser.add_argument(
         "--prefix",

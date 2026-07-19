@@ -1,0 +1,15 @@
+episode: 219
+title: "ББ-219: Василий Шаповалов"
+status: draft
+
+recording_date: 2026-04-27
+
+hosts:
+  - slug: alexander-seleznev
+  - slug: ivan-ivanitskiy
+
+guests:
+  - slug: vasiliy-shapovalov
+    organization: lido
+
+links: {}

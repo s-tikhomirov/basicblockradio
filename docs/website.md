@@ -32,7 +32,7 @@ In scope for the website track in this repository:
 
 - Historical episode archive
 - Readable material (show notes, and deeper text when available)
-- Topic-based filtering and guest pages
+- Person pages (`people/`) and episode ↔ person links
 - Public site built from repo content files (no content database required for v1)
 
 Out of scope for this track (do not design here; separate projects if ever):
@@ -53,25 +53,35 @@ Episode (primary)
 - One show, identity includes number in the public URL
 - Episode page is the main public source of truth for that episode
 - Reverse-chronological feed of episodes
+- Canonical title is the full string `title` in `NNN-episode.yml`
+  (usual shape: `ББ-{N}: {Guest} ({Organization}) …`)
+- Webpage title and headings use that string
+- Show-notes first line should match `title` (enforced by checker later)
+- Title is authored; number/guest/org are not auto-assembled into the title in v1
+- `status`: `draft` | `ready`
+  (`ready` = include in the public site build; `draft` = repo only until then)
+- No `depth` field; richness follows which files and fields exist
 
-Guest (first-class pages)
+Person (first-class records; hosts and guests share one type)
 
-- Dedicated page with short bio, personal or social links, and episodes appeared in
-- Episode pages link to guests; guest pages link back to episodes
-- Guests are worth visiting on their own
+- Stored under `content/people/`; referenced from episodes by slug
+- Episode appearances use billed roles in `NNN-episode.yml`:
+  `hosts:` and `guests:` lists (slug each; optional `organization` on a guest)
+- Billed = how this episode credits them (intro/title), not the permanent host roster
+- Zero guests allowed; one or many hosts/guests allowed
+- Person bios are not auto-injected into show notes or about pages in v1
+  (episode- and podcast-level prose stays hand-written for flexibility)
 
-Topic (filter, not a rich object in v1)
+Topic
 
-- Curated labels on episodes (small set; not large auto-generated tag clouds)
-- Clicking a topic shows a filtered episode list
-- No maintained topic essay pages in v1
-- Subject themes, not old format «рубрики» (livestream, paper, conference, …)
+- Omitted from v1
+- Add later as a controlled vocabulary and episode filters (see `docs/IDEAS.md`)
 
-Company or project
+Organization (company, protocol, foundation, project, …)
 
-- Optional later
-- If used, treat affiliation as historical (as of recording), not a live org chart
-- Do not promise up-to-date employment or rebrand tracking in v1
+- Stored as `content/organizations/<slug>.yml` with name and URL
+- Appearances on an episode may reference `organization` slug at recording time
+- Show notes may duplicate org/person URLs; person/org records remain the structured home
 
 ## Episode completeness
 
@@ -79,53 +89,51 @@ Two contracts.
 
 Source completeness (repo)
 
-- Canonical public description is the show-notes file plus frontmatter
-- Identity: episode number, title, guest(s), hosts, recording date
+- Canonical metadata in `NNN-episode.yml`; public narrative in show notes
+- Identity: episode number, full-string `title`, guests, hosts, recording date
 - Body: intro or summary, timecodes, links, usual CTAs and sponsors as today
-- Listen and watch URLs stored in a stable place (exact field layout is Phase B)
-- Topics when the curated vocabulary exists
+- Listen and watch URLs in episode metadata
 - Transcript and readable are deeper artifacts from the editorial pipeline;
   they complete the deep archive but are not required for every catalog stub
 
 Public episode page
 
-- Shows identity, show-notes intro, listen and watch, timecodes, links
-- Shows hosts and guest links
-- Shows topics when present
-- Links into readable or transcript when those artifacts exist
-- May present the same substance more cleanly than a raw paste of the Markdown file
+- Article body comes from `NNN-shownotes.md` (same order/shape as the public article;
+  may duplicate person/org/sponsor/CTA lines already known elsewhere — that is OK)
+- Page chrome and structured data come from `NNN-episode.yml`
+  (title, status, media URLs, appearances → person/org pages)
+- Optional extra section from `NNN-readable.md` (and/or transcript) when present
+- Compose/fill of repeatable show-notes blocks is a content-side step
+  (`scripts/` or editorial workflow), not the website generator’s job to invent prose
+  by joining many sources at HTML build time
 
 Layout and widget mapping are not fixed in this brief.
 
-## Depth policy
+## Catalog richness and site inclusion
 
-Launch without waiting for the full historical catalog to be deep.
+Launch without waiting for every historical episode to have full text artifacts.
 
-Tier 1 (deep)
+Site inclusion
 
-- New episodes going forward, plus a starter set of recent episodes
-  (about 10–20 as resources allow)
-- Full public checklist, including deeper text when the pipeline has produced it
+- Public build includes episodes with `status: ready`
+- `status: draft` stays out of the public build (optional local/preview flag may include them)
 
-Tier 2 (thin but real)
+Richness (no stored depth level)
 
-- Rest of the migrated catalog
-- Number, title, date, guest(s) when known, listen and watch when known
-- Optional short existing blurb; no transcript required
-- Prefer a quiet absence of deep notes over loud undated «coming soon» on hundreds of pages
-
-Tier 3 (upgrade)
-
-- Thin episodes promoted to deep over time
-- Cross-links by guest (and topic) work across deep and thin pages
-  (for example a deep episode notes that the guest also appears in an older thin episode)
+- Whatever files exist are what the page can show
+  (show notes, transcript, readable, shorts, listen links, …)
+- Checker uses implication rules (e.g. readable implies transcript), not a level matrix
+- Migrated catalog stubs can be `ready` with little more than `NNN-episode.yml`
+  (+ short show notes when you have them)
+- Newer episodes add artifacts over time; person cross-links work across stub and full pages
+- Prefer quiet absence of missing sections over undated «coming soon» on many pages
 
 ## Homepage
 
 Job of the first screen (decided)
 
 - Make clear what this place is
-- Offer paths into recent or deep episodes and into browse
+- Offer paths into recent or deep episodes and into the archive / people
 - Avoid feeling like only a blog post dump with a sidebar
 
 Exact composition (open)
@@ -138,19 +146,19 @@ Exact composition (open)
 
 - Episode pages with episode number in the URL
 - Reverse-chronological episode feed
-- Guest pages with bidirectional links to episodes
-- Topics as filters over the episode feed
+- Person pages with bidirectional links to episodes
 
 Not in v1 browse
 
-- Company pages
+- Topics / tag filters
+- Organization pages (records may exist for joins before pages ship)
 - Format rubrics as the main map
 - In-site command palette search (see `docs/IDEAS.md`)
 
 ## Repository role
 
-This private repository remains the home of editorial content and, later,
-the public site project beside it (for example a `site/` directory).
+Domain data lives under `content/`. The public site project lives under `site/`.
+Layout details: `docs/content-model.md`.
 
 Website direction docs live under `docs/`.
 Agent skills and pipeline docs stay where they are;
@@ -158,7 +166,7 @@ they are author tooling, not public site pages.
 
 ## Open for Phase B
 
-- Exact frontmatter and file layout for listen and watch URLs
-- Guest as structured files or pages source
-- Curated topic vocabulary and how topics are stored on episodes
-- How thin historical stubs are imported from the current site
+- Listen/watch URL conventions in `NNN-episode.yml`
+- Content-side compose helper for repeatable show-notes blocks (optional)
+- How thin historical stubs are imported from the current WordPress site
+- Whether organization pages ship in the first public site or only as data for joins

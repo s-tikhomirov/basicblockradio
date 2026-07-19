@@ -1,0 +1,27 @@
+# Canonical episode metadata (single source of truth).
+# Prototype with fake data — not the real published ББ-222.
+# See docs/content-model.md.
+# Display names and URLs live on content/people/ and content/organizations/.
+
+episode: 222
+title: "ББ-222: Иван Примерский (Example Protocol) о lorem ipsum в DeFi"
+status: ready
+
+recording_date: 2026-06-15
+publish_date: 2026-07-03
+
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: alexander-seleznev
+
+guests:
+  - slug: ivan-primerskiy
+    organization: example-protocol
+
+# Where the episode is published (repo source of truth).
+# The public site may show only a subset (e.g. youtube + audio).
+links:
+  audio: https://example.com/libsyn/bb-222-fake.mp3
+  youtube: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+  libsyn_embed: https://example.com/libsyn/embed/222
+  old_wordpress: https://basicblockradio.com/e222/

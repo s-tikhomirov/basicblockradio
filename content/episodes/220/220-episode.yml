@@ -1,0 +1,15 @@
+episode: 220
+title: "ББ-220: Михаил Кудинов (Blockstream) о пост-квантовой криптографии. Часть 1: теория и стандарты"
+status: ready
+
+recording_date: 2025-05-12
+
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: alexander-seleznev
+
+guests:
+  - slug: mikhail-kudinov
+    organization: blockstream
+
+links: {}

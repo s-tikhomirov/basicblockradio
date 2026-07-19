@@ -11,7 +11,7 @@ Per-skill rules live only under `.agents/skills/*/SKILL.md`.
 3. Human transcript review
 4. `transcript-to-readable` → `NNN-readable.md`. Long episodes: `scripts/` split → per-chunk skill pass → merge.
 5. Human readable review
-6. `readable-to-shownotes` → `NNN-shownotes.md` (user URL list for `Ссылки:`; sponsors from `sponsors/current/`)
+6. `readable-to-shownotes` → `NNN-shownotes.md` (user URL list for `Ссылки:`; sponsors from `content/sponsorships/`)
 7. Optional: `transcript-to-shorts` → `NNN-shorts.md` (after step 3; can run in parallel with 4–6). Segment format and `Диапазон в выпуске` rules are in the shorts skill only.
 
 ## Batch runs
@@ -32,9 +32,12 @@ One-line pointers only — invoke the matching `SKILL.md` for scope, inputs, and
 - `.agents/dictionary.md`
 - `.agents/editing-standards.md`
 - `podcast-info.md`
-- `episodes/templates/transcript-template.md`
-- `episodes/templates/shownotes-template.md`
-- `sponsors/current/sponsor-*.md`
+- `docs/content-model.md`
+- `content/episodes/templates/episode-template.yml`
+- `content/episodes/templates/transcript-template.md`
+- `content/episodes/templates/shownotes-template.md`
+- `content/sponsorships/*.md`
+- `content/people/`, `content/organizations/`
 
 ## In repo today
 
