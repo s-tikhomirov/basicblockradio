@@ -4,8 +4,13 @@ status: draft
 
 recording_date: unknown
 
-hosts: []
-
-guests: []
+hosts:
+  - slug: alexander-seleznev
+  - slug: evgeny-marchenko
+guests:
+  - slug: igor-gulamov
+    organization: savant-chat
+  - slug: alexandra-gulamova
+    organization: savant-chat
 
 url: https://basicblockradio.com/e216/

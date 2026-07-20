@@ -4,8 +4,11 @@ status: draft
 
 recording_date: 2026-01-30
 
-hosts: []
-
-guests: []
+hosts:
+  - slug: alexander-seleznev
+  - slug: sergei-tikhomirov
+guests:
+  - slug: evgeny-ponomarev
+    organization: fluence
 
 url: https://basicblockradio.com/e217/
