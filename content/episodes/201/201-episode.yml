@@ -4,7 +4,9 @@ status: draft
 
 recording_date: 2025-06-19
 
-hosts: []
+hosts:
+  - slug: ivan-ivanitskiy
+  - slug: sergei-tikhomirov
 
 guests: []
 
