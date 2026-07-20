@@ -4,8 +4,11 @@ status: draft
 
 recording_date: unknown
 
-hosts: []
+hosts:
+  - slug: alexander-seleznev
+  - slug: ivan-ivanitskiy
 
-guests: []
+guests:
+  - slug: ivan-kozlov
 
 url: https://basicblockradio.com/e204/

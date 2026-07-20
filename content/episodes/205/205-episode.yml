@@ -1,11 +1,14 @@
 episode: 205
-title: "ББ-205: Евгений Пономарёв (Fluence) о децентрализованных облаках"
+title: "ББ-205: Евгений Пономарев (Fluence) о децентрализованных облаках"
 status: draft
 
 recording_date: unknown
 
-hosts: []
-
-guests: []
+hosts:
+  - slug: alexander-seleznev
+  - slug: sergei-tikhomirov
+guests:
+  - slug: evgeny-ponomarev
+    organization: fluence
 
 url: https://basicblockradio.com/e205/
