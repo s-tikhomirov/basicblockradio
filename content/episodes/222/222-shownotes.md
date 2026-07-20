@@ -1,38 +1,67 @@
-ББ-222: Иван Примерский (Example Protocol) о lorem ipsum в DeFi
+ББ-222: Иван Козлов (Resolv) о жизни после взлома и новом продукте
 
-Иван Примерский — вымышленный гость для прототипа структуры каталога.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Внимание, это наш первый номерной выпуск в формате видео! Кмк и ведущий и гость получились красивы, как аниме-персонажи. Пишите в комментариях, что понравилось, а что нет!
 
-В этом учебном выпуске обсуждаем ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+В прошлый раз, когда к нам в гости заходил Иван, мы разбирались в главной теме прошлого года: какие бывают стейблы, как устроены дельта-нейтральные стейблы вообще и Resolv в частности. Теперь повод другой: 22 марта 2026 года Resolv взломали. Проект пал одной из первых больших жертв череды взломов этого года. Это первое развёрнутое публичное выступление Ивана после инцидента.
+
+Обсудим, как произошел взлом, почему его не смогли предотвратить никакие меры в области безопасности, а также нелегкую долю фаундера проекта, для которого взлом — не финал злоключений, а только начало. После этого предстояло еще несколько месяцев под давлением вести переговоры со всеми интересантами ради того, чтобы наиболее справедливым образом вернуть средства тем, кто их потерял, особенно в каскаде дефайных потерь второго порядка.
+
+Извлечем уроки из грустных событий и дадим советы фаундерам, которые не были в этой ситуации.
+
+В результате хакера так и не нашли, однако возврат средств уже почти завершен. Ребята запускают новый проект, связанный с новой горячей темой (кто-то скажет “последней горячей темой крипты"): RWA и работой с институционалами. Обсудим, хорошо ли это — работать с институционалами, или лучше сидеть в подвале и пилить свой шифропанк-проект на трех юзеров.
+
+Дисклеймер: мы в Pessimistic Security работали над аудитом смарт-контрактов Resolv, а я держал личные средства в протоколе. Выпуск подготовлен по нашим обычным редакционным стандартам.
 
 Таймкоды:
 
-- 00:00 — Вступление
-- 05:00 — Lorem ipsum и стабильность
-- 20:00 — Consectetur adipiscing elit
-- 45:00 — Вопросы слушателей
-- 1:10:00 — Итоги
+- 00:02 — Приветствие! Джекпотовый выпуск 222!
+- 02:10 — Спонсоры
+- 04:06 — Что такое Resolv и delta-neutral стейблкоин
+- 05:42 — В каком состоянии проект подошёл к 22 марта: TVL и аллокации
+- 08:57 — Как был устроен риск-менеджмент до взлома
+- 13:01 — Что произошло: компрометация через GitHub-аккаунт
+- 14:57 — Таймлайн атаки: от ноября до марта
+- 16:23 — Как заминтили 80 миллионов необеспеченных USR
+- 17:41 — Что делали в первые часы после атаки
+- 18:11 — Нужен ли проекту детальный incident response plan?
+- 20:55 — Развилка USR и RLP при расчёте recovery
+- 26:36 — Как покупали USR ниже par и брали под него в долг
+- 27:50 — Риск-кураторы залетели с плечом в скомпрометированный токен
+- 31:10 — Опыт обращения в SEAL 911
+- 35:33 — Крипторасследователи и заморозка средств
+- 37:04 — Law enforcement: BVI, Кайманы, ФБР
+- 43:58 — Кто такие пользователи из whitelist
+- 45:20 — Почему держатели USR получают один к одному
+- 51:12 — Зачем KYC при редемпшене
+- 54:35 — Аналогия с редемпшеном USDT у Tether
+- 56:17 — Договорённости с риск-кураторами о компенсации
+- 59:10 — Morpho как инфраструктура и роль риск-куратора
+- 1:00:58 — За что риск-куратор берёт комиссию?
+- 1:01:14 — Аналогия со Сбербанком и ПИФом
+- 1:10:18 — Чему научились: последствия хака в DeFi
+- 1:14:53 — Бусидо: самурай, который мёртв внутри
+- 1:16:11 — Новый продукт вместо стейблкоина
+- 1:19:52 — Wall Street by Resolv Labs и leverage на RWA
+- 1:33:19 — Куда движется индустрия
 
 Ссылки:
 
-Episode-specific materials only.
-Guest personal links and organization URL are composed from
-`people/ivan-primerskiy` and `organizations/example-protocol` when exporting
-or rendering the page (guest → org → materials).
-
-- [Lorem Ipsum Paper](https://example.com/paper.pdf) (пейпер)
-- [Related talk on YouTube](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+- [Resolv](https://resolv.xyz/) (сайт проекта)
+- [Постмортем Resolv по инциденту 22 марта](https://resolv.xyz/blog/resolv-postmortem-march-22-2026-incident)
+- [Прошлогодний выпуск с Иваном Козловым про Resolv](https://t.me/basicblockradio/590)
+- [Выпуск с Григорием Осиповым про крипторасследования](https://t.me/basicblockradio/620)
+- [Выпуск с Василием Шаповаловым (Lido), в том числе про взлом KelpDAO](https://t.me/basicblockradio/622) 
+- [Выпуск с Лёхой (cp0x), в том числе про риск-кураторов](https://t.me/basicblockradio/614)
 
 Спасибо нашим спонсорам!
 
-- [Example Sponsor](https://example.com/sponsor) – placeholder sponsor line
+- [Fluence](https://www.fluence.network/) – децентрализованная облачная платформа
+- [1inch](https://link.1inch.com/XsWg/BasicBlock) – свопаем токены по лучшим курсам с 1inch
+- [Zerion](https://zerion.io/api) – Enterprise-grade web3 API
+- [AckiNacki](https://ackinacki.com/) — the fastest blockchain possible
 
-Поддержите подкаст! [https://basicblockradio.com/donate/](https://basicblockradio.com/donate/)
+Поддержите подкаст! https://basicblockradio.com/donate/
 
-Заходите в наш чат: [https://t.me/basicblockradio_chat](https://t.me/basicblockradio_chat)
+Заходите в наш чат: https://t.me/basicblockradio_chat
 
-Наш сайт: [https://basicblockradio.com/](https://basicblockradio.com/)
+Наш сайт: https://basicblockradio.com/

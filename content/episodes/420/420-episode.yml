@@ -1,0 +1,22 @@
+# Canonical episode metadata (single source of truth).
+# Prototype with fake data — not the real published ББ-420.
+# See docs/content-model.md.
+# Display names and URLs live on content/people/ and content/organizations/.
+
+episode: 420
+title: "ББ-420: Иван Примерский (Example Protocol) о lorem ipsum в DeFi"
+status: draft
+
+recording_date: 2026-06-15
+publish_date: 2026-07-03
+
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: alexander-seleznev
+
+guests:
+  - slug: ivan-primerskiy
+    organization: example-protocol
+
+# Canonical public webpage for this episode.
+url: https://example.com/e420/

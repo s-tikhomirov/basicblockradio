@@ -1,22 +1,14 @@
-# Canonical episode metadata (single source of truth).
-# Prototype with fake data — not the real published ББ-222.
-# See docs/content-model.md.
-# Display names and URLs live on content/people/ and content/organizations/.
-
 episode: 222
-title: "ББ-222: Иван Примерский (Example Protocol) о lorem ipsum в DeFi"
+title: "ББ-222: Иван Козлов (Resolv) о жизни после взлома и новом продукте"
 status: draft
 
-recording_date: 2026-06-15
-publish_date: 2026-07-03
+recording_date: unknown
 
 hosts:
-  - slug: sergei-tikhomirov
   - slug: alexander-seleznev
 
 guests:
-  - slug: ivan-primerskiy
-    organization: example-protocol
+  - slug: ivan-kozlov
+    organization: resolv
 
-# Canonical public webpage for this episode.
-url: https://example.com/e222/
+url: https://basicblockradio.com/e222/

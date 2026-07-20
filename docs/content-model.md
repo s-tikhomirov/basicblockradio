@@ -131,9 +131,9 @@ Run from repo root: `python3 scripts/check_content.py`
 
 ## Prototype
 
-`content/episodes/222/` is a fake structure sample (lorem ipsum), not a real publish package.
+`content/episodes/420/` is a fake structure sample (lorem ipsum), not a real publish package.
 `status: draft` so it stays out of the public site build.
-See `content/episodes/222/STRUCTURE.md`.
+See `content/episodes/420/STRUCTURE.md`.
 
 Golden real packages (full YAML + show notes + `url`, `status: ready`):
 `content/episodes/220/`, `content/episodes/221/`.
