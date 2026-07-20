@@ -4,8 +4,10 @@ status: draft
 
 recording_date: 2025-09-14
 
-hosts: []
+hosts:
+  - slug: ivan-ivanitskiy
 
-guests: []
+guests:
+  - slug: vadim-nesterenko
 
 url: https://basicblockradio.com/e210/

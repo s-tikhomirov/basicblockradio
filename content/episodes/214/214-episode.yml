@@ -4,8 +4,12 @@ status: draft
 
 recording_date: 2025-12-30
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: ivan-ivanitskiy
+  - slug: alexander-seleznev
 
-guests: []
+guests:
+  - slug: pavel-komarovsky
 
 url: https://basicblockradio.com/e214/
