@@ -37,7 +37,7 @@ Optional in user prompt (or from pre-flight metadata passed by the coordinator):
 
 Content being edited:
 
-- Raw SRT file with timestamped segments (the AI reads this directly)
+- `NNN-raw.srt` with timestamped segments (the AI reads this directly). May be Format A or Format B; after `diarize-srt`, it is Format B.
 
 Context sources (read by the skill):
 
@@ -57,9 +57,10 @@ Format A — Standard Whisper SubRip (default)
 
 Format B — Diarized bracket format
 - Time range in brackets: `[HH:MM:SS:ff - HH:MM:SS:ff]` (four colon-separated fields)
-- Optional speaker label on first line of text block: `Speaker N`, `Speaker 1`, `Speaker 2`, `Speaker 3`
+- Optional speaker label on first line of text block: any non-empty string (`Speaker 1`, `Sergei`, `Ivan Ivanitskiy`, …)
 - Text may follow on same line (after speaker) or subsequent lines
 - Blocks may contain placeholder content: `(Music)`, `Transcription Pending`
+- After `diarize-srt`, `NNN-raw.srt` is this format (export labels kept as-is until `speaker_map`)
 
 ### Timestamp normalization
 
@@ -272,7 +273,7 @@ If a word might be filler or might carry meaning (e.g. «наверное», «�
    - Episode number (e.g., 219)
    - Guest name
    - Host names with context (who asks questions, who gives answers)
-   - For Format B (diarized with `Speaker N` labels): `speaker_map` mapping each speaker number to a full name (see Format B speaker mapping)
+   - For Format B (any speaker labels present): `speaker_map` mapping each distinct label string to a Cyrillic full name (see Format B speaker mapping)
    - Optional `recording_date` when known (otherwise the skill writes `unknown`)
 5. The skill will:
    - Read the SRT file directly
@@ -334,7 +335,7 @@ Use these patterns to distinguish speakers when the raw SRT lacks diarization:
 
 ### Format B speaker mapping (required when labels present)
 
-When the input contains `Speaker N` labels (`Speaker 1`, `Speaker 2`, `Speaker 3`, etc.), the user must provide a `speaker_map` in the prompt when invoking the skill:
+When the input contains speaker labels of any form (`Speaker 1`, `Sergei`, `Ivan Ivanitskiy`, …), the user must provide a `speaker_map` in the prompt when invoking the skill. Map every distinct label string that appears to the Cyrillic full name used in the transcript:
 
 ```
 speaker_map:
@@ -343,12 +344,21 @@ speaker_map:
   Speaker 3: [Guest Name]
 ```
 
-Why required: Format B exports only provide generic numbers. The skill cannot reliably infer which number maps to which person without explicit mapping.
+or, for export names left in `NNN-raw.srt` by `diarize-srt`:
+
+```
+speaker_map:
+  Sergei: Сергей Тихомиров
+  Ivan Ivanitskiy: Иван Иваницкий
+  Alexander: Александр Селезнев
+```
+
+Why required: raw labels are either anonymous (`Speaker N`) or export spellings, not final transcript names. Do not invent the mapping.
 
 How to apply:
-1. Read the SRT file first to identify which speaker numbers appear
+1. Read the SRT file first to list every distinct speaker label
 2. Ask the user for the mapping if not provided
-3. Replace every `Speaker N` label with the mapped full name in the transcript output
+3. Replace every label with the mapped full name in the transcript output
 
 If no map provided: Ask the user before proceeding. Do not guess based on heuristics alone when explicit speaker labels exist in the source.
 

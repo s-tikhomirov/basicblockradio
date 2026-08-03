@@ -94,7 +94,7 @@ Person pages at `people/{slug}/`.
 Guests index lists only people with at least one guest appearance in this set.
 No organization pages.
 
-Do not publish: `NNN-shorts.md`, `NNN-raw.srt`, or other non-public artifacts.
+Do not publish: `NNN-shorts.md`, `NNN-raw.srt`, `NNN-raw-undiaried.srt`, `NNN-raw-diarized.txt`, or other non-public artifacts.
 
 ### Output URL map
 

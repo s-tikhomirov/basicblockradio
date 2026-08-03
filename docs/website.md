@@ -113,7 +113,7 @@ Public episode page
 - Page chrome and structured data come from `NNN-episode.yml`
   (title, status, url, appearances → person/org pages)
 - Optional extra section from `NNN-readable.md` (and/or transcript) when present
-- Never publish `NNN-shorts.md` or `NNN-raw.srt` (editorial / pipeline only)
+- Never publish `NNN-shorts.md`, `NNN-raw.srt`, `NNN-raw-undiaried.srt`, or `NNN-raw-diarized.txt` (editorial / pipeline only)
 - Compose/fill of repeatable show-notes blocks is a content-side step
   (`scripts/` or editorial workflow), not the website generator’s job to invent prose
   by joining many sources at HTML build time

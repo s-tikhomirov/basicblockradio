@@ -7,7 +7,8 @@ Per-skill rules live only under `.agents/skills/*/SKILL.md`.
 ## Pipeline
 
 1. Whisper (`medium`, Russian) → `NNN-raw.srt`
-2. `srt-to-transcript` → `NNN-transcript.md`
+1a. When a separate diarized TXT exists: `diarize-srt` promotes Format B into `NNN-raw.srt` (Format A kept as `NNN-raw-undiaried.srt`)
+2. `srt-to-transcript` → `NNN-transcript.md` (always from `NNN-raw.srt`)
 3. Human transcript review
 4. `transcript-to-readable` → `NNN-readable.md`. Long episodes: `scripts/` split → per-chunk skill pass → merge.
 5. Human readable review
@@ -16,12 +17,14 @@ Per-skill rules live only under `.agents/skills/*/SKILL.md`.
 
 ## Batch runs
 
-Multi-episode coordinator flow: `pipeline-launch.md` (pre-flight, worker layout). Top-of-file hold applies until diarization is solved; readable and shorts still need reviewed speaker labels in the transcript.
+Multi-episode coordinator flow: `pipeline-launch.md` (pre-flight, worker layout).
+When `NNN-raw-diarized.txt` exists, run `diarize-srt` before `srt-to-transcript` and pass `speaker_map` for export labels.
 
 ## Agent skills
 
 One-line pointers only — invoke the matching `SKILL.md` for scope, inputs, and checklists.
 
+- `diarize-srt` — merge Format A SRT + diarized TXT; promote Format B into `NNN-raw.srt`
 - `srt-to-transcript` — SRT to transcript; structure and spelling; no readable rewrite
 - `transcript-to-readable` — one line per transcript line; in-block copy-edit; chunked mode uses `scripts/`
 - `readable-to-shownotes` — title, intro, timecodes, user URL list for `Ссылки:`, sponsors

@@ -25,7 +25,9 @@ Knowledge base for the Basic Block Radio podcast — deep technical interviews a
 │   │   │   └── shownotes-template.md
 │   │   └── NNN/
 │   │       ├── NNN-episode.yml     # Canonical episode metadata
-│   │       ├── NNN-raw.srt
+│   │       ├── NNN-raw.srt         # Canonical raw (Format A or B)
+│   │       ├── NNN-raw-diarized.txt  # Optional speaker-track export
+│   │       ├── NNN-raw-undiaried.srt # Format A kept after diarize-srt
 │   │       ├── NNN-transcript.md
 │   │       ├── NNN-readable.md
 │   │       ├── NNN-shownotes.md    # Full public article
@@ -48,12 +50,14 @@ Two deliverable tracks share the same transcript. Long-form publication uses rea
 
 ```mermaid
 flowchart LR
+  TXT[NNN-raw-diarized.txt]
   SRT[NNN-raw.srt]
   T[NNN-transcript.md]
   R[NNN-readable.md]
   SN[NNN-shownotes.md]
   SH[NNN-shorts.md]
   Y[NNN-episode.yml]
+  TXT -->|diarize-srt when present| SRT
   SRT -->|srt-to-transcript| T
   T -->|human review| T
   T -->|transcript-to-readable| R
@@ -74,12 +78,26 @@ Generate `content/episodes/NNN/NNN-raw.srt` with Whisper on the episode audio.
 - Model `medium` is a practical CPU choice for Russian.
 - VAD filter with max segment duration around 20s improves stability.
 
+### 1a. Diarize (when a speaker-track TXT exists)
+
+If the export includes `NNN-raw-diarized.txt` (labels + coarse times) alongside undiarized `NNN-raw.srt`, run `diarize-srt` before the transcript pass.
+
+- Merges SRT wording/times with TXT speakers into Format B.
+- Promotes Format B into `NNN-raw.srt`; keeps Format A as `NNN-raw-undiaried.srt`.
+- Helper script lives under the skill directory (not `scripts/` at repo root).
+
+Skill: `.agents/skills/diarize-srt/SKILL.md`
+
+Skip this step when there is no diarized TXT (Format A `NNN-raw.srt` goes straight to the transcript skill).
+
 ### 2. Transcript (pass 1)
 
-Run the `srt-to-transcript` skill on the SRT file.
+Run the `srt-to-transcript` skill on `NNN-raw.srt`.
 
 - Timestamped paragraphs, speaker labels, dictionary spellings, light filler cleanup.
 - Does not rewrite for readable prose.
+- Format A or Format B auto-detected from file content.
+- After `diarize-srt`, provide `speaker_map` from export labels to Cyrillic full names.
 - Output `content/episodes/NNN/NNN-transcript.md` (frontmatter: `episode` only).
 - Create or update `NNN-episode.yml` for identity (hosts/guests slugs, dates, title when known).
 - Sponsor lines in the recording can be aligned with `content/sponsorships/` when building the transcript.
@@ -133,6 +151,7 @@ Skill: `.agents/skills/transcript-to-shorts/SKILL.md`
 
 | Skill | Input | Output |
 |-------|--------|--------|
+| `diarize-srt` | Format A `NNN-raw.srt` + `NNN-raw-diarized.txt` | Format B `NNN-raw.srt` (+ `NNN-raw-undiaried.srt`) |
 | `srt-to-transcript` | `NNN-raw.srt` | `NNN-transcript.md` (+ `NNN-episode.yml` identity) |
 | `transcript-to-readable` | `NNN-transcript.md` | `NNN-readable.md` |
 | `readable-to-shownotes` | `NNN-readable.md` + URL list | `NNN-shownotes.md` |
@@ -145,14 +164,17 @@ Scripts under `scripts/`:
 - `check_content.py` — deterministic content-model checks (run from repo root).
 - Transcript chunking / merge helpers for `transcript-to-readable` only.
 
-Skills that process Russian episode text do not call those scripts unless the skill explicitly says so (`transcript-to-readable` chunked mode only).
+`diarize-srt` uses its own helper under `.agents/skills/diarize-srt/scripts/`.
+Skills that process Russian episode text do not call repo-root `scripts/` unless the skill explicitly says so (`transcript-to-readable` chunked mode only).
 
 ## Episode artifacts
 
 | File | Role |
 |------|------|
 | `NNN-episode.yml` | Canonical metadata (title, status, hosts/guests, url) |
-| `NNN-raw.srt` | Whisper subtitles |
+| `NNN-raw.srt` | Canonical raw for `srt-to-transcript` (Whisper Format A, or Format B after `diarize-srt`) |
+| `NNN-raw-diarized.txt` | Optional speaker-track export for `diarize-srt` |
+| `NNN-raw-undiaried.srt` | Format A preserved when `diarize-srt` promotes Format B into `NNN-raw.srt` |
 | `NNN-transcript.md` | Canonical spoken wording and timestamps |
 | `NNN-readable.md` | Canonical long-form reading text |
 | `NNN-shownotes.md` | Full public article for site / platforms |

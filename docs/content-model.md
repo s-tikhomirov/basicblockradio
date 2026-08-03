@@ -1,6 +1,6 @@
 # Content model and repository layout
 
-Last updated: 2026-07-19
+Last updated: 2026-08-03
 
 Living description of how domain data is stored in this repository.
 Product goals for the public site: `docs/website.md`.
@@ -38,7 +38,9 @@ Public-facing (eligible for the site when `status: ready`)
 Editorial / non-public (stay in git; never copied into the public site output)
 
 - `NNN-shorts.md` — editor map for Shorts/Reels (not a public page)
-- `NNN-raw.srt` — Whisper input
+- `NNN-raw.srt` — canonical raw for `srt-to-transcript` (Whisper Format A, or Format B after `diarize-srt`)
+- `NNN-raw-diarized.txt` — optional speaker-track export for `diarize-srt`
+- `NNN-raw-undiaried.srt` — Format A preserved when `diarize-srt` rewrites `NNN-raw.srt`
 - `.chunks/` — temporary readable-pipeline chunks (gitignored)
 
 Every file name in the folder carries the episode number `NNN`.
