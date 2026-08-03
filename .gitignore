@@ -6,3 +6,4 @@ site/bakeoff/.venv/
 site/bakeoff/.tools/
 site/bakeoff/**/public/
 site/bakeoff/**/.build/
+site/
