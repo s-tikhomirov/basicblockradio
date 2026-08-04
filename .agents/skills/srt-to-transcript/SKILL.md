@@ -7,6 +7,7 @@ Turn Whisper SRT into a structured transcript file. Establishes speakers, timest
 When this skill is invoked, complete only the work described here and stop.
 
 - Produce `content/episodes/NNN/NNN-transcript.md` from the raw SRT.
+- After writing the transcript, list in chat any paragraph timestamps that look grammatically incomplete for manual review.
 - Do not run `scripts/` under `knowledge-bases/basicblockradio/`.
 - Do not generate Python or shell tools to transform SRT or transcript text.
 - Do not start readable copy-editing or create `NNN-readable.md`.
@@ -229,6 +230,16 @@ Self-check before finishing:
 - Spot-read several multi-cue blocks against the SRT. If whole sentences or distinct clauses disappeared, restore them from the SRT.
 - Scan for host questions or guest confirmations embedded inside another speaker’s block (missing `(timestamp) Name:` line). Split any you find.
 - Opening sponsor reads: one block per sponsor; closing sponsor roll call: one block for all end mentions (not one block per sponsor at the end).
+- Flag grammatically incomplete sentences for manual review (see Incomplete sentences below).
+
+### Incomplete sentences (manual review)
+
+ASR and cue cuts often drop the end of a clause. After the transcript is written, scan for sentences that look grammatically incomplete (cut off mid-predicate, dangling connective, missing expected complement — e.g. «решил, что неплохо было» where «бы …» is clearly missing).
+
+- Do not invent the missing wording in the transcript unless the intended continuation is already present in a nearby SRT cue or is an obvious ASR token fix.
+- Keep the incomplete wording as transcribed when unsure.
+- In the chat summary after the skill run, list the paragraph timestamp(s) of such sentences for manual review (same idea as flagged timestamps in `diarize-srt`).
+- Skip intentional trailing-off, unfinished thoughts the speaker abandoned, and short backchannels.
 
 ## Fillers (bulk cleanup)
 
@@ -262,6 +273,7 @@ If a word might be filler or might carry meaning (e.g. «наверное», «�
 - DO read and process SRT content directly to produce the transcript
 - DO output only the transcript content with speaker labels and timestamps
 - DO insert exactly one blank line between paragraph blocks
+- DO flag grammatically incomplete-looking sentences by listing their paragraph timestamps in chat after the run (do not invent missing endings unless already in nearby SRT or an obvious ASR token fix)
 - DO stop after writing and verifying `NNN-transcript.md`
 
 ## Usage
@@ -282,6 +294,7 @@ If a word might be filler or might carry meaning (e.g. «наверное», «�
    - Identify speakers using provided names and heuristics (Format A) or the provided `speaker_map` (Format B)
    - Apply dictionary spellings, sponsor-file fixes in sponsor segments, and fillers per Fillers
    - Create transcript file (e.g., `content/episodes/219/219-transcript.md`)
+   - List in chat any timestamps flagged as grammatically incomplete for manual review
 6. Review the created transcript before running downstream skills.
 
 Do not continue with any other skill or script in the same run unless the user explicitly asks.

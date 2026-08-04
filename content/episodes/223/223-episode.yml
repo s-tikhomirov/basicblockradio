@@ -1,9 +1,13 @@
 episode: 223
-title: "ББ-223:"
-status: draft
+title: "ББ-223: DWeb Camp. Децентрализованный веб вне блокчейна"
+status: ready
 
 recording_date: 2026-07-14
 
-hosts: []
+hosts:
+  - slug: alexander-seleznev
+  - slug: ivan-ivanitskiy
+guests:
+  - slug: sergei-tikhomirov
 
-guests: []
+url: https://basicblockradio.com/e223/

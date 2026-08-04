@@ -41,6 +41,132 @@
       "given": "Ник",
       "family": "Картер",
       "family_indeclinable": false
+    },
+    {
+      "id": "brewster_kahle",
+      "english": "Brewster Kahle",
+      "given": "Брюстер",
+      "family": "Кейл",
+      "family_indeclinable": false
+    },
+    {
+      "id": "vint_cerf",
+      "english": "Vint Cerf",
+      "given": "Винт",
+      "family": "Серф",
+      "family_indeclinable": false
+    },
+    {
+      "id": "tim_berners_lee",
+      "english": "Tim Berners-Lee",
+      "given": "Тим",
+      "family": "Бернерс-Ли",
+      "family_indeclinable": true
+    },
+    {
+      "id": "zooko_wilcox",
+      "english": "Zooko Wilcox",
+      "given": "Зуко",
+      "family": "Уилкокс",
+      "family_indeclinable": false
+    },
+    {
+      "id": "gavin_wood",
+      "english": "Gavin Wood",
+      "given": "Гевин",
+      "family": "Вуд",
+      "family_indeclinable": false
+    },
+    {
+      "id": "richard_stallman",
+      "english": "Richard Stallman",
+      "given": "Ричард",
+      "family": "Столман",
+      "family_indeclinable": false
+    },
+    {
+      "id": "moxie_marlinspike",
+      "english": "Moxie Marlinspike",
+      "given": "Мокси",
+      "family": "Марлинспайк",
+      "family_indeclinable": true
+    },
+    {
+      "id": "matthew_hodgson",
+      "english": "Matthew Hodgson",
+      "given": "Мэтью",
+      "family": "Ходжсон",
+      "family_indeclinable": false
+    },
+    {
+      "id": "joe_lubin",
+      "english": "Joe Lubin",
+      "given": "Джо",
+      "family": "Любин",
+      "family_indeclinable": false
+    },
+    {
+      "id": "michael_saylor",
+      "english": "Michael Saylor",
+      "given": "Майкл",
+      "family": "Сейлор",
+      "family_indeclinable": false
+    },
+    {
+      "id": "david_dias",
+      "english": "David Dias",
+      "given": "Дэвид",
+      "family": "Диас",
+      "family_indeclinable": false
+    },
+    {
+      "id": "christopher_allen",
+      "english": "Christopher Allen",
+      "given": "Кристофер",
+      "family": "Аллен",
+      "family_indeclinable": false
+    },
+    {
+      "id": "muneeb_ali",
+      "english": "Muneeb Ali",
+      "given": "Муниб",
+      "family": "Али",
+      "family_indeclinable": true
+    },
+    {
+      "id": "jeremy_rand",
+      "english": "Jeremy Rand",
+      "given": "Джереми",
+      "family": "Рэнд",
+      "family_indeclinable": false
+    },
+    {
+      "id": "daniel_holmgren",
+      "english": "Daniel Holmgren",
+      "given": "Дэниел",
+      "family": "Холмгрен",
+      "family_indeclinable": false
+    },
+    {
+      "id": "paul_frazee",
+      "english": "Paul Frazee",
+      "given": "Пол",
+      "family": "Фрейзи",
+      "family_indeclinable": true
+    },
+    {
+      "id": "evan_prodromou",
+      "english": "Evan Prodromou",
+      "given": "Эван",
+      "family": "Продрому",
+      "family_indeclinable": true
+    },
+    {
+      "id": "dario_presutti",
+      "english": "Dario Presutti",
+      "given": "Дарио",
+      "family": "Пресутти",
+      "family_indeclinable": true
     }
   ]
 }

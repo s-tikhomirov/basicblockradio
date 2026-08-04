@@ -91,6 +91,30 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - Solidity
 - SolC
 - SolX
+- ActivityPub
+- Atmosphere
+- AT Protocol
+- ATProto
+- Bluesky
+- Blockstack
+- Blockstream
+- c-base
+- Department of Decentralization
+- DWeb Camp
+- Element
+- eQualitie
+- Freifunk
+- Free Software Foundation Europe
+- Internet Archive
+- IPFS
+- Matrix
+- Mastodon
+- Namecoin
+- OnionPress
+- Social Web Foundation
+- Wayback Machine
+- WebTorrent
+- Zcash
 
 ### Technical Terms
 - AML
@@ -176,6 +200,23 @@ Foreign researchers and guests: **Russian surface forms** in transcript and read
 - SEC
 - Tanja Lange
 - WisdomTree
+- Brewster Kahle
+- Vint Cerf
+- Tim Berners-Lee
+- Zooko Wilcox
+- Gavin Wood
+- Richard Stallman
+- Moxie Marlinspike
+- Matthew Hodgson
+- Evan Prodromou
+- Daniel Holmgren
+- Dario Presutti
+- David Dias
+- Paul Frazee
+- Christopher Allen
+- Muneeb Ali
+- Jeremy Rand
+- Jihoon Song
 
 ### Foreign persons (readable disclosure)
 
@@ -226,6 +267,9 @@ Machine-readable list: `.agents/foreign-persons.json`. Each entry has `english`,
 - он-чейн
 - вайбкодить
 - Киберфонд
+- митап
+- mesh-сеть
+- mesh-интернет
 
 ### Common Phrases
 - Базовый Блок (podcast name; both words capitalized in all cases: Базового Блока, Базовому Блоку, Базовым Блоком, Базовом Блоке — not «Базовый блок»)
@@ -322,6 +366,29 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 - предложим ссылку в описании = приложим ссылку в описании
 - предложим в описании = приложим в описании
 - пич = питч
+- метап = митап
+- метапе = митапе
+- метапы = митапы
+- метапов = митапов
+- межсети = mesh-сети
+- межсеть = mesh-сеть
+- межсетей = mesh-сетей
+- меш-сети = mesh-сети
+- меш-сеть = mesh-сеть
+- меш-сетей = mesh-сетей
+- меш-интернет = mesh-интернет
+- меш-интернета = mesh-интернета
+- меш-интернете = mesh-интернете
+- DwebCamp = DWeb Camp
+- DWebCamp = DWeb Camp
+- BlueSky = Bluesky
+- AT Proto = AT Protocol
+- Onion Press = OnionPress
+- C-Base = c-base
+- Ji-Hong Song = Jihoon Song
+- Brewster Kale = Brewster Kahle
+- Мокси = Мокси Марлинспайк
+- Гэвин Вуд = Гевин Вуд
 - трансляций в секунду = транзакций в секунду
 - волт = vault
 - гovernance = governance
