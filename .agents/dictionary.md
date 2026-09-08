@@ -135,6 +135,7 @@ Proper spellings for technical terms, project names, and non-trivial vocabulary 
 - KYC
 - NFT
 - PKI
+- principal membership
 - Provable Security
 - Rage Quit
 - SNARKs
@@ -216,6 +217,11 @@ Foreign researchers and guests: **Russian surface forms** in transcript and read
 - Christopher Allen
 - Muneeb Ali
 - Jeremy Rand
+- Jeremy Allaire
+- Arthur Hayes
+- Nevin Freeman
+- Raphael Auer
+- Wintermute
 - Jihoon Song
 
 ### Foreign persons (readable disclosure)
@@ -248,6 +254,7 @@ Machine-readable list: `.agents/foreign-persons.json`. Each entry has `english`,
 - нод-оператор
 - оракул
 - период группы
+- принципальный (Visa / Mastercard principal membership: принципальное членство, принципальная лицензия, принципальные отношения)
 - рестейкинг
 - сайд-проект
 - чат-бот
@@ -295,6 +302,7 @@ When hosts mean they will put a link or reference in show notes or the episode d
 
 - vault vs волт: Use "волт" in casual speech, "vault" in technical descriptions
 - Cosmos vs космос: Use "Cosmos" for the blockchain protocol, "космос" for literal space/universe. When the speaker says "коммьюнити Космоса" referring to the blockchain ecosystem, use "Cosmos". When they say "в космосе" meaning outer space, use "космос".
+- принципальный vs принципиальный: Use принципальный for Visa / Mastercard principal membership (принципальное членство, принципальная лицензия, принципальные отношения). Use принципиальный for a matter of principle, a schematic, or «fundamentally» (принципиальное решение, принципиальная схема, принципиально новое). Keep «в принципе» and «из принципа» as those words.
 
 ---
 
@@ -358,6 +366,8 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 - Ник Карткр = Ник Картер
 - Джастин Рейком = Джастин Дрейк
 - Джастином Рейком = Джастином Дрейком
+- Intermute = Wintermute
+- Джереми Аллэр = Джереми Аллер
 - Виндикт Вагнер = Бенедикт Вагнер
 - Эра = Era
 - Эру = Era
@@ -366,6 +376,10 @@ Terms that are equivalent and should not be flagged as discrepancies during SRT 
 - предложим ссылку в описании = приложим ссылку в описании
 - предложим в описании = приложим в описании
 - пич = питч
+- принципиальное членство = принципальное членство
+- принципиальных членов = принципальных членов
+- принципиальных лицензий = принципальных лицензий
+- принципиальной лицензии = принципальной лицензии
 - метап = митап
 - метапе = митапе
 - метапы = митапы

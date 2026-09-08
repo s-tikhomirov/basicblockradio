@@ -4,7 +4,7 @@ Knowledge base for the Basic Block Radio podcast — deep technical interviews a
 
 - Content model and folder layout: `docs/content-model.md`
 - Public website product brief: `docs/website.md`
-- Parked ideas: `docs/IDEAS.md`
+- Tasks: `_tasks/tasks.md`
 
 ## Repository structure
 
@@ -13,10 +13,11 @@ Knowledge base for the Basic Block Radio podcast — deep technical interviews a
 ├── podcast-info.md
 ├── PROJECT_STATUS.md
 ├── pipeline-launch.md
+├── _tasks/
+│   └── tasks.md
 ├── docs/
 │   ├── content-model.md            # Data model and layout (source of truth)
-│   ├── website.md                  # Public archive product brief
-│   └── IDEAS.md
+│   └── website.md                  # Public archive product brief
 ├── content/
 │   ├── episodes/
 │   │   ├── templates/
@@ -109,11 +110,16 @@ Skill: `.agents/skills/srt-to-transcript/SKILL.md`
 Human review of `NNN-transcript.md`.
 
 - Speakers, boundaries, technical terms (`.agents/dictionary.md`).
-- When satisfied, run downstream skills on this file.
+- Missed turns can be added as new lines with `()` for the time and initials for the speaker (`ST`, `MG`, `II`).
+  Run `expand-transcript-placeholders` to expand those initials to in-file full names, fill empty timestamps, and spread copied start times.
+- When satisfied, set `status: transcript-reviewed` on `NNN-episode.yml`.
+- Then run downstream skills on this file.
+
+Skill: `.agents/skills/expand-transcript-placeholders/SKILL.md`
 
 ### 4. Readable (pass 2)
 
-Run `transcript-to-readable` on the reviewed `NNN-transcript.md`.
+Run `transcript-to-readable` on a `transcript-reviewed` `NNN-transcript.md`.
 
 - One output line per input line (same timestamps and speakers; no merge or split).
 - Copy-edit inside each block only.
@@ -125,6 +131,7 @@ Skill: `.agents/skills/transcript-to-readable/SKILL.md`
 ### 5. Readable review
 
 Check meaning, years (`.agents/editing-standards.md`), and flow before show notes.
+When satisfied, set `status: readable-reviewed` on `NNN-episode.yml`.
 
 ### 6. Show notes
 
@@ -133,14 +140,14 @@ Run `readable-to-shownotes` on `NNN-readable.md`.
 - Output `NNN-shownotes.md` without YAML frontmatter (full article body).
 - Title line must match `title` in `NNN-episode.yml`.
 - Sponsors from `content/sponsorships/` active for this episode number; `Ссылки:` from a URL list the user provides.
-- Human review before setting `status: ready` on the episode YAML.
+- Human review of show notes, then set `status: ready` on the episode YAML.
 
 Skill: `.agents/skills/readable-to-shownotes/SKILL.md`  
 Template: `content/episodes/templates/shownotes-template.md`
 
 ### 7. Shorts (optional)
 
-Run `transcript-to-shorts` on the reviewed `NNN-transcript.md` (parallel with readable once the transcript is reviewed).
+Run `transcript-to-shorts` on a `transcript-reviewed` `NNN-transcript.md` (parallel with readable once the transcript is reviewed).
 
 - Output `NNN-shorts.md`. Clip text is verbatim from the transcript only, not from `NNN-readable.md`.
 - Segment layout, montage rules, `Диапазон в выпуске`, and the pre-finish checklist are defined in the skill, not duplicated here.
@@ -153,6 +160,7 @@ Skill: `.agents/skills/transcript-to-shorts/SKILL.md`
 |-------|--------|--------|
 | `diarize-srt` | Format A `NNN-raw.srt` + `NNN-raw-diarized.txt` | Format B `NNN-raw.srt` (+ `NNN-raw-undiaried.srt`) |
 | `srt-to-transcript` | `NNN-raw.srt` | `NNN-transcript.md` (+ `NNN-episode.yml` identity) |
+| `expand-transcript-placeholders` | `NNN-transcript.md` during review | same file (initials, empty `()`, duplicate times) |
 | `transcript-to-readable` | `NNN-transcript.md` | `NNN-readable.md` |
 | `readable-to-shownotes` | `NNN-readable.md` + URL list | `NNN-shownotes.md` |
 | `transcript-to-shorts` | `NNN-transcript.md` | `NNN-shorts.md` |
@@ -164,7 +172,7 @@ Scripts under `scripts/`:
 - `check_content.py` — deterministic content-model checks (run from repo root).
 - Transcript chunking / merge helpers for `transcript-to-readable` only.
 
-`diarize-srt` uses its own helper under `.agents/skills/diarize-srt/scripts/`.
+`diarize-srt` and `expand-transcript-placeholders` use helpers under their skill directories.
 Skills that process Russian episode text do not call repo-root `scripts/` unless the skill explicitly says so (`transcript-to-readable` chunked mode only).
 
 ## Episode artifacts
@@ -189,5 +197,7 @@ Use one reviewed `NNN-readable.md` per episode for publication. Extra drafts, if
 - `NNN-shorts.md` adds `source: NNN-transcript.md`.
 - `NNN-shownotes.md` has no YAML frontmatter; first line is the title string from `NNN-episode.yml`.
 
-Review gates are human workflow steps in this README, not frontmatter values on speech files.
-`status: draft | ready` on `NNN-episode.yml` controls inclusion in the public site build.
+Review gates are human workflow steps.
+`status` on `NNN-episode.yml` records them:
+`draft` → `transcript-reviewed` → `readable-reviewed` → `ready`.
+The public site build includes only `ready`.

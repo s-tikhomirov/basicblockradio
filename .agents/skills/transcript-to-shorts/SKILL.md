@@ -12,7 +12,8 @@ Find shareable ideas in a long episode and point editors to verbatim transcript 
 
 When this skill is invoked, complete only the work described here and stop.
 
-- Input: `content/episodes/NNN/NNN-transcript.md` (use a human-reviewed transcript when possible; otherwise use whatever exists if the user asks)
+- Input: `content/episodes/NNN/NNN-transcript.md`
+  (prefer `status: transcript-reviewed`; use whatever exists if the user asks)
 - Output: `content/episodes/NNN/NNN-shorts.md`
 - Read: episode frontmatter, `.agents/dictionary.md` (spelling for Russian titles, hooks, and terms)
 

@@ -5,7 +5,7 @@ Last updated: 2026-07-19
 Living recipe for choosing the static site generator for the public archive.
 Product contract: `docs/website.md`.
 Content layout: `docs/content-model.md`.
-Parked ideas: `docs/IDEAS.md`.
+Parked ideas: `_tasks/tasks.md`.
 
 If this experiment is inconclusive, edit this file and re-run.
 Do not delete `site/bakeoff/` trees unless explicitly asked.

@@ -1,10 +1,10 @@
 # Content model and repository layout
 
-Last updated: 2026-08-03
+Last updated: 2026-09-02
 
 Living description of how domain data is stored in this repository.
 Product goals for the public site: `docs/website.md`.
-Parked ideas: `docs/IDEAS.md`.
+Parked ideas: `_tasks/tasks.md`.
 
 ## Root layout
 
@@ -16,6 +16,7 @@ content/                 # domain data (file-backed model)
   sponsorships/
 site/                    # website project (build reads content/)
 docs/                    # product and project writing
+_tasks/                  # work tracking (see meta task tracking)
 scripts/                 # deterministic tooling
 .agents/                 # agent skills and editorial refs
 README.md
@@ -45,8 +46,9 @@ Editorial / non-public (stay in git; never copied into the public site output)
 
 Every file name in the folder carries the episode number `NNN`.
 No `depth` field; richness = which files exist.
-`status`: `draft` | `ready` (`ready` = include in the public site build;
-requires `NNN-shownotes.md` and `url`).
+`status`: `draft` | `transcript-reviewed` | `readable-reviewed` | `ready`.
+The public site build includes only `ready`.
+`ready` requires `NNN-readable.md`, `NNN-shownotes.md`, and `url`.
 
 Site build may use a two-stage flow: (1) project only public-facing inputs into a
 gitignored staging tree shaped for the SSG, or load them in memory; (2) generate HTML.
@@ -70,14 +72,14 @@ Sponsorship — `content/sponsorships/{org}-{first}-{last}.md`
 - Time-bounded contract: `organization`, `first_episode`, `last_episode`, ad copy
 - Not a separate “sponsor org” tree
 
-Topic / `related_episodes` — omitted in v1 (see `docs/IDEAS.md`).
+Topic / `related_episodes` — omitted in v1 (see `_tasks/tasks.md`).
 
 ## Episode YAML (v1)
 
 ```yaml
 episode: 221
 title: "ББ-221: …"          # full-string canon for the webpage
-status: ready                 # draft | ready
+status: ready                 # draft | transcript-reviewed | readable-reviewed | ready
 
 recording_date: 2026-05-22
 publish_date: 2026-07-03      # optional
@@ -92,7 +94,10 @@ url: https://basicblockradio.com/e221/   # canonical episode webpage
 ```
 
 `url` is the only publication link in episode YAML (see `docs/website.md`).
-When `status: ready`: `url` and `NNN-shownotes.md` are required; both optional while `draft`.
+When `status: ready`: `url`, `NNN-readable.md`, and `NNN-shownotes.md` are required.
+`transcript-reviewed` requires `NNN-transcript.md`.
+`readable-reviewed` requires transcript and readable.
+Agents create YAML as `draft`. A human sets the next status after each review gate.
 
 Billed roles: `hosts` / `guests` match how the episode credits people (intro/title),
 not a permanent staff roster. Zero guests allowed.
@@ -128,7 +133,8 @@ Run from repo root: `python3 scripts/check_content.py`
 - `title` starts with `ББ-{N}:`
 - Appearance slugs resolve under `people/` / `organizations/`
 - `url` is an http(s) page URL; required when `status: ready`
-- `NNN-shownotes.md` required when `status: ready`
+- `NNN-shownotes.md` and `NNN-readable.md` required when `status: ready`
+- `NNN-transcript.md` required when `status` is `transcript-reviewed` or later
 - Implication rules (e.g. readable implies transcript)
 
 ## Prototype

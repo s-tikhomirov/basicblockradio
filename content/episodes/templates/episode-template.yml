@@ -1,6 +1,8 @@
 episode: NNN
 title: "ББ-NNN: …"
 status: draft
+# draft | transcript-reviewed | readable-reviewed | ready
+# Humans advance status after each review gate. Agents leave it as draft.
 
 recording_date: unknown
 # publish_date: YYYY-MM-DD

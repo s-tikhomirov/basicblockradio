@@ -1,13 +1,13 @@
 episode: 216
 title: "ББ-216: ИИ-аудиты в Web3 (Игорь и Александра Гуламовы Savant.chat)"
-status: draft
+status: readable-reviewed
 
 recording_date: unknown
 
 hosts:
   - slug: alexander-seleznev
-  - slug: evgeny-marchenko
 guests:
+  - slug: evgeny-marchenko
   - slug: igor-gulamov
     organization: savant-chat
   - slug: alexandra-gulamova

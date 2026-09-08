@@ -167,6 +167,104 @@
       "given": "Дарио",
       "family": "Пресутти",
       "family_indeclinable": true
+    },
+    {
+      "id": "vitalik_buterin",
+      "english": "Vitalik Buterin",
+      "given": "Виталик",
+      "family": "Бутерин",
+      "family_indeclinable": false
+    },
+    {
+      "id": "marc_andreessen",
+      "english": "Marc Andreessen",
+      "given": "Марк",
+      "family": "Андриссен",
+      "family_indeclinable": false
+    },
+    {
+      "id": "lex_fridman",
+      "english": "Lex Fridman",
+      "given": "Лекс",
+      "family": "Фридман",
+      "family_indeclinable": false
+    },
+    {
+      "id": "sundar_pichai",
+      "english": "Sundar Pichai",
+      "given": "Сундар",
+      "family": "Пичаи",
+      "family_indeclinable": true
+    },
+    {
+      "id": "jason_crawford",
+      "english": "Jason Crawford",
+      "given": "Джейсон",
+      "family": "Кроуфорд",
+      "family_indeclinable": false
+    },
+    {
+      "id": "martin_koppelmann",
+      "english": "Martin Köppelmann",
+      "given": "Мартин",
+      "family": "Кёппельманн",
+      "family_indeclinable": false
+    },
+    {
+      "id": "emma_hodcroft",
+      "english": "Emma Hodcroft",
+      "given": "Эмма",
+      "family": "Ходжкрофт",
+      "family_indeclinable": false
+    },
+    {
+      "id": "eric_raymond",
+      "english": "Eric Raymond",
+      "given": "Эрик",
+      "family": "Рэймонд",
+      "family_indeclinable": false
+    },
+    {
+      "id": "anish_mohammed",
+      "english": "Anish Mohammed",
+      "given": "Аниш",
+      "family": "Мохаммед",
+      "family_indeclinable": false
+    },
+    {
+      "id": "tomasz_stanczak",
+      "english": "Tomasz Stanczak",
+      "given": "Томаш",
+      "family": "Станчак",
+      "family_indeclinable": false
+    },
+    {
+      "id": "jeremy_allaire",
+      "english": "Jeremy Allaire",
+      "given": "Джереми",
+      "family": "Аллер",
+      "family_indeclinable": false
+    },
+    {
+      "id": "arthur_hayes",
+      "english": "Arthur Hayes",
+      "given": "Артур",
+      "family": "Хейс",
+      "family_indeclinable": false
+    },
+    {
+      "id": "nevin_freeman",
+      "english": "Nevin Freeman",
+      "given": "Невин",
+      "family": "Фриман",
+      "family_indeclinable": false
+    },
+    {
+      "id": "raphael_auer",
+      "english": "Raphael Auer",
+      "given": "Рафаэль",
+      "family": "Ауэр",
+      "family_indeclinable": false
     }
   ]
 }

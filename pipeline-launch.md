@@ -62,11 +62,11 @@ Running in parallel for multiple episodes means:
 
 - Different episodes are independent. Episode 210's files do not affect episode 211's workers.
 - You may run the same skill on different episodes at the same time (e.g. one srt-to-transcript worker per episode in the batch), because each worker reads and writes only under `content/episodes/<n>/` for its own `<n>`.
-- You must still respect per-episode dependencies: do not start readable or shorts for `<n>` until `<n>`'s transcript worker has finished and been verified; do not start srt-to-transcript until diarize-srt has finished when that step applies.
+- You must still respect per-episode dependencies: do not start readable or shorts for `<n>` until `<n>`'s transcript worker has finished and the human has set `status: transcript-reviewed`; do not start srt-to-transcript until diarize-srt has finished when that step applies.
 - Parallelism across episodes is optional. You may run episodes one after another; the rule is always one worker per skill invocation, not one worker per episode for the whole pipeline.
 
 Wave 0 (optional): one `diarize-srt` worker per episode that has a diarized TXT.
-Wave 1: up to one srt-to-transcript worker per episode in the batch at once; then, as each episode's transcript is verified, launch readable and shorts for that episode (two workers per episode).
+Wave 1: up to one srt-to-transcript worker per episode in the batch at once; then, as each episode's YAML becomes `transcript-reviewed`, launch readable and shorts for that episode (two workers per episode).
 
 ## Orchestration
 
@@ -78,7 +78,7 @@ Wave 1: up to one srt-to-transcript worker per episode in the batch at once; the
 - Context hygiene: Each worker reads only that skill's `SKILL.md` and that episode's inputs on disk.
   Workers for readable and shorts must not load or reference SRT files.
 - Parallelism is optional; sequential execution is OK at coordinator discretion.
-- Dependencies: diarize-srt (when needed) before srt-to-transcript; do not start readable or shorts for an episode until that episode's transcript output exists on disk.
+- Dependencies: diarize-srt (when needed) before srt-to-transcript; do not start readable or shorts for an episode until that episode is `transcript-reviewed`.
 
 ## Base path
 
@@ -133,7 +133,7 @@ Run workers in parallel or sequentially as you judge best for reliability and co
 - Do not edit any files except newly created output files for this batch (and `diarize-srt` promotion of `NNN-raw.srt` / `NNN-raw-undiaried.srt` when that step runs).
 - While this pipeline run is active, do not modify `pipeline-launch.md` at this knowledge base root — read it only. No coordinator or worker may change that file during pre-flight, while waiting for start, or while workers are running.
 - Read-only access to inputs, skill files, and reference episodes only as each skill requires.
-- Do not modify `docs/IDEAS.md` or other repo metadata.
+- Do not modify `_tasks/` or other repo metadata.
 - Do not create git commits unless the user asks separately in another message.
 
 ## Per-worker instructions (template)
@@ -181,7 +181,7 @@ For each episode in the user-supplied list (only after the start instruction):
 
 - [ ] diarize-srt when `NNN-raw-diarized.txt` exists and `NNN-raw.srt` is still Format A
 - [ ] srt-to-transcript (input `content/episodes/<n>/<n>-raw.srt`)
-- [ ] After that transcript is verified, transcript-to-readable
-- [ ] After that transcript is verified, transcript-to-shorts
+- [ ] After `status: transcript-reviewed`, transcript-to-readable
+- [ ] After `status: transcript-reviewed`, transcript-to-shorts
 
 One separate background worker per skill invocation, each with a minimal, skill-specific prompt.

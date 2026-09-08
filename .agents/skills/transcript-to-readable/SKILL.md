@@ -8,7 +8,8 @@ When this skill is invoked, complete only the work described here.
 
 - Input: `content/episodes/NNN/NNN-transcript.md`
 - Output: `content/episodes/NNN/NNN-readable.md`
-- Chunk orchestration scripts (split/merge only) and `disclose_foreign_names.py` (English parentheticals only) are allowed; they must not copy-edit Russian prose.
+- If preflight reports `episode-status` (`readable-reviewed` or `ready`), stop without writing `NNN-readable.md`
+- Chunk orchestration scripts (split/merge only), `check_transcript_gaps.py` (preflight only), and `disclose_foreign_names.py` (English parentheticals only) are allowed; they must not copy-edit Russian prose.
 
 Do not convert raw SRT in this skill. If the user only has `NNN-raw.srt`, ask them to produce `NNN-transcript.md` from the SRT in a separate chat invocation before running this skill.
 
@@ -16,7 +17,8 @@ Sponsor reads: primary cleanup belongs in `srt-to-transcript` (`content/sponsors
 
 ## Files
 
-- Input: `content/episodes/NNN/NNN-transcript.md` (after human review). Episode number from filename.
+- Input: `content/episodes/NNN/NNN-transcript.md` after human review
+  (`NNN-episode.yml` `status: transcript-reviewed`). Episode number from filename.
 - Output: `content/episodes/NNN/NNN-readable.md` — frontmatter copied verbatim from the transcript (`episode: NNN` only per `content/episodes/templates/transcript-template.md`). Same line format:
 
 ```
@@ -25,7 +27,7 @@ Sponsor reads: primary cleanup belongs in `srt-to-transcript` (`content/sponsors
 
 ## Hard limits
 
-Do not: third-person narrative; editorial commentary; drop or change timestamps; add or remove paragraph blocks; merge two input lines into one; split one input line into two; change speaker labels; change facts, numbers, or technical claims; soften or sharpen tone; telegraphic compression (dropping pronouns, objects, or examples the speaker clearly expressed); “fix” gender or pronouns when referent is ambiguous; strip pronouns or objects that carry meaning (ты/вы/она/он/это/в ней/мне and similar) only to sound tighter; compress a block into headline-style dash chains; use scripts or tools that rewrite Russian prose or auto-edit wording (orchestration split/merge under `scripts/` is allowed in chunked mode; `disclose_foreign_names.py` only after the readable body is finished — see Foreign names).
+Do not: run copy-edit, split, merge, disclose, or overwrite `NNN-readable.md` when preflight reports `episode-status`; third-person narrative; editorial commentary; drop or change timestamps; add or remove paragraph blocks; merge two input lines into one; split one input line into two; change speaker labels; change facts, numbers, or technical claims; soften or sharpen tone; telegraphic compression (dropping pronouns, objects, or examples the speaker clearly expressed); “fix” gender or pronouns when referent is ambiguous; strip pronouns or objects that carry meaning (ты/вы/она/он/это/в ней/мне and similar) only to sound tighter; compress a block into headline-style dash chains; use scripts or tools that rewrite Russian prose or auto-edit wording (orchestration split/merge under `scripts/` is allowed in chunked mode; `disclose_foreign_names.py` only after the readable body is finished — see Foreign names).
 
 Do: copy-edit every block so it reads clearly as written Russian, not as raw transcript pasted verbatim; keep first person and speaker on every block; one output line per input line (same timestamp and speaker); restore implied subjects when written Russian needs them; fix Russian endings when context is clear (section Russian grammar).
 
@@ -121,6 +123,19 @@ python3 scripts/disclose_foreign_names.py content/episodes/NNN/NNN-readable.md
 
 The script inserts ` (English canonical)` once per foreign person per episode, immediately after the first matched Russian name span. Case mismatch is OK (`с Джастином Дрейком (Justin Drake)`). It does not change block count, timestamps, or speakers. Use `--dry-run` to preview.
 
+## Preflight (transcript gaps)
+
+Before any copy-edit, split, or overwrite of `NNN-readable.md`, run from the knowledge base root:
+
+```bash
+python3 scripts/check_transcript_gaps.py content/episodes/NNN/NNN-transcript.md
+```
+
+Episode number alone is enough: `python3 scripts/check_transcript_gaps.py NNN`.
+An inclusive range works too: `python3 scripts/check_transcript_gaps.py 200-223`.
+
+The script flags unlabeled speaker lines, duplicate start timestamps, backward time order, blocks that look too sparse for the span until the next block start, and sibling `NNN-episode.yml` `status` of `readable-reviewed` or `ready` (`episode-status`). Output `clean` and exit code 0 mean continue. Any flags or exit code 1 mean stop: report the script output in chat, and leave `NNN-readable.md` unchanged. For gap flags (`unlabeled`, `duplicate-timestamp`, `time-order`, `sparse`), leave fixing the transcript to a human pass (listen, relabel, or adjust blocks in `NNN-transcript.md` only). Exit code 2 means the transcript path or episode folder is missing.
+
 ## Workflow
 
 ### When to use chunked mode
@@ -134,31 +149,33 @@ Otherwise a single full-file pass is fine.
 
 ### Single-file mode
 
-1. Read `NNN-transcript.md` line by line (each timestamped speaker line is one block).
-2. For each block: copy-edit per Prose and Fillers above (expect visible improvement, not near-verbatim output); keep same timestamp and speaker; do not merge with adjacent blocks.
-3. Verify output block count and timestamps match input.
-4. Write `NNN-readable.md` with frontmatter copied from the transcript (`episode: NNN` only); use `.agents/dictionary.md`, `podcast-info.md`, `.agents/editing-standards.md`.
-5. Run `python3 scripts/disclose_foreign_names.py content/episodes/NNN/NNN-readable.md`.
+1. Run preflight (`check_transcript_gaps.py`); stop if not clean.
+2. Read `NNN-transcript.md` line by line (each timestamped speaker line is one block).
+3. For each block: copy-edit per Prose and Fillers above (expect visible improvement, not near-verbatim output); keep same timestamp and speaker; do not merge with adjacent blocks.
+4. Verify output block count and timestamps match input.
+5. Write `NNN-readable.md` with frontmatter copied from the transcript (`episode: NNN` only); use `.agents/dictionary.md`, `podcast-info.md`, `.agents/editing-standards.md`.
+6. Run `python3 scripts/disclose_foreign_names.py content/episodes/NNN/NNN-readable.md`.
 
 ### Chunked mode (long episodes)
 
 Orchestration only — run repo scripts from `knowledge-bases/basicblockradio/scripts/` (they do not edit Russian text):
 
-1. Split: `python3 split_transcript_chunks.py content/episodes/NNN/NNN-transcript.md`  
+1. Run preflight (`check_transcript_gaps.py`); stop if not clean.
+2. Split: `python3 split_transcript_chunks.py content/episodes/NNN/NNN-transcript.md`  
    - Default: writes `content/episodes/NNN/.chunks/chunk-001.md`, … (gitignored; safe to delete after merge).  
    - Defaults: about **15 minutes** per chunk (`--max-span-seconds 900`) and `--max-blocks 22` (whichever limit is hit first). Smaller chunks reduce quality drift on long episodes.  
    - Override only when needed, e.g. `--max-span-seconds 1200` for ~20 minutes.  
    - `--dry-run` prints JSON manifest (block counts, line ranges, timestamps, span per chunk) without writing files.
-2. For each chunk file: apply this skill’s rules to every line in that chunk only — exactly one output line per input line; same timestamps and speakers; full within-block copy-edit; no merge/split across chunk boundaries.
-3. Save each result as `content/episodes/NNN/.chunks/chunk-NNN-readable.md` (same chunk order as split).
-4. Merge:  
+3. For each chunk file: apply this skill’s rules to every line in that chunk only — exactly one output line per input line; same timestamps and speakers; full within-block copy-edit; no merge/split across chunk boundaries.
+4. Save each result as `content/episodes/NNN/.chunks/chunk-NNN-readable.md` (same chunk order as split).
+5. Merge:  
    `python3 merge_readable_chunks.py --transcript content/episodes/NNN/NNN-transcript.md --chunks-dir content/episodes/NNN/.chunks -o content/episodes/NNN/NNN-readable.md`  
    Optional: `--qc` warns on blocks where readable text is much shorter than transcript (ratio heuristic).
-5. Verify merged block count equals the transcript; spot-check timestamps monotonic.
-6. Run `python3 scripts/disclose_foreign_names.py content/episodes/NNN/NNN-readable.md`.
-7. Remove the chunk working directory after a successful merge — do not leave split/readable chunk files on disk. Delete `content/episodes/NNN/.chunks/` entirely (e.g. `rm -rf content/episodes/NNN/.chunks`). Only keep `NNN-readable.md` as the artifact for this skill.
+6. Verify merged block count equals the transcript; spot-check timestamps monotonic.
+7. Run `python3 scripts/disclose_foreign_names.py content/episodes/NNN/NNN-readable.md`.
+8. Remove the chunk working directory after a successful merge — do not leave split/readable chunk files on disk. Delete `content/episodes/NNN/.chunks/` entirely (e.g. `rm -rf content/episodes/NNN/.chunks`). Only keep `NNN-readable.md` as the artifact for this skill.
 
-For three or more chunks, parallel Task subagents (one per chunk) are reasonable; each subagent gets one chunk path and the same hard limits above (no English parentheticals in chunks). The orchestrating agent still runs merge, disclose, and step 7 cleanup.
+For three or more chunks, parallel Task subagents (one per chunk) are reasonable; each subagent gets one chunk path and the same hard limits above (no English parentheticals in chunks). The orchestrating agent still runs preflight, merge, disclose, and step 8 cleanup.
 
 Goal: reads like the podcast in clearly edited written Russian — not a summary, not a near-verbatim transcript. Structure matches the transcript file (whole file or sum of chunks).
 
@@ -186,6 +203,8 @@ Input (three blocks — boundaries unchanged):
 
 ## Usage
 
-Run on a reviewed `NNN-transcript.md` → `NNN-readable.md`; human-review the readable before show notes.
+Run on a `transcript-reviewed` `NNN-transcript.md` → `NNN-readable.md`.
+Run `check_transcript_gaps.py` first; do not start copy-edit until the report is clean.
+Do not change episode `status`. A human sets `readable-reviewed` after reviewing the readable.
 
 Do not convert SRT or build `NNN-transcript.md` in the same run unless the user explicitly asks for that work separately.

@@ -25,7 +25,14 @@ EPISODE_TOP_KEYS = frozenset(
         "url",
     }
 )
-STATUS_VALUES = frozenset({"draft", "ready"})
+STATUS_VALUES = frozenset(
+    {
+        "draft",
+        "transcript-reviewed",
+        "readable-reviewed",
+        "ready",
+    }
+)
 ARTIFACT_SUFFIXES = (
     "episode.yml",
     "shownotes.md",
@@ -324,6 +331,24 @@ class Checker:
         self.check_episode_url(yml_path, data.get("url"), status)
 
         shownotes = folder / f"{number}-shownotes.md"
+        transcript = folder / f"{number}-transcript.md"
+        readable = folder / f"{number}-readable.md"
+        if status == "transcript-reviewed" and not transcript.is_file():
+            self.error(
+                folder,
+                f"transcript required when status is transcript-reviewed ({number}-transcript.md)",
+            )
+        if status in {"readable-reviewed", "ready"}:
+            if not transcript.is_file():
+                self.error(
+                    folder,
+                    f"transcript required when status is {status} ({number}-transcript.md)",
+                )
+            if not readable.is_file():
+                self.error(
+                    folder,
+                    f"readable required when status is {status} ({number}-readable.md)",
+                )
         if status == "ready" and not shownotes.is_file():
             self.error(folder, f"shownotes required when status is ready ({number}-shownotes.md)")
         if shownotes.is_file():

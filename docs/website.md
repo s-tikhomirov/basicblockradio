@@ -1,6 +1,6 @@
 # Website product brief
 
-Last updated: 2026-07-19
+Last updated: 2026-09-02
 
 Status key: decided means build against this until explicitly changed.
 Open means safe to refine later.
@@ -54,7 +54,7 @@ Out of scope for this track (do not design here; separate projects if ever):
 Later evolution is allowed in principle (for example events or jobs, ZK-style)
 but must not shape the v1 content model.
 
-Parked product ideas that might return after launch live in `docs/IDEAS.md`.
+Parked product ideas that might return after launch live in `_tasks/tasks.md`.
 
 ## Content objects
 
@@ -68,8 +68,8 @@ Episode (primary)
 - Webpage title and headings use that string
 - Show-notes first line should match `title` (enforced by checker later)
 - Title is authored; number/guest/org are not auto-assembled into the title in v1
-- `status`: `draft` | `ready`
-  (`ready` = include in the public site build; `draft` = repo only until then)
+- `status`: `draft` | `transcript-reviewed` | `readable-reviewed` | `ready`
+  (`ready` = include in the public site build; earlier values stay in the repo)
 - No `depth` field; richness follows which files and fields exist
 
 Person (first-class records; hosts and guests share one type)
@@ -85,7 +85,7 @@ Person (first-class records; hosts and guests share one type)
 Topic
 
 - Omitted from v1
-- Add later as a controlled vocabulary and episode filters (see `docs/IDEAS.md`)
+- Add later as a controlled vocabulary and episode filters (see `_tasks/tasks.md`)
 
 Organization (company, protocol, foundation, project, …)
 
@@ -133,15 +133,16 @@ Launch without waiting for every historical episode to have full text artifacts.
 Site inclusion
 
 - Public build includes episodes with `status: ready`
-- `status: draft` stays out of the public build (optional local/preview flag may include them)
-- `ready` requires `NNN-shownotes.md` and `url` (enforced by the checker)
+- `draft`, `transcript-reviewed`, and `readable-reviewed` stay out of the public build
+  (optional local/preview flag may include them)
+- `ready` requires `NNN-readable.md`, `NNN-shownotes.md`, and `url` (enforced by the checker)
 
 Richness (no stored depth level)
 
 - Whatever files exist are what the page can show
   (show notes, transcript, readable, shorts, …)
 - Checker uses implication rules (e.g. readable implies transcript), not a level matrix
-- Catalog stubs stay `draft` until they have show notes (and `url`)
+- Catalog stubs stay `draft` until editorial review and show notes (and `url`)
 - Newer episodes add deeper artifacts over time; person cross-links work across stub and full pages
 - Prefer quiet absence of missing sections over undated «coming soon» on many pages
 
@@ -169,7 +170,7 @@ Not in v1 browse
 - Topics / tag filters
 - Organization pages (org YAML is data for guest joins only; no public org routes in v1)
 - Format rubrics as the main map
-- In-site command palette search (see `docs/IDEAS.md`)
+- In-site command palette search (see `_tasks/tasks.md`)
 
 ## Repository role
 
@@ -191,7 +192,7 @@ url: https://basicblockradio.com/e221/
 Platform-agnostic: old WordPress, the new archive site, or whatever hosts the page.
 No separate audio / YouTube / embed fields in episode YAML for v1 —
 platform listen/watch links stay in show notes (or elsewhere) when needed.
-Required when `status: ready`; optional while `draft`.
+Required when `status: ready`; optional before that.
 
 ## Sequencing
 

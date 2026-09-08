@@ -13,11 +13,12 @@ Output title, intro, timecodes, episode `Ссылки:` (from a user-supplied UR
 
 When this skill is invoked, complete only the work described here and stop.
 
-- Input: `content/episodes/NNN/NNN-readable.md` (after human review of the readable)
+- Input: `content/episodes/NNN/NNN-readable.md` after human review of the readable
+  (`NNN-episode.yml` `status: readable-reviewed`)
 - Output: `content/episodes/NNN/NNN-shownotes.md` (same numbering as `NNN-readable.md`, `NNN-transcript.md`; body structure per `content/episodes/templates/shownotes-template.md`)
 - Read: `NNN-episode.yml`, `podcast-info.md`, `.agents/dictionary.md`, active files in `content/sponsorships/`
 
-Do not: edit `NNN-readable.md`; run `scripts/`; invent episode URLs or add links the user did not supply; invent sponsor URLs or rewrite `Shownotes line` text; rewrite the readable line-by-line; translate to English.
+Do not: edit `NNN-readable.md`; run `scripts/`; invent episode URLs or add links the user did not supply; invent sponsor URLs or rewrite `Shownotes line` text; rewrite the readable line-by-line; translate to English; change episode YAML `status`.
 
 Do not continue with transcript or readable skills in the same run unless the user explicitly asks.
 

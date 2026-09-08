@@ -97,7 +97,8 @@ New transcript file `content/episodes/NNN/NNN-transcript.md` containing:
 
 - Frontmatter: only `episode: NNN` (see `content/episodes/templates/transcript-template.md`)
 - Also create or update `content/episodes/NNN/NNN-episode.yml` for identity (see `docs/content-model.md` and `content/episodes/templates/episode-template.yml`):
-  - `episode`, `title` when known, `status: draft` until show notes are ready
+  - `episode`, `title` when known, `status: draft`
+    (do not advance `status`; a human sets `transcript-reviewed` after reviewing this file)
   - `hosts` / `guests` as slugs under `content/people/` (create person stubs if new; do not invent slugs without confirming)
   - `recording_date`: exact date from user prompt, pre-flight metadata, or an explicit episode-level entry in `podcast-info.md` for this episode; if none of those apply, use `unknown`
 - Transcript content only — no chapter headers, no summarization
@@ -267,6 +268,7 @@ If a word might be filler or might carry meaning (e.g. «наверное», «�
 - DO NOT add `(English Name)` parentheticals for foreign persons (readable disclosure pass only)
 - DO NOT invent or guess `recording_date`
 - DO NOT derive `recording_date` from SRT headers or cue text, raw or mix filenames, export paths, git history, file modification times, or any other file or path metadata
+- DO NOT advance `NNN-episode.yml` `status` past `draft`
 - DO set `recording_date` to `unknown` when no explicit user or coordinator value and no explicit episode-level date for this episode in `podcast-info.md`
 - DO NOT use bold formatting for timestamps or speaker names
 - DO change only what is necessary for accuracy, structure rules above, and filler removal
@@ -434,6 +436,12 @@ When the transcript is in Russian, write units of data size in Russian, with cor
 ### use case (mandatory in Russian speech)
 
 Write `юз-кейс`, `юз-кейса`, `юз-кейсы`, `юз-кейсов` (hyphenated) instead of English `use case` / `use cases` / `use-case` in Russian transcript lines; inflect for grammar.
+
+### Geographic names (mandatory in Russian speech)
+
+When the transcript is in Russian, write names of countries, cities, and regions in Russian, with grammar matching the sentence (`Таиланд`, `во Вьетнаме`, `Сингапур`, `Гонконг`, `на Филиппинах`, `Лондон`, `Европа`). Whisper often emits the English form; replace the place-name token and keep the rest of the sentence.
+
+Letter-name exceptions: when the speaker pronounces `US` as «ю-эс» or `UK` as «ю-кей», write `US` and `UK`. When they say «США», «Америка», «Великобритания», or «Англия», write that Russian form.
 
 ## Sponsor read segments
 
