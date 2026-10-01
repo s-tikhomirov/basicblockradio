@@ -37,9 +37,13 @@ ARTIFACT_SUFFIXES = (
     "episode.yml",
     "shownotes.md",
     "transcript.md",
+    "transcript-no-timestamps.md",
+    "timestamps-source.md",
     "readable.md",
     "shorts.md",
     "raw.srt",
+    "raw-undiaried.srt",
+    "raw-diarized.txt",
 )
 EXTRA_EPISODE_FILES = frozenset({"STRUCTURE.md", "README.md"})
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
