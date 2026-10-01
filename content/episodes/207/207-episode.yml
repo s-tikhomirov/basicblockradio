@@ -4,8 +4,10 @@ status: ready
 
 recording_date: unknown
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
 
-guests: []
+guests:
+  - slug: kirill-pimenov
 
 url: https://basicblockradio.com/e207/

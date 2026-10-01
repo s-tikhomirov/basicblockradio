@@ -15,7 +15,7 @@ import yaml
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 EPISODE_NUMBERS = (221, 220, 219, 200)
-PAGE_SIZE = 2
+PAGE_SIZE = 8
 
 # Site chrome (bake-off). Internal targets use site paths; externals are absolute.
 # Labels follow the live menu, plus Гости; order as agreed for the new archive.

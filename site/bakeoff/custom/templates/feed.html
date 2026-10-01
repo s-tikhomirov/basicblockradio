@@ -15,9 +15,8 @@
       <div class="title"><a href="{{ rel('e' ~ ep.number) }}">{{ ep.title }}</a></div>
       <div class="meta">
         {% if ep.publish_date %}{{ ep.publish_date }} · {% elif ep.recording_date and ep.recording_date != 'unknown' %}{{ ep.recording_date }} · {% endif %}
-        {% for p in ep.people %}
-          <a href="{{ rel('people/' ~ p.slug) }}">{{ p.name }}</a>{% if not loop.last %}, {% endif %}
-        {% endfor %}
+        {% if ep.guests %}{{ 'Гость' if ep.guests|length == 1 else 'Гости' }}: {% for p in ep.guests %}<a href="{{ rel('people/' ~ p.slug) }}">{{ p.name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}{% if ep.hosts %} · {% endif %}{% endif %}
+        {% if ep.hosts %}{{ 'Ведущий' if ep.hosts|length == 1 else 'Ведущие' }}: {% for p in ep.hosts %}<a href="{{ rel('people/' ~ p.slug) }}">{{ p.name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}
       </div>
     </li>
     {% endfor %}
@@ -32,7 +31,7 @@
       {% endif %}
     {% endif %}
     {% if next_page is not none %}
-    <a href="{{ rel('page/' ~ next_page) }}">Старее →</a>
+    <a href="{{ rel('page/' ~ next_page) }}">Раньше →</a>
     {% endif %}
   </nav>
 {% endblock %}

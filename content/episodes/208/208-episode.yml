@@ -4,8 +4,10 @@ status: ready
 
 recording_date: 2025-08-22
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
 
-guests: []
+guests:
+  - slug: kirill-pimenov
 
 url: https://basicblockradio.com/e208/
