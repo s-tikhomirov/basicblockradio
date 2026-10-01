@@ -10,3 +10,5 @@ hosts:
 guests:
   - slug: mitya-goroshevsky
     organization: gosh
+
+url: https://basicblockradio.com/e212/
