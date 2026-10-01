@@ -236,6 +236,41 @@ small supply-chain surface, local preview, glue vs batteries.
 
 Episode artwork stays outside the site build (see below).
 
+## v0.1 (2026-10-01)
+
+First running version: Zola build over all 24 `ready` episodes (200–223),
+previewed locally. Implemented beyond the July fixture:
+
+- Full catalog, 8 episodes per feed page, pager «Позже» / «Раньше»
+- Feed rows label `Гость:` then `Ведущий:` (singular/plural from count)
+- Guests page lists episode titles; sort switch by first vs last name
+  (two pre-rendered pages, no JavaScript)
+- Episode players: Libsyn audio for all 24 (IDs mined from the Libsyn RSS),
+  YouTube for all 24 via `youtube_url` in episode YAML
+  (IDs matched against the channel RSS and title search;
+  embeds use `youtube-nocookie.com`)
+- AI transcript disclaimer on episode pages
+- Static pages copied verbatim from basicblockradio.com
+  (about, donate, for-sponsors)
+- Site RSS (`/rss.xml`, enclosures with byte sizes), sitemap, robots.txt,
+  kept `404.html`
+- Meta descriptions and Open Graph tags (per-episode excerpts)
+- Backfilled RSS publication dates into episodes lacking any date
+
+Implementation notes for future agents
+
+- Build entrypoint: `site/bakeoff/zola/adapt.py --out <dir>`;
+  preview with `python3 -m http.server --directory <dir>`.
+- The adapter hardcodes feed-derived maps (`_LIBYSN_IDS`, `_AUDIO`,
+  `_PUBDATES`); refresh them from the Libsyn RSS if episodes are added.
+- `youtube_url` in episode YAML is the home for video links;
+  the adapter derives the embed URL. Never guess IDs, match channel titles.
+- Static page sources live in `site/bakeoff/zola/pages/`
+  (verbatim WP copies plus `#` title headers the adapter reads).
+- Only `site/bakeoff/custom/` is versioned history;
+  the Zola tree is gitignored working state pending promotion
+  to a production location.
+
 ## Open for Phase B
 
 - Content-side compose helper for repeatable show-notes blocks (optional)

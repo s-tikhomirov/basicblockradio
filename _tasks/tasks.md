@@ -7,9 +7,6 @@
 - Website search (Ctrl+K): after the public archive launches,
   an in-site command palette to search episodes, people, and later topics.
   Build-time index over repo content is enough.
-- RSS: after the archive site exists,
-  generate a podcast RSS feed from repo content
-  (episode metadata + enclosure URLs).
 - Privacy-preserving metrics (only if ever needed):
   server log aggregates or a self-hosted, cookieless counter.
   Default remains no metrics (see `docs/website.md`).
@@ -44,6 +41,8 @@
 
 ## Done
 
+- RSS: podcast RSS feed generated from repo content
+  (`/rss.xml` in the Zola build; metadata + enclosure URLs).
 - Episode file naming and title canon:
   enforced by `scripts/check_content.py`
   (see `docs/content-model.md`).

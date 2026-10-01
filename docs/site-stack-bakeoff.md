@@ -1,6 +1,13 @@
-# Site stack bake-off
+# Site stack bake-off (concluded 2026-10-01: Zola selected)
 
-Last updated: 2026-07-19
+Last updated: 2026-10-01
+
+> Concluded. Zola + thin Python adapter was selected
+> (decision in `docs/website.md`); Hugo, Pelican, and custom were retired
+> and their trees removed, leaving `site/bakeoff/zola/` only.
+> Below is the July fixture recipe, kept as a historical record.
+> It describes 4 episodes, page size 2, and «Новее»/«Старее» labels;
+> v0.1 (see `docs/website.md`) builds 24 episodes with evolved chrome.
 
 Living recipe for choosing the static site generator for the public archive.
 Product contract: `docs/website.md`.

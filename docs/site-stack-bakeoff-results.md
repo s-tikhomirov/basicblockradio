@@ -1,6 +1,10 @@
 # Site stack bake-off results
 
-Last updated: 2026-07-19
+Last updated: 2026-10-01
+
+> Concluded 2026-10-01: Zola selected (see `docs/website.md` for rationale).
+> Hugo, Pelican, and custom retired as candidates.
+> Measurements below describe the July four-episode fixture.
 
 Outcome of the four-stack spike against the recipe in `docs/site-stack-bakeoff.md`.
 This records process metrics and parity checks.

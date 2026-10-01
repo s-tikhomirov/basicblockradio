@@ -46,8 +46,10 @@ One-line pointers only — invoke the matching `SKILL.md` for scope, inputs, and
 
 ## In repo today
 
-- Show notes on disk: 220, 221.
-- Latest full pass (transcript, readable, shownotes, shorts): 221.
-- `NNN-shorts.md` present for 200, 211, 219, 220, 221 (older files may predate current `Диапазон в выпуске` rules; regenerate or fix when re-editing clips).
+- Episodes 200–223: all `status: ready` with transcript, readable,
+  shownotes, `url`, `youtube_url`, and publication dates.
+- `NNN-shorts.md` present for 200, 211, 219, 220, 221, 223 (older files may predate current `Диапазон в выпуске` rules; regenerate or fix when re-editing clips).
+- Website v0.1: Zola build over the full catalog (see `docs/website.md`).
+  Other bake-off stacks retired; only `site/bakeoff/zola/` remains.
 
 Open and parked work lives in `_tasks/tasks.md`.
