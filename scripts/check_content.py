@@ -23,6 +23,7 @@ EPISODE_TOP_KEYS = frozenset(
         "hosts",
         "guests",
         "url",
+        "youtube_url",
     }
 )
 STATUS_VALUES = frozenset(
@@ -333,6 +334,7 @@ class Checker:
         self.check_appearances(yml_path, data.get("hosts"), "hosts", people_slugs, org_slugs, False)
         self.check_appearances(yml_path, data.get("guests"), "guests", people_slugs, org_slugs, True)
         self.check_episode_url(yml_path, data.get("url"), status)
+        self.check_optional_url(yml_path, data.get("youtube_url"), "youtube_url")
 
         shownotes = folder / f"{number}-shownotes.md"
         transcript = folder / f"{number}-transcript.md"
@@ -417,6 +419,12 @@ class Checker:
             return
         if not isinstance(value, str) or not URL_RE.match(value):
             self.error(path, "url must be an http(s) URL")
+
+    def check_optional_url(self, path: Path, value: Any, field: str) -> None:
+        if value is None or value == "":
+            return
+        if not isinstance(value, str) or not URL_RE.match(value):
+            self.error(path, f"{field} must be an http(s) URL")
 
     def check_speech_file(self, path: Path, number: int, kind: str) -> None:
         text = path.read_text(encoding="utf-8")

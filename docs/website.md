@@ -190,8 +190,9 @@ url: https://basicblockradio.com/e221/
 ```
 
 Platform-agnostic: old WordPress, the new archive site, or whatever hosts the page.
-No separate audio / YouTube / embed fields in episode YAML for v1 —
-platform listen/watch links stay in show notes (or elsewhere) when needed.
+Optional `youtube_url` holds the episode's YouTube watch URL; the site build
+derives the player embed from it. Other platform listen links stay in show
+notes when needed.
 Required when `status: ready`; optional before that.
 
 ## Sequencing

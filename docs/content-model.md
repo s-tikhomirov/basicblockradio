@@ -93,7 +93,8 @@ guests:
 url: https://basicblockradio.com/e221/   # canonical episode webpage
 ```
 
-`url` is the only publication link in episode YAML (see `docs/website.md`).
+`url` is the canonical episode webpage in episode YAML (see `docs/website.md`).
+Optional `youtube_url` holds the episode's YouTube watch URL.
 When `status: ready`: `url`, `NNN-readable.md`, and `NNN-shownotes.md` are required.
 `transcript-reviewed` requires `NNN-transcript.md`.
 `readable-reviewed` requires transcript and readable.
@@ -133,6 +134,7 @@ Run from repo root: `python3 scripts/check_content.py`
 - `title` starts with `ББ-{N}:`
 - Appearance slugs resolve under `people/` / `organizations/`
 - `url` is an http(s) page URL; required when `status: ready`
+- `youtube_url`, when present, is an http(s) URL
 - `NNN-shownotes.md` and `NNN-readable.md` required when `status: ready`
 - `NNN-transcript.md` required when `status` is `transcript-reviewed` or later
 - Implication rules (e.g. readable implies transcript)
