@@ -1,7 +1,9 @@
-# Site stack bake-off
+# Site stack bake-off (concluded 2026-10-01: Zola selected)
 
 Isolated experiment trees for comparing static site generators.
 Recipe: `docs/site-stack-bakeoff.md`.
+Decision recorded in `docs/website.md`. Only the `zola/` tree remains;
+`hugo/`, `pelican/`, and `custom/` were retired as candidates.
 
 Tools and build output stay gitignored under this directory
 (`.venv/`, `.tools/`, `**/public/`, `**/.build/`).

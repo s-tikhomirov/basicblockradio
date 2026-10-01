@@ -205,25 +205,30 @@ Migration of the historical catalog, redirects, and import tooling come later â€
 after the new siteâ€™s look and content contracts feel settled.
 Do not let WP import details drive v1 schema or MVP scope.
 
-## Site stack (open)
+## Site stack (decided 2026-10-01: Zola + thin Python adapter)
 
-Not chosen yet. Bake-off recipe and shortlist: `docs/site-stack-bakeoff.md`.
-Work tree: `site/bakeoff/` (keep until explicitly removed).
+Selected: Zola with a thin Python adapter that projects `content/` into a
+gitignored staging tree, then runs the pinned Zola binary.
+Work tree: `site/bakeoff/zola/` until promoted to the production location.
 
-Shortlist for the bake-off:
+Why Zola: all four bakeoff stacks reached full URL-map and visual parity
+(`docs/site-stack-bakeoff-results.md`), so the choice came down to maintenance
+burden. Zola's Tera templates mirror the reference implementation almost line
+for line, its nested sections needed no config workarounds, and its slow
+upstream cadence suits a build touched a few times a year. No strong reason
+against it surfaced while building the full 24-episode catalog with it.
 
-1. Hugo + thin Python adapter (gitignored staging)
-2. Zola + thin Python adapter
-3. Pelican + custom reader
-4. Custom Python + Jinja
+Retired as candidates: Hugo, Pelican, and custom Python + Jinja
+(their bakeoff trees are removed; custom remains in git history only).
+Full-site iteration continues on the Zola tree.
 
-Bake-off contract
+Bake-off record (concluded)
 
 Full site structure (routes, chrome, page shapes, listen sidebar, static pages)
-is defined only in `docs/site-stack-bakeoff.md`.
-All four stacks under `site/bakeoff/` must follow that recipe;
-`site/bakeoff/custom/` is the reference build.
-Scoring: decide after seeing the four previews.
+is defined in `docs/site-stack-bakeoff.md`.
+The four-stack spike and its scoring are recorded in
+`docs/site-stack-bakeoff-results.md`; the recipe stays as the build contract
+for the Zola implementation.
 
 Decision criteria (unchanged): content-layout fit, static/privacy, OSS/non-commercial,
 small supply-chain surface, local preview, glue vs batteries.
