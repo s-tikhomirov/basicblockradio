@@ -366,13 +366,20 @@ def build(root: Path, out: Path) -> None:
         html = render("person.html", page_dir, person=person)
         write_page(out / "people" / person.slug / "index.html", html)
 
-    guests = [
+    guests_by_first = [
         p
         for p in sorted(people.values(), key=lambda x: x.name)
         if any(ep.get("role") == "гость" for ep in p.episodes)
     ]
-    html = render("guests.html", "guests", guests=guests)
+    guests_by_last = sorted(
+        guests_by_first, key=lambda x: x.name.split()[-1]
+    )
+    html = render("guests.html", "guests", guests=guests_by_first, sort_mode="first")
     write_page(out / "guests" / "index.html", html)
+    html = render(
+        "guests.html", "guests/by-last-name", guests=guests_by_last, sort_mode="last"
+    )
+    write_page(out / "guests" / "by-last-name" / "index.html", html)
 
     for page_dir, filename in STATIC_PAGES:
         page_title, page_html = load_static_page(pages_dir, filename)

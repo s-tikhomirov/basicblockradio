@@ -25,9 +25,9 @@
   <nav class="pager">
     {% if prev_page is not none %}
       {% if prev_page == 1 %}
-      <a href="{{ rel('') }}">← Новее</a>
+      <a href="{{ rel('') }}">← Позже</a>
       {% else %}
-      <a href="{{ rel('page/' ~ prev_page) }}">← Новее</a>
+      <a href="{{ rel('page/' ~ prev_page) }}">← Позже</a>
       {% endif %}
     {% endif %}
     {% if next_page is not none %}
