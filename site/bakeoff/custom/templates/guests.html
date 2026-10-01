@@ -8,7 +8,7 @@
       <div class="title"><a href="{{ rel('people/' ~ person.slug) }}">{{ person.name }}</a></div>
       <div class="meta">
         {% for ep in person.episodes if ep.role == 'гость' %}
-          <a href="{{ rel('e' ~ ep.number) }}">ББ-{{ ep.number }}</a>{% if not loop.last %}, {% endif %}
+          <a href="{{ rel('e' ~ ep.number) }}">{{ ep.title }}</a>{% if not loop.last %}, {% endif %}
         {% endfor %}
       </div>
     </li>
