@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}{{ section.title }} — Базовый Блок{% endblock %}
+{% block body %}
+  <article class="shownotes page">
+    {% set html = load_data(path="data/pages/" ~ section.extra.html_file) %}
+    {{ html | safe }}
+  </article>
+{% endblock %}

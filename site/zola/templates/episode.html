@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block title %}{{ page.title }}{% endblock %}
+{% block meta %}
+  <meta name="description" content="{{ page.extra.description }}">
+  <meta property="og:title" content="{{ page.title }}">
+  <meta property="og:description" content="{{ page.extra.description }}">
+  <meta property="og:type" content="article">
+{% endblock %}
+{% block body %}
+  <nav class="trail"><a href="{{ m::href(depth=depth, target='') }}">← Выпуски</a></nav>
+
+  <div class="credits">
+    {% if page.extra.guests %}
+    <p>
+      {% if page.extra.guests | length == 1 %}Гость:{% else %}Гости:{% endif %}
+      {% for p in page.extra.guests %}
+        <a href="{{ m::href(depth=depth, target='people/' ~ p.slug) }}">{{ p.name }}</a>{% if not loop.last %},{% endif %}
+      {% endfor %}
+    </p>
+    {% endif %}
+    {% if page.extra.hosts %}
+    <p>
+      {% if page.extra.hosts | length == 1 %}Ведущий:{% else %}Ведущие:{% endif %}
+      {% for p in page.extra.hosts %}
+        <a href="{{ m::href(depth=depth, target='people/' ~ p.slug) }}">{{ p.name }}</a>{% if not loop.last %},{% endif %}
+      {% endfor %}
+    </p>
+    {% endif %}
+  </div>
+
+  {% if page.extra.youtube_embed or page.extra.libsyn_embed %}
+  <section class="embeds" aria-label="Слушать и смотреть">
+    {% if page.extra.youtube_embed %}
+    <div class="embed embed-youtube">
+      <iframe
+        src="{{ page.extra.youtube_embed | safe }}"
+        title="YouTube"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+        loading="lazy"></iframe>
+    </div>
+    {% endif %}
+    {% if page.extra.libsyn_embed %}
+    <div class="embed embed-libsyn">
+      <iframe
+        src="{{ page.extra.libsyn_embed | safe }}"
+        title="Аудио (Libsyn)"
+        loading="lazy"></iframe>
+    </div>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  <article class="shownotes">
+    {% set shownotes = load_data(path="data/episodes/e" ~ page.extra.number ~ "-shownotes.html") %}
+    {{ shownotes | safe }}
+  </article>
+
+  {% set readable_path = "data/episodes/e" ~ page.extra.number ~ "-readable.html" %}
+  {% set readable = load_data(path=readable_path, required=false) %}
+  {% if readable %}
+  <details class="transcript">
+    <summary>Полная расшифровка</summary>
+    <p class="ai-disclaimer">Расшифровка создана автоматически и отредактирована с помощью ИИ для удобства чтения, поэтому возможны ошибки.</p>
+    <div class="readable">
+      {{ readable | safe }}
+    </div>
+  </details>
+  {% endif %}
+{% endblock %}

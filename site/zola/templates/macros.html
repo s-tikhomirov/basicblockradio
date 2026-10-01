@@ -1,0 +1,19 @@
+{% macro href(depth, target) -%}
+{%- if depth == 2 -%}{%- set p = "../../" -%}
+{%- elif depth == 1 -%}{%- set p = "../" -%}
+{%- else -%}{%- set p = "" -%}
+{%- endif -%}
+{%- if target == "" -%}
+{%- set out = p ~ "index.html" -%}
+{{ out | safe }}
+{%- else -%}
+{%- set name = target | split(pat="/") | last -%}
+{%- if name is containing(".") -%}
+{%- set out = p ~ target -%}
+{{ out | safe }}
+{%- else -%}
+{%- set out = p ~ target ~ "/index.html" -%}
+{{ out | safe }}
+{%- endif -%}
+{%- endif -%}
+{%- endmacro %}

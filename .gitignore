@@ -1,9 +1,8 @@
 __pycache__/
 *.py[cod]
 
-# Site stack bake-off (isolated tools and build output)
-site/bakeoff/.venv/
-site/bakeoff/.tools/
-site/bakeoff/**/public/
-site/bakeoff/**/.build/
-site/
+# Site build inputs that stay local: tool binary, venv, staging, output
+site/.venv/
+site/.tools/
+site/zola/.build/
+site/zola/public/

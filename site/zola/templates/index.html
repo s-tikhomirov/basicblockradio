@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block title -%}
+{%- if paginator.current_index == 1 -%}Базовый Блок{%- else -%}Базовый Блок — страница {{ paginator.current_index }}{%- endif -%}
+{%- endblock %}
+{% block body %}
+  {% if paginator.current_index > 1 %}
+  <nav class="trail"><a href="{{ m::href(depth=depth, target='') }}">← К началу</a></nav>
+  {% endif %}
+
+  <h2>{% if paginator.current_index == 1 %}Выпуски{% else %}Выпуски — страница {{ paginator.current_index }}{% endif %}</h2>
+
+  {% if paginator.current_index == 1 %}
+  <p class="lede">«Базовый Блок» — русскоязычный подкаст о блокчейн-технологиях: длинные интервью с разработчиками, основателями и исследователями. Здесь — архив выпусков с полными текстами и расшифровками.</p>
+  {% endif %}
+
+  <ul class="episode-list">
+    {% for page in paginator.pages %}
+    <li>
+      <div class="title"><a href="{{ m::href(depth=depth, target='e' ~ page.extra.number) }}">{{ page.title }}</a></div>
+      <div class="meta">
+        {% if page.extra.display_date %}{{ page.extra.display_date }} · {% endif %}
+        {% if page.extra.guests %}{% if page.extra.guests | length == 1 %}Гость{% else %}Гости{% endif %}: {% for p in page.extra.guests %}<a href="{{ m::href(depth=depth, target='people/' ~ p.slug) }}">{{ p.name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}{% if page.extra.hosts %} · {% endif %}{% endif %}
+        {% if page.extra.hosts %}{% if page.extra.hosts | length == 1 %}Ведущий{% else %}Ведущие{% endif %}: {% for p in page.extra.hosts %}<a href="{{ m::href(depth=depth, target='people/' ~ p.slug) }}">{{ p.name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <nav class="pager">
+    {% if paginator.current_index > 1 %}
+      {% if paginator.current_index == 2 %}
+      <a href="{{ m::href(depth=depth, target='') }}">← Позже</a>
+      {% else %}
+      {% set prev = paginator.current_index - 1 %}
+      <a href="{{ m::href(depth=depth, target='page/' ~ prev) }}">← Позже</a>
+      {% endif %}
+    {% endif %}
+    {% if paginator.current_index < paginator.number_pagers %}
+    {% set next = paginator.current_index + 1 %}
+    <a href="{{ m::href(depth=depth, target='page/' ~ next) }}">Раньше →</a>
+    {% endif %}
+  </nav>
+{% endblock %}

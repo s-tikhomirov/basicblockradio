@@ -210,7 +210,7 @@ Do not let WP import details drive v1 schema or MVP scope.
 
 Selected: Zola with a thin Python adapter that projects `content/` into a
 gitignored staging tree, then runs the pinned Zola binary.
-Work tree: `site/bakeoff/zola/` until promoted to the production location.
+Work tree: `site/zola/`.
 
 Why Zola: all four bakeoff stacks reached full URL-map and visual parity
 (`docs/site-stack-bakeoff-results.md`), so the choice came down to maintenance
@@ -259,17 +259,16 @@ previewed locally. Implemented beyond the July fixture:
 
 Implementation notes for future agents
 
-- Build entrypoint: `site/bakeoff/zola/adapt.py --out <dir>`;
+- Build entrypoint: `site/zola/adapt.py --out <dir>`;
   preview with `python3 -m http.server --directory <dir>`.
 - The adapter hardcodes feed-derived maps (`_LIBYSN_IDS`, `_AUDIO`,
   `_PUBDATES`); refresh them from the Libsyn RSS if episodes are added.
 - `youtube_url` in episode YAML is the home for video links;
   the adapter derives the embed URL. Never guess IDs, match channel titles.
-- Static page sources live in `site/bakeoff/zola/pages/`
+- Static page sources live in `site/zola/pages/`
   (verbatim WP copies plus `#` title headers the adapter reads).
-- Only `site/bakeoff/custom/` is versioned history;
-  the Zola tree is gitignored working state pending promotion
-  to a production location.
+- Only `site/zola/` is versioned;
+  tool binary, venv, staging, and output stay gitignored.
 
 ## Open for Phase B
 

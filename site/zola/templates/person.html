@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block title %}{{ page.title }} — Базовый Блок{% endblock %}
+{% block body %}
+  <nav class="trail"><a href="{{ m::href(depth=depth, target='') }}">← Выпуски</a></nav>
+
+  <h2>{{ page.title }}</h2>
+
+  {% if page.extra.links %}
+  <ul class="people">
+    {% for key, url in page.extra.links %}
+    <li><a href="{{ url | safe }}">{{ key }}</a></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <h3>Выпуски</h3>
+  <ul class="episode-list">
+    {% for ep in page.extra.episodes %}
+    <li>
+      <div class="title"><a href="{{ m::href(depth=depth, target='e' ~ ep.number) }}">{{ ep.title }}</a></div>
+      <div class="meta">{{ ep.role }}</div>
+    </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
