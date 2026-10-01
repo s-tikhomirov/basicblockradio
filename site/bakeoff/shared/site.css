@@ -52,6 +52,11 @@ a:visited {
   color: #551a8b;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 .wrap {
   max-width: 58rem;
   margin: 0 auto;
