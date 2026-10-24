@@ -265,6 +265,55 @@
       "given": "Рафаэль",
       "family": "Ауэр",
       "family_indeclinable": false
+    },
+    {
+      "id": "allen_farrington",
+      "english": "Allen Farrington",
+      "given": "Аллен",
+      "family": "Фаррингтон",
+      "family_indeclinable": false
+    },
+    {
+      "id": "rene_pickhardt",
+      "english": "Rene Pickhardt",
+      "given": "Рене",
+      "family": "Пикхардт",
+      "family_indeclinable": false
+    },
+    {
+      "id": "david_chaum",
+      "english": "David Chaum",
+      "given": "Дэвид",
+      "family": "Чом",
+      "family_indeclinable": false
+    },
+    {
+      "id": "satoshi_nakamoto",
+      "english": "Satoshi Nakamoto",
+      "given": "Сатоши",
+      "family": "Накамото",
+      "family_indeclinable": true
+    },
+    {
+      "id": "jack_dorsey",
+      "english": "Jack Dorsey",
+      "given": "Джек",
+      "family": "Дорси",
+      "family_indeclinable": true
+    },
+    {
+      "id": "elias_rohrer",
+      "english": "Elias Rohrer",
+      "given": "Элиас",
+      "family": "Рорер",
+      "family_indeclinable": false
+    },
+    {
+      "id": "pim_keer",
+      "english": "Pim Keer",
+      "given": "Пим",
+      "family": "Кер",
+      "family_indeclinable": false
     }
   ]
 }

@@ -1,6 +1,47 @@
 __pycache__/
 *.py[cod]
 
+# Local episode audio
+*.wav
+*.wave
+*.mp3
+*.flac
+*.ogg
+*.oga
+*.opus
+*.m4a
+*.m4b
+*.aac
+*.aiff
+*.aif
+*.wma
+*.alac
+*.ape
+*.wv
+*.mp2
+*.caf
+*.au
+*.snd
+*.pcm
+*.dsd
+*.dff
+*.dsf
+*.ac3
+*.amr
+*.mka
+*.aa
+*.aax
+*.m4p
+*.spx
+*.tta
+*.shn
+*.tak
+*.mpc
+*.gsm
+*.vox
+*.ra
+*.ram
+
 # Site build inputs that stay local: tool binary, venv, staging, output
 site/.venv/
 site/.tools/
