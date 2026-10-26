@@ -242,13 +242,14 @@ def project_articles(
                 "extra": {"html_file": html_name},
             },
         )
-        images = folder / "images"
-        if not images.is_dir():
-            continue
-        for img in images.iterdir():
-            if img.suffix == ".txt" or not img.is_file():
+        for kind in ("images", "files"):
+            folder_files = folder / kind
+            if not folder_files.is_dir():
                 continue
-            copies.append((img, f"articles/{folder.name}/images/{img.name}"))
+            for item in folder_files.iterdir():
+                if item.suffix == ".txt" or not item.is_file():
+                    continue
+                copies.append((item, f"articles/{folder.name}/{kind}/{item.name}"))
     return copies
 
 

@@ -4,7 +4,7 @@
 
 <figure class="wp-block-image"><img src="images/01.png" alt=""/></figure>
 
-<p><a href="https://docsend.com/view/ijd8qrs﻿">Оригинал</a> || <a href="https://basicblockradio.com/wp-content/uploads/Bitcoin-Reformation.pdf">Скачать PDF</a> || <a href="https://basicblockradio.com/wp-content/uploads/Bitcoin-Reformation.epub">Скачать EPUB</a>|| <a href="../../e104/index.html">Аудио-версия</a></p>
+<p><a href="https://docsend.com/view/ijd8qrs﻿">Оригинал</a> || <a href="files/Bitcoin-Reformation.pdf">Скачать PDF</a> || <a href="files/Bitcoin-Reformation.epub">Скачать EPUB</a>|| <a href="../../e104/index.html">Аудио-версия</a></p>
 
 <p>Перевели и редактировали Олег Андреев, <a href="https://twitter.com/TonyCrusoe">Tony B</a> (<a href="https://bitcoin-translated.ru/">Bitcoin Translated</a>), Валерия Важнова, <a href="https://twitter.com/dizhel">Дима Железов</a>, <a href="https://twitter.com/IvanitskiyIvan">Иван Иваницкий</a>, Александр Селезнев, <a href="https://s-tikhomirov.github.io/about/">Сергей Тихомиров</a> (подкаст <a href="../../index.html">«Базовый Блок»</a>).</p>
 

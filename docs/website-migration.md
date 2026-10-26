@@ -131,8 +131,11 @@ They are not in the menu.
 - `stallman.mp4`, 229 MB
 - `stallman_hq.mp4`, 2.1 GB
 
+The bonus page keeps those WordPress addresses for now.
 These files stay out of git.
-Before WordPress stops serving uploads, copy them once onto the public host
+
+Moving them off WordPress is a later step, before WordPress stops serving uploads.
+Copy them once onto the public host
 at `/files/bb-bonus-rms/stallman.mp4` and `/files/bb-bonus-rms/stallman_hq.mp4`.
 The bonus page then links to those paths.
 
@@ -154,27 +157,22 @@ The old root addresses redirect there.
 Images live in each article's `images/` folder,
 numbered in the order they appear.
 `images/sources.txt` records the filename, the caption, and the address the file was saved from.
+The Bitcoin Reformation PDF and EPUB live in
+`content/articles/bitcoin-reformation/files/`.
 
 ## Color
 
 Settled 2026-10-26.
 The site keeps its current fonts and its current colors.
 
-## Open
-
-The Bitcoin Reformation post also offers a PDF (2.5 MB) and an EPUB (17 MB)
-from `wp-content`.
-The open choice is whether both files are saved
-under `content/articles/bitcoin-reformation/files/`.
-They are small enough to live in git next to that article.
-
 ## Cutover
 
 1. Import episodes before 200 in the separate later task.
 2. The articles section is already in the build,
    including redirects from the old root addresses.
-3. Copy `stallman.mp4` and `stallman_hq.mp4` to `/files/bb-bonus-rms/`
-   and point the bonus page at those paths.
+3. The bonus page still links to the WordPress copies of
+   `stallman.mp4` and `stallman_hq.mp4`.
+   Moving those files is a later step, before WordPress stops serving uploads.
 4. Build the static site and serve it at basicblockradio.com.
 5. Retire WordPress as the public host.
    The build already includes the address redirects, the soon pages, and the 404.

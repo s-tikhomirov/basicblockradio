@@ -123,6 +123,7 @@ Organization records exist for joins; public org pages are not in v1 browse.
 `content/articles/<slug>/article.md` is one article.
 Files in `images/` are numbered in the order they appear in the article.
 `images/sources.txt` records each filename, its caption, and the address the file was saved from.
+Downloads that belong to an article live in `files/` next to `article.md`.
 The public paths are `/articles/` and `/articles/<slug>/`.
 
 ## Show notes and the site
