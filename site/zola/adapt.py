@@ -459,6 +459,20 @@ def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[P
             },
         )
 
+    write_md(
+        content_out / "all-episodes" / "_index.md",
+        {
+            "title": "Все выпуски",
+            "template": "all-episodes.html",
+            "extra": {
+                "episodes": [
+                    {"slug": ep["slug"], "title": ep["title"]}
+                    for ep in episodes_meta
+                ],
+            },
+        },
+    )
+
     guests_list = [
         {
             "slug": p["slug"],
@@ -467,6 +481,11 @@ def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[P
                 {"number": e["number"], "slug": e["slug"], "title": e["title"]}
                 for e in p["episodes"]
                 if e["role"] == "гость"
+            ],
+            "host_episodes": [
+                {"number": e["number"], "slug": e["slug"], "title": e["title"]}
+                for e in p["episodes"]
+                if e["role"] == "ведущий"
             ],
         }
         for p in sorted(people.values(), key=lambda x: x["name"])
@@ -641,7 +660,6 @@ def write_robots(out: Path) -> None:
 # Old WordPress paths that point at an episode already in this build.
 REDIRECTS: tuple[tuple[str, str, str], ...] = (
     ("for-sponsors-and-advertisers", "for-sponsors/index.html", "/for-sponsors/"),
-    ("all-episodes", "index.html", "/"),
     ("ep212", "e212/index.html", "/e212/"),
     ("ep099", "e099/index.html", "/e099/"),
     ("https-basicblockradio-com-e214", "e214/index.html", "/e214/"),

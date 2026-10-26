@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block title %}Все выпуски — Базовый Блок{% endblock %}
+{% block body %}
+  <h2>Все выпуски</h2>
+  <ul class="catalog">
+    {% for ep in section.extra.episodes %}
+    <li><a href="{{ m::href(depth=depth, target=ep.slug) }}">{{ ep.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}

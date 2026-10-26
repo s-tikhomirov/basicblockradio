@@ -4,15 +4,25 @@
 {% block body %}
   <h2>Гости</h2>
   <p class="sort-switch">Порядок: {% if section.extra.sort_mode == 'first' %}По имени · <a href="{{ m::href(depth=depth, target='guests/by-last-name') }}">По фамилии</a>{% else %}<a href="{{ m::href(depth=depth, target='guests') }}">По имени</a> · По фамилии{% endif %}</p>
-  <ul class="episode-list">
+  <ul class="people-list">
     {% for person in section.extra.guests %}
     <li>
       <div class="title"><a href="{{ m::href(depth=depth, target='people/' ~ person.slug) }}">{{ person.name }}</a></div>
-      <div class="meta">
+      <ul class="catalog">
         {% for ep in person.guest_episodes %}
-          <a href="{{ m::href(depth=depth, target=ep.slug) }}">{{ ep.title }}</a>{% if not loop.last %}, {% endif %}
+        <li><a href="{{ m::href(depth=depth, target=ep.slug) }}">{{ ep.title }}</a></li>
         {% endfor %}
-      </div>
+      </ul>
+      {% if person.host_episodes %}
+      <details class="host-episodes">
+        <summary>Как ведущий</summary>
+        <ul class="catalog">
+          {% for ep in person.host_episodes %}
+          <li><a href="{{ m::href(depth=depth, target=ep.slug) }}">{{ ep.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </details>
+      {% endif %}
     </li>
     {% endfor %}
   </ul>

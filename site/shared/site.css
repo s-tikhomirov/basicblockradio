@@ -14,6 +14,9 @@
   footer.site
 
   Feed / lists:  ul.episode-list > li > .title + .meta
+  People:       ul.people-list > li > .title + ul.catalog
+  Catalog:      ul.catalog > li > a
+  Host spoiler: details.host-episodes > summary + ul.catalog
   Pager:         nav.pager
   Trail:         nav.trail
   Credits:       .credits > p
@@ -222,13 +225,33 @@ nav.trail {
   padding: 0;
 }
 
-.episode-list li {
+.episode-list > li {
   border-top: 1px solid var(--border);
   padding: 1rem 0;
 }
 
-.episode-list li:last-child {
+.episode-list > li:last-child {
   border-bottom: 1px solid var(--border);
+}
+
+.people-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.people-list > li {
+  border-top: 1px solid var(--border);
+  padding: 1rem 0;
+}
+
+.people-list > li:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.people-list .title {
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .episode-list .title {
@@ -240,6 +263,44 @@ nav.trail {
   margin-top: 0.35rem;
   color: var(--muted);
   font-size: 0.9rem;
+}
+
+.catalog {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.35;
+  list-style: disc;
+}
+
+.people-list .catalog {
+  margin-top: 0.35rem;
+}
+
+.episode-list .catalog > li,
+.episode-list .catalog > li:last-child,
+.catalog > li,
+.catalog > li:last-child {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: disc;
+}
+
+.host-episodes {
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+.host-episodes summary {
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.host-episodes .catalog {
+  margin-top: 0.2rem;
 }
 
 .pager {

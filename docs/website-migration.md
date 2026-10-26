@@ -85,7 +85,7 @@ Settled 2026-10-26.
 The build writes the pages and a `_redirects` file.
 
 - `/for-sponsors-and-advertisers/` redirects to `/for-sponsors/`
-- `/all-episodes/` redirects to the main page
+- `/all-episodes/` lists every published episode title, newest first
 - `/ep212/` redirects to `/e212/`
 - `/https-basicblockradio-com-e214/` redirects to `/e214/`
 - `/https-basicblockradio-com-e215/` redirects to `/e215/`
