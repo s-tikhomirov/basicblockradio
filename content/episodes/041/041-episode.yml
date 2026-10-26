@@ -5,7 +5,8 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-01-31
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
 guests:
   - slug: aleks-zabuga
 

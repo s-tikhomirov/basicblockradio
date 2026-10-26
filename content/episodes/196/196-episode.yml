@@ -5,7 +5,9 @@ status: catalog
 recording_date: unknown
 publish_date: 2025-01-11
 
-hosts: []
+hosts:
+  - slug: alexander-seleznev
+  - slug: sergei-tikhomirov
 guests:
   - slug: gurgen-arakelov
 

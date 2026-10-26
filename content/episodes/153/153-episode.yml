@@ -5,8 +5,10 @@ status: catalog
 recording_date: unknown
 publish_date: 2022-06-06
 
-hosts: []
-guests: []
+hosts:
+  - slug: alexander-seleznev
+guests:
+  - slug: sergei-tikhomirov
 
 url: https://basicblockradio.com/e153/
 youtube_url: "https://www.youtube.com/watch?v=1E8dEgibT7w"

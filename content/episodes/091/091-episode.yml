@@ -5,8 +5,18 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-09-30
 
-hosts: []
-guests: []
+hosts:
+  - slug: sergey-pavlin
+  - slug: sergei-tikhomirov
+  - slug: ivan-ivanitskiy
+guests:
+  - slug: oleg-andreev
+  - slug: roman-snitko
+  - slug: ton-veys
+  - slug: dmitriy-khovratovich
+  - slug: gleb-naumenko
+  - slug: sergey-kotlyar
+  - slug: maksim-orlovskiy
 
 url: https://basicblockradio.com/e091/
 youtube_url: "https://www.youtube.com/watch?v=EkRcLBeD68s"

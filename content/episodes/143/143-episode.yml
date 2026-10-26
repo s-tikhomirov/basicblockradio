@@ -5,7 +5,9 @@ status: catalog
 recording_date: unknown
 publish_date: 2021-06-01
 
-hosts: []
+hosts:
+  - slug: ivan-ivanitskiy
+  - slug: alexander-seleznev
 guests:
   - slug: aleksandr-salnikov
 

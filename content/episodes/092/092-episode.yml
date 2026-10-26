@@ -5,7 +5,9 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-10-10
 
-hosts: []
+hosts:
+  - slug: sergey-pavlin
+  - slug: alexander-seleznev
 guests:
   - slug: sergey-nazarov
 

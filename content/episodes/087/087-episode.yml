@@ -5,8 +5,20 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-09-09
 
-hosts: []
-guests: []
+hosts:
+  - slug: sergey-pavlin
+  - slug: sergei-tikhomirov
+  - slug: alexander-seleznev
+  - slug: evgeny-marchenko
+guests:
+  - slug: igor-barinov
+  - slug: anatoliy-ressin
+  - slug: aleksey-bashlykov
+  - slug: vitaliy-gataulin
+  - slug: maks-demyan
+  - slug: roman-semenov
+  - slug: aleksey-pertsev
+  - slug: aleksey-akhunov
 
 url: https://basicblockradio.com/e087/
 youtube_url: "https://www.youtube.com/watch?v=7HpOUFlBgjg"

@@ -475,7 +475,7 @@ class Checker:
 
     def check_episode_url(self, path: Path, value: Any, status: Any) -> None:
         if value is None or value == "":
-            if status in PUBLIC_STATUSES:
+            if status == "ready":
                 self.error(path, f"url is required when status is {status}")
             return
         if not isinstance(value, str) or not URL_RE.match(value):

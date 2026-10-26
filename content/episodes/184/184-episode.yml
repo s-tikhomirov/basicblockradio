@@ -5,7 +5,9 @@ status: catalog
 recording_date: unknown
 publish_date: 2024-03-27
 
-hosts: []
+hosts:
+  - slug: alexander-seleznev
+  - slug: sergey-pavlin
 guests:
   - slug: dima-starodubtsev
   - slug: valera-litvin

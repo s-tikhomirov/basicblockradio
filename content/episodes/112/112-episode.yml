@@ -5,7 +5,9 @@ status: catalog
 recording_date: unknown
 publish_date: 2020-03-02
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: sergey-pavlin
 guests:
   - slug: andrey-kozlov
 

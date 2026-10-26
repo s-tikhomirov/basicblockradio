@@ -136,8 +136,9 @@ Site inclusion
 - `draft`, `transcript-reviewed`, and `readable-reviewed` stay out of the public build
   (optional local/preview flag may include them)
 - `ready` requires `NNN-readable.md`, `NNN-shownotes.md`, and `url` (enforced by the checker)
-- `catalog` requires `NNN-shownotes.md` and `url`
+- `catalog` requires `NNN-shownotes.md`
   A catalog episode is a historical page published from its show notes.
+  `url` is the canonical page address when the episode has one.
   It becomes `ready` after a transcript and a readable file are reviewed.
 
 Richness (no stored depth level)

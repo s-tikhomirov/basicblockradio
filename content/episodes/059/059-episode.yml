@@ -6,8 +6,9 @@ recording_date: unknown
 publish_date: 2019-02-10
 
 hosts:
+  - slug: ivan-ivanitskiy
+guests:
   - slug: alexander-seleznev
-guests: []
 
 url: https://basicblockradio.com/e059/
 youtube_url: "https://www.youtube.com/watch?v=cgdPe2acSko"

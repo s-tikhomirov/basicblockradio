@@ -5,7 +5,9 @@ status: catalog
 recording_date: unknown
 publish_date: 2023-01-26
 
-hosts: []
+hosts:
+  - slug: alexander-seleznev
+  - slug: sergei-tikhomirov
 guests: []
 
 url: https://basicblockradio.com/e163/

@@ -5,7 +5,8 @@ status: catalog
 recording_date: unknown
 publish_date: 2023-07-13
 
-hosts: []
+hosts:
+  - slug: alexander-seleznev
 guests:
   - slug: eldar-khamitov
 

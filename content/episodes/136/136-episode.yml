@@ -5,7 +5,10 @@ status: catalog
 recording_date: unknown
 publish_date: 2021-01-20
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: sergey-pavlin
+  - slug: alexander-seleznev
 guests: []
 
 url: https://basicblockradio.com/e136/

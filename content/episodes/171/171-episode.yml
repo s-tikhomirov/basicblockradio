@@ -5,7 +5,8 @@ status: catalog
 recording_date: unknown
 publish_date: 2023-05-26
 
-hosts: []
+hosts:
+  - slug: ivan-ivanitskiy
 guests:
   - slug: aleksandr-mukhanchikov
 

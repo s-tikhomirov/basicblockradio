@@ -5,8 +5,16 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-09-17
 
-hosts: []
-guests: []
+hosts:
+  - slug: sergey-pavlin
+  - slug: sergei-tikhomirov
+  - slug: alexander-seleznev
+guests:
+  - slug: kirill-pimenov
+  - slug: ilya-polosukhin
+  - slug: evgeny-ponomarev
+  - slug: hashmap-grin
+  - slug: ivan-sorokin
 
 url: https://basicblockradio.com/e089/
 youtube_url: "https://www.youtube.com/watch?v=Q2Kr-Mna1u4"

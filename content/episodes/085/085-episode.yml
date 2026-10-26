@@ -5,7 +5,10 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-08-14
 
-hosts: []
+hosts:
+  - slug: sergey-pavlin
+  - slug: alexander-seleznev
+  - slug: ivan-ivanitskiy
 guests: []
 
 url: https://basicblockradio.com/e085/

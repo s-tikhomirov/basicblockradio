@@ -5,8 +5,21 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-12-08
 
-hosts: []
-guests: []
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: ivan-ivanitskiy
+  - slug: alexander-seleznev
+  - slug: sergey-pavlin
+guests:
+  - slug: aleksandr-zaydelson
+  - slug: andrey-sobol
+  - slug: gleb-naumenko
+  - slug: anatoliy-ressin
+  - slug: maksim-keydun
+  - slug: inal-kardanov
+  - slug: evgeniy-yurtaev
+  - slug: aleks-skidanov
+  - slug: anna-baydakova
 
 url: https://basicblockradio.com/e100/
 youtube_url: "https://www.youtube.com/watch?v=bJ6HdTQ9w0A"

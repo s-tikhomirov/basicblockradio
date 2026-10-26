@@ -5,7 +5,10 @@ status: catalog
 recording_date: unknown
 publish_date: 2022-02-04
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: alexander-seleznev
+  - slug: sergey-pavlin
 guests: []
 
 url: https://basicblockradio.com/e148/

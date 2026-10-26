@@ -5,7 +5,8 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-11-19
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
 guests:
   - slug: hashmap-grin
   - slug: ivan-sorokin

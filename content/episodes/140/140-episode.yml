@@ -5,7 +5,9 @@ status: catalog
 recording_date: unknown
 publish_date: 2021-04-13
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: alexander-seleznev
 guests:
   - slug: mitya-goroshevsky
 

@@ -5,7 +5,8 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-09-23
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
 guests:
   - slug: kirill-pimenov
 

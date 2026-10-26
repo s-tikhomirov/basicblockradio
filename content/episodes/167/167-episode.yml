@@ -5,7 +5,8 @@ status: catalog
 recording_date: unknown
 publish_date: 2023-03-24
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
 guests:
   - slug: nadya-petrova
   - slug: aleksey-paletskikh

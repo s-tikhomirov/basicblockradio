@@ -5,7 +5,9 @@ status: catalog
 recording_date: unknown
 publish_date: 2023-12-20
 
-hosts: []
+hosts:
+  - slug: ivan-ivanitskiy
+  - slug: alexander-seleznev
 guests:
   - slug: vladimir-smerkis
 

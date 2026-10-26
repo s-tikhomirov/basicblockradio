@@ -5,8 +5,11 @@ status: catalog
 recording_date: unknown
 publish_date: 2024-06-12
 
-hosts: []
-guests: []
+hosts:
+  - slug: alexander-seleznev
+  - slug: ivan-ivanitskiy
+guests:
+  - slug: sergei-tikhomirov
 
 url: https://basicblockradio.com/e186/
 youtube_url: "https://www.youtube.com/watch?v=euf_UGrWz6E"

@@ -5,7 +5,8 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-11-25
 
-hosts: []
+hosts:
+  - slug: ivan-ivanitskiy
 guests:
   - slug: sergey-prilutskiy
 

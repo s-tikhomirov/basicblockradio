@@ -5,7 +5,9 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-07-08
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: ivan-ivanitskiy
 guests:
   - slug: egor-khomyakov
 

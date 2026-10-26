@@ -5,7 +5,10 @@ status: catalog
 recording_date: unknown
 publish_date: 2024-12-13
 
-hosts: []
+hosts:
+  - slug: alexander-seleznev
+  - slug: sergei-tikhomirov
+  - slug: ivan-ivanitskiy
 guests: []
 
 url: https://basicblockradio.com/e193/

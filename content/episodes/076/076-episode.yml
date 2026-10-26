@@ -5,8 +5,10 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-06-10
 
-hosts: []
-guests: []
+hosts:
+  - slug: ivan-ivanitskiy
+guests:
+  - slug: sergei-tikhomirov
 
 url: https://basicblockradio.com/e076/
 youtube_url: "https://www.youtube.com/watch?v=qG7xvO2GgYc"

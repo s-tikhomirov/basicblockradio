@@ -5,7 +5,10 @@ status: catalog
 recording_date: unknown
 publish_date: 2025-02-03
 
-hosts: []
+hosts:
+  - slug: alexander-seleznev
+  - slug: sergei-tikhomirov
+  - slug: ivan-ivanitskiy
 guests:
   - slug: pavel-komarovsky
 

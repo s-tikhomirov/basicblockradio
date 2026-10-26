@@ -5,7 +5,8 @@ status: catalog
 recording_date: unknown
 publish_date: 2021-03-11
 
-hosts: []
+hosts:
+  - slug: alexander-seleznev
 guests:
   - slug: dan-dadybaev
   - slug: aybek-esengulov

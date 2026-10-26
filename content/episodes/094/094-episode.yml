@@ -5,8 +5,11 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-10-23
 
-hosts: []
-guests: []
+hosts:
+  - slug: sergey-pavlin
+guests:
+  - slug: sergei-tikhomirov
+  - slug: alexander-seleznev
 
 url: https://basicblockradio.com/e094/
 youtube_url: "https://www.youtube.com/watch?v=W-P0iJlolCk"

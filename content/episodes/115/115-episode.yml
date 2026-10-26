@@ -5,8 +5,15 @@ status: catalog
 recording_date: unknown
 publish_date: 2020-03-26
 
-hosts: []
-guests: []
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: ivan-ivanitskiy
+  - slug: alexander-seleznev
+  - slug: sergey-pavlin
+guests:
+  - slug: yaroslav-aleksandrov
+  - slug: boris-nikashin
+  - slug: vadim-koleoshkin
 
 url: https://basicblockradio.com/e115/
 youtube_url: "https://www.youtube.com/watch?v=e6t8JwKAihg"

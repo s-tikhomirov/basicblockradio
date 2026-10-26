@@ -5,7 +5,9 @@ status: catalog
 recording_date: unknown
 publish_date: 2023-04-27
 
-hosts: []
+hosts:
+  - slug: ivan-ivanitskiy
+  - slug: sergei-tikhomirov
 guests:
   - slug: alexander-seleznev
   - slug: evgeny-marchenko

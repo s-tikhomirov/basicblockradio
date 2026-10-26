@@ -5,8 +5,10 @@ status: catalog
 recording_date: unknown
 publish_date: 2020-04-29
 
-hosts: []
-guests: []
+hosts:
+  - slug: ivan-ivanitskiy
+guests:
+  - slug: sergei-tikhomirov
 
 url: https://basicblockradio.com/e120/
 youtube_url: "https://www.youtube.com/watch?v=dq8EudBY-cs"

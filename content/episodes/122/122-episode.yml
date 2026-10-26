@@ -5,8 +5,14 @@ status: catalog
 recording_date: unknown
 publish_date: 2020-05-15
 
-hosts: []
-guests: []
+hosts:
+  - slug: sergei-tikhomirov
+guests:
+  - slug: maksim-keydun
+  - slug: kir-kelevra
+  - slug: aleksandr-momot
+  - slug: aleksey-petrov
+  - slug: gleb-naumenko
 
 url: https://basicblockradio.com/e122/
 youtube_url: "https://www.youtube.com/watch?v=e4kha3QrKY4"

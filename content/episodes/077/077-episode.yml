@@ -5,7 +5,9 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-06-17
 
-hosts: []
+hosts:
+  - slug: ivan-ivanitskiy
+  - slug: evgeny-marchenko
 guests:
   - slug: igor-yalovoy
 

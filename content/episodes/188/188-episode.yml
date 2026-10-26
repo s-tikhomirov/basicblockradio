@@ -5,7 +5,9 @@ status: catalog
 recording_date: unknown
 publish_date: 2024-07-23
 
-hosts: []
+hosts:
+  - slug: alexander-seleznev
+  - slug: ivan-ivanitskiy
 guests:
   - slug: daniil-romazanov
 

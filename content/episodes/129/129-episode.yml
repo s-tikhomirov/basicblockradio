@@ -5,7 +5,9 @@ status: catalog
 recording_date: unknown
 publish_date: 2020-07-02
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: alexander-seleznev
 guests:
   - slug: artur-shabak
 

@@ -6,9 +6,10 @@ recording_date: unknown
 publish_date: 2019-02-25
 
 hosts:
+  - slug: sergei-tikhomirov
+guests:
   - slug: ivan-ivanitskiy
   - slug: alexander-seleznev
-guests: []
 
 url: https://basicblockradio.com/e061/
 youtube_url: "https://www.youtube.com/watch?v=JAxTWew08q8"

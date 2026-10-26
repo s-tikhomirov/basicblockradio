@@ -5,7 +5,8 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-01-30
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
 guests: []
 
 url: https://basicblockradio.com/e011/

@@ -6,8 +6,9 @@ recording_date: unknown
 publish_date: 2022-12-05
 
 hosts:
+  - slug: alexander-seleznev
+guests:
   - slug: sergei-tikhomirov
-guests: []
 
 url: https://basicblockradio.com/e159/
 youtube_url: "https://www.youtube.com/watch?v=dTO9AZF7tjI"

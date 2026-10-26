@@ -5,7 +5,8 @@ status: catalog
 recording_date: unknown
 publish_date: 2019-12-11
 
-hosts: []
+hosts:
+  - slug: sergey-pavlin
 guests:
   - slug: sergey-lyubich
   - slug: stanislav-bogatyrev

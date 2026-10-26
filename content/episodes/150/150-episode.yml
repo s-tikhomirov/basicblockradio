@@ -5,7 +5,8 @@ status: catalog
 recording_date: unknown
 publish_date: 2022-02-18
 
-hosts: []
+hosts:
+  - slug: alexander-seleznev
 guests:
   - slug: andrey-belyakov
 

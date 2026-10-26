@@ -5,7 +5,11 @@ status: catalog
 recording_date: unknown
 publish_date: 2022-12-30
 
-hosts: []
+hosts:
+  - slug: sergei-tikhomirov
+  - slug: ivan-ivanitskiy
+  - slug: alexander-seleznev
+  - slug: sergey-pavlin
 guests: []
 
 url: https://basicblockradio.com/e161/
