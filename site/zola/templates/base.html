@@ -5,6 +5,7 @@
 {%- else -%}
 {%- set_global depth = trimmed | split(pat="/") | length -%}
 {%- endif -%}
+{%- set sidebar = load_data(path="data/sidebar.json", format="json") -%}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -22,14 +23,15 @@
 <body>
   <div class="wrap">
     <header class="site">
-      <h1><a href="{{ m::href(depth=depth, target='') }}">Базовый Блок</a></h1>
+      <h1><a href="{{ m::href(depth=depth, target='') }}"><img class="logo" src="{{ m::href(depth=depth, target='logo.png') }}" alt="Базовый Блок" width="240" height="52"></a></h1>
       <p>Подкаст про блокчейн</p>
       <nav class="menu" aria-label="Основное меню">
         <ul>
           <li><a href="{{ m::href(depth=depth, target='') }}">Выпуски</a></li>
           <li><a href="{{ m::href(depth=depth, target='guests') }}">Гости</a></li>
+          <li><a href="https://t.me/basicblockradio_chat" rel="noopener noreferrer">Чат</a></li>
+          <li><a href="{{ m::href(depth=depth, target='articles') }}">Статьи</a></li>
           <li><a href="{{ m::href(depth=depth, target='about') }}">О подкасте</a></li>
-          <li><a href="{{ m::href(depth=depth, target='donate') }}">Поддержать</a></li>
           <li><a href="{{ m::href(depth=depth, target='for-sponsors') }}">Для спонсоров</a></li>
         </ul>
       </nav>
@@ -39,17 +41,41 @@
       <main class="main">
         {% block body %}{% endblock %}
       </main>
-      <aside class="sidebar" aria-label="Слушать подкаст">
-        <h2>Слушать подкаст</h2>
-        <ul class="listen">
-          <li><a class="listen-btn" href="https://podcasts.apple.com/ru/podcast/id1289965366" rel="noopener noreferrer">Apple Podcasts</a></li>
-          <li><a class="listen-btn" href="https://podcasts.google.com/?feed=aHR0cDovL2Jhc2ljYmxvY2tyYWRpby5saWJzeW4uY29tL3Jzcw" rel="noopener noreferrer">Google Podcasts</a></li>
-          <li><a class="listen-btn" href="https://open.spotify.com/show/4flYcruRigqZVPYBZRtMHa" rel="noopener noreferrer">Spotify</a></li>
-          <li><a class="listen-btn" href="https://music.yandex.ru/album/7638583" rel="noopener noreferrer">Яндекс Музыка</a></li>
-          <li><a class="listen-btn" href="https://www.youtube.com/channel/UC95bSmaFa7R33GOyi6VfyGQ" rel="noopener noreferrer">YouTube</a></li>
-          <li><a class="listen-btn" href="https://basicblockradio.libsyn.com/rss" rel="noopener noreferrer">RSS</a></li>
-        </ul>
-        <p class="listen-note">…и вообще везде, где вы слушаете что-то ещё</p>
+      <aside class="sidebar" aria-label="Слушать и поддержать">
+        <section>
+          <h2>Поддержать подкаст</h2>
+          <ul class="listen">
+            <li><a class="listen-btn" href="https://www.patreon.com/basicblockradio/overview" rel="noopener noreferrer">Patreon</a></li>
+            <li><a class="listen-btn" href="https://boosty.to/basicblockradio" rel="noopener noreferrer">Boosty</a></li>
+            <li><a href="{{ m::href(depth=depth, target='donate') }}">Все способы</a></li>
+          </ul>
+        </section>
+        <section>
+          <h2>Слушать подкаст</h2>
+          <ul class="listen">
+            <li><a class="listen-btn" href="https://podcasts.apple.com/ru/podcast/id1289965366" rel="noopener noreferrer">Apple Podcasts</a></li>
+            <li><a class="listen-btn" href="https://podcasts.google.com/?feed=aHR0cDovL2Jhc2ljYmxvY2tyYWRpby5saWJzeW4uY29tL3Jzcw" rel="noopener noreferrer">Google Podcasts</a></li>
+            <li><a class="listen-btn" href="https://open.spotify.com/show/4flYcruRigqZVPYBZRtMHa" rel="noopener noreferrer">Spotify</a></li>
+            <li><a class="listen-btn" href="https://music.yandex.ru/album/7638583" rel="noopener noreferrer">Яндекс Музыка</a></li>
+            <li><a class="listen-btn" href="https://www.youtube.com/channel/UC95bSmaFa7R33GOyi6VfyGQ" rel="noopener noreferrer">YouTube</a></li>
+            <li><a class="listen-btn" href="https://basicblockradio.libsyn.com/rss" rel="noopener noreferrer">RSS</a></li>
+          </ul>
+          <p class="listen-note">…и вообще везде, где вы слушаете что-то ещё</p>
+        </section>
+        {% if sidebar.sponsors %}
+        <section>
+          <h2>Нас поддерживают</h2>
+          <ul class="sponsor-logos">
+            {% for sponsor in sidebar.sponsors %}
+            <li>
+              <a href="{{ sponsor.url }}" rel="noopener noreferrer">
+                <img src="{{ m::href(depth=depth, target=sponsor.logo) }}" alt="{{ sponsor.name }}">
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </section>
+        {% endif %}
       </aside>
     </div>
 

@@ -2,6 +2,7 @@
 organization: fluence
 first_episode: 200
 last_episode: 223
+logo: logos/fluence.png
 ---
 
 ## Episode read: start

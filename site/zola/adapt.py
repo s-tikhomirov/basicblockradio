@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import shutil
 import subprocess
@@ -54,6 +55,9 @@ STATIC_PAGES: tuple[tuple[str, str], ...] = (
     ("about", "about.md"),
     ("donate", "donate.md"),
     ("for-sponsors", "for-sponsors.md"),
+    ("best-of-2020", "best-of-2020.md"),
+    ("bb-bonus-rms", "bb-bonus-rms.md"),
+    ("ep100an", "ep100an.md"),
 )
 
 
@@ -139,6 +143,115 @@ def dump_frontmatter(data: dict[str, Any]) -> str:
     ).rstrip() + "\n"
 
 
+_SHOWNOTES_SECTION = re.compile(
+    r"^## Shownotes line[ \t]*\n(.*?)(?=^## |\Z)",
+    re.M | re.S,
+)
+_MD_LINK = re.compile(r"\[[^\]]*\]\((https?://[^)\s]+)\)")
+
+
+def shownotes_link(body: str) -> str | None:
+    match = _SHOWNOTES_SECTION.search(body)
+    if not match:
+        return None
+    link = _MD_LINK.search(match.group(1))
+    return link.group(1) if link else None
+
+
+def active_sponsor_logos(content: Path, latest: int) -> tuple[list[dict[str, str]], list[tuple[Path, str]]]:
+    """Sponsors whose paid range includes the latest published episode."""
+    sp_dir = content / "sponsorships"
+    sponsors: list[dict[str, str]] = []
+    copies: list[tuple[Path, str]] = []
+    if not sp_dir.is_dir():
+        return sponsors, copies
+    for path in sorted(sp_dir.glob("*.md")):
+        if path.name == "sponsorship-template.md":
+            continue
+        data, body = split_frontmatter(path.read_text(encoding="utf-8"))
+        org = data.get("organization")
+        first = data.get("first_episode")
+        last = data.get("last_episode")
+        logo = data.get("logo")
+        if not isinstance(org, str) or not isinstance(first, int) or not isinstance(last, int):
+            continue
+        if not (first <= latest <= last):
+            continue
+        if not isinstance(logo, str) or not logo.strip():
+            raise SystemExit(f"{path}: active sponsorship is missing logo")
+        src = sp_dir / logo
+        if not src.is_file():
+            raise SystemExit(f"{path}: missing logo file {logo}")
+        url = shownotes_link(body)
+        if url is None:
+            raise SystemExit(f"{path}: Shownotes line needs one markdown link")
+        org_path = content / "organizations" / f"{org}.yml"
+        org_data = load_yaml(org_path) if org_path.is_file() else {}
+        name = org_data.get("name") if isinstance(org_data, dict) else None
+        if not isinstance(name, str) or not name.strip():
+            name = org
+        public_logo = f"sponsors/{src.name}"
+        sponsors.append({"name": name, "url": url, "logo": public_logo})
+        copies.append((src, public_logo))
+    sponsors.sort(key=lambda item: item["name"].casefold())
+    return sponsors, copies
+
+
+def project_articles(
+    content: Path, content_out: Path, data_pages: Path
+) -> list[tuple[Path, str]]:
+    """Publish content/articles as /articles/ and one page per article."""
+    root = content / "articles"
+    copies: list[tuple[Path, str]] = []
+    index_path = root / "index.md"
+    if not index_path.is_file():
+        return copies
+    text = index_path.read_text(encoding="utf-8").strip()
+    title = "Статьи"
+    for line in text.splitlines():
+        if line.startswith("# "):
+            title = line[2:].strip()
+            break
+    html_name = "articles.html"
+    (data_pages / html_name).write_text(md_to_html(text), encoding="utf-8")
+    write_md(
+        content_out / "articles" / "_index.md",
+        {
+            "title": title,
+            "template": "static.html",
+            "extra": {"html_file": html_name},
+        },
+    )
+    for folder in sorted(path for path in root.iterdir() if path.is_dir()):
+        article = folder / "article.md"
+        if not article.is_file():
+            continue
+        body = article.read_text(encoding="utf-8").strip()
+        article_title = folder.name
+        for line in body.splitlines():
+            if line.startswith("# "):
+                article_title = line[2:].strip()
+                break
+        html_name = f"article-{folder.name}.html"
+        (data_pages / html_name).write_text(md_to_html(body), encoding="utf-8")
+        write_md(
+            content_out / "articles" / folder.name / "_index.md",
+            {
+                "title": article_title,
+                "template": "static.html",
+                "extra": {"html_file": html_name},
+            },
+        )
+        images = folder / "images"
+        if not images.is_dir():
+            continue
+        for img in images.iterdir():
+            if img.suffix == ".txt" or not img.is_file():
+                continue
+            copies.append((img, f"articles/{folder.name}/images/{img.name}"))
+    return copies
+
+
 def write_md(path: Path, frontmatter: dict[str, Any], body: str = "") -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     text = f"---\n{dump_frontmatter(frontmatter)}---\n"
@@ -149,7 +262,7 @@ def write_md(path: Path, frontmatter: dict[str, Any], body: str = "") -> None:
     path.write_text(text, encoding="utf-8")
 
 
-def project(root: Path, build: Path) -> list[dict[str, Any]]:
+def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[Path, str]]]:
     content = root / "content"
     custom_pages = stack_dir() / "pages"
     zola = stack_dir()
@@ -350,10 +463,22 @@ def project(root: Path, build: Path) -> list[dict[str, Any]]:
             },
         )
 
-    print(
-        f"Projected {len(episodes_meta)} episodes, {len(people)} people → {build}"
+    latest = max((ep["number"] for ep in episodes_meta), default=None)
+    if latest is None:
+        sponsors, logo_copies = [], []
+    else:
+        sponsors, logo_copies = active_sponsor_logos(content, latest)
+    (build / "data" / "sidebar.json").write_text(
+        json.dumps({"sponsors": sponsors}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
     )
-    return episodes_meta
+
+    article_copies = project_articles(content, content_out, data_pages)
+    print(
+        f"Projected {len(episodes_meta)} episodes, {len(people)} people, "
+        f"{len(sponsors)} sponsor logos (latest episode {latest}) → {build}"
+    )
+    return episodes_meta, logo_copies + article_copies
 
 
 SITE_URL = "https://basicblockradio.com"
@@ -465,8 +590,145 @@ def write_robots(out: Path) -> None:
     )
 
 
+# Old WordPress paths that point at an episode already in this build.
+REDIRECTS: tuple[tuple[str, str, str], ...] = (
+    ("for-sponsors-and-advertisers", "for-sponsors/index.html", "/for-sponsors/"),
+    ("all-episodes", "index.html", "/"),
+    ("ep212", "e212/index.html", "/e212/"),
+    ("https-basicblockradio-com-e214", "e214/index.html", "/e214/"),
+    ("https-basicblockradio-com-e215", "e215/index.html", "/e215/"),
+    ("best-of-basic-block-1", "best-of-2020/index.html", "/best-of-2020/"),
+    (
+        "базовый-блок-лучшее-часть-2-из-4",
+        "best-of-2020/index.html",
+        "/best-of-2020/",
+    ),
+    (
+        "базовый-блок-лучшее-часть-3-из-4",
+        "best-of-2020/index.html",
+        "/best-of-2020/",
+    ),
+    ("flash-attacks", "articles/flash-attacks/index.html", "/articles/flash-attacks/"),
+    (
+        "51-percent-attack",
+        "articles/51-percent-attack/index.html",
+        "/articles/51-percent-attack/",
+    ),
+    (
+        "bitcoin-reformation",
+        "articles/bitcoin-reformation/index.html",
+        "/articles/bitcoin-reformation/",
+    ),
+)
+
+
+def pending_episode_slugs() -> list[str]:
+    path = stack_dir() / "pending-episodes.txt"
+    slugs = []
+    if not path.is_file():
+        return slugs
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.split("#", 1)[0].strip()
+        if line:
+            slugs.append(line)
+    return slugs
+
+
+def notice_page(title: str, message: str, home_href: str, css_href: str, logo_href: str) -> str:
+    return (
+        "<!DOCTYPE html>\n"
+        '<html lang="ru">\n'
+        "<head>\n"
+        '  <meta charset="utf-8">\n'
+        '  <meta name="viewport" content="width=device-width, initial-scale=1">\n'
+        f"  <title>{title}</title>\n"
+        '  <meta name="robots" content="noindex">\n'
+        f'  <link rel="stylesheet" href="{css_href}">\n'
+        "</head>\n"
+        "<body>\n"
+        '  <div class="wrap">\n'
+        '    <header class="site">\n'
+        f'      <h1><a href="{home_href}"><img class="logo" src="{logo_href}" alt="Базовый Блок" width="240" height="52"></a></h1>\n'
+        "    </header>\n"
+        "    <main>\n"
+        f"      <p>{message}</p>\n"
+        f'      <p><a href="{home_href}">На главную</a></p>\n'
+        "    </main>\n"
+        "  </div>\n"
+        "</body>\n"
+        "</html>\n"
+    )
+
+
+def redirect_page(target: str) -> str:
+    return (
+        "<!DOCTYPE html>\n"
+        '<html lang="ru">\n'
+        "<head>\n"
+        '  <meta charset="utf-8">\n'
+        '  <meta name="viewport" content="width=device-width, initial-scale=1">\n'
+        f'  <meta http-equiv="refresh" content="0; url={target}">\n'
+        f'  <link rel="canonical" href="{target}">\n'
+        "  <title>Базовый Блок</title>\n"
+        '  <meta name="robots" content="noindex">\n'
+        "</head>\n"
+        "<body>\n"
+        f'  <p><a href="{target}">Дальше</a></p>\n'
+        "</body>\n"
+        "</html>\n"
+    )
+
+
+def write_cutover(out: Path, published: set[str]) -> None:
+    """Soon pages, address redirects, and the 404 page."""
+    soon = notice_page(
+        "Выпуск скоро будет опубликован — Базовый Блок",
+        "Этот выпуск скоро будет опубликован.",
+        "../index.html",
+        "../css/site.css",
+        "../logo.png",
+    )
+    written = 0
+    for slug in pending_episode_slugs():
+        if slug in published:
+            continue
+        dest = out / slug / "index.html"
+        if dest.exists():
+            continue
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(soon, encoding="utf-8")
+        written += 1
+
+    rules = []
+    for folder, relative, absolute in REDIRECTS:
+        dest = out / folder / "index.html"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(redirect_page("../" + relative), encoding="utf-8")
+        rules.append(f"/{folder} {absolute} 301")
+        rules.append(f"/{folder}/ {absolute} 301")
+    # Episode numbers with no file (not published yet) go to the main page.
+    # Hosts that honor _redirects apply this only when the file is absent.
+    rules.append("/e:episode / 302")
+    (out / "_redirects").write_text("\n".join(rules) + "\n", encoding="utf-8")
+
+    (out / "404.html").write_text(
+        notice_page(
+            "Страница не найдена — Базовый Блок",
+            "Страница не найдена.",
+            "/",
+            "/css/site.css",
+            "/logo.png",
+        ),
+        encoding="utf-8",
+    )
+    print(f"Cutover: {written} soon pages, {len(REDIRECTS)} redirects, 404")
+
+
 def run_zola(
-    build: Path, out: Path, episodes: list[dict[str, Any]] | None = None
+    build: Path,
+    out: Path,
+    episodes: list[dict[str, Any]] | None = None,
+    logo_copies: list[tuple[Path, str]] | None = None,
 ) -> None:
     zola_bin = site_root() / ".tools" / "zola"
     if not zola_bin.is_file():
@@ -493,6 +755,14 @@ def run_zola(
     css_dest = out / "css" / "site.css"
     css_dest.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(css_src, css_dest)
+    shutil.copy2(site_root() / "shared" / "logo.png", out / "logo.png")
+    about_dir = out / "about"
+    about_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(stack_dir() / "pages" / "about-screenshot.png", about_dir / "about-screenshot.png")
+    for src, rel in logo_copies or []:
+        dest = out / rel
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dest)
 
     # Recipe URL map has / and pagers only; Zola also emits /page/1/.
     page1 = out / "page" / "1"
@@ -502,6 +772,8 @@ def run_zola(
     write_rss(out, episodes or [])
     write_sitemap(out)
     write_robots(out)
+    published = {f"e{ep['number']}" for ep in episodes or []}
+    write_cutover(out, published)
 
 
 def main() -> int:
@@ -530,8 +802,8 @@ def main() -> int:
     build = args.build.resolve() if args.build else zola / ".build"
     out = args.out.resolve() if args.out else zola / "public"
 
-    episodes = project(root, build)
-    run_zola(build, out, episodes)
+    episodes, logo_copies = project(root, build)
+    run_zola(build, out, episodes, logo_copies)
     print(f"Built → {out}")
     return 0
 

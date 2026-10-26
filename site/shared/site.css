@@ -7,9 +7,10 @@
   Required markup hooks (class names):
 
   .wrap
-  header.site          h1 > a, p (tagline), nav.menu > ul > li > a
+  header.site          h1 > a > img.logo, p (tagline), nav.menu > ul > li > a
   .layout              > main.main + aside.sidebar
-  aside.sidebar        h2, ul.listen > li > a.listen-btn, p.listen-note
+  aside.sidebar        section > h2, ul.listen > li > a.listen-btn, p.listen-note,
+                       ul.sponsor-logos > li > a > img
   footer.site
 
   Feed / lists:  ul.episode-list > li > .title + .meta
@@ -80,6 +81,12 @@ header.site h1 {
 header.site h1 a {
   color: inherit;
   text-decoration: none;
+}
+
+header.site .logo {
+  display: block;
+  width: 15rem;
+  height: auto;
 }
 
 header.site p {
@@ -155,6 +162,38 @@ nav.menu ul {
   color: var(--muted);
   font-size: 0.8rem;
   line-height: 1.35;
+}
+
+.sidebar section + section {
+  margin-top: 1.35rem;
+}
+
+.sponsor-logos {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sponsor-logos li {
+  margin: 0;
+  list-style: none;
+}
+
+.sponsor-logos li::marker {
+  content: none;
+}
+
+.sponsor-logos a {
+  display: block;
+}
+
+.sponsor-logos img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 @media (max-width: 40rem) {

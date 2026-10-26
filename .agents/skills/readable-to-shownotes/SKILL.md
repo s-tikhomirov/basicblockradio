@@ -230,6 +230,11 @@ After `Ссылки:`, append the sponsor block from sponsor files (not from the
 
 Same rule as `srt-to-transcript`: episode `NNN`, include every `content/sponsorships/*.md` where `first_episode` ≤ `NNN` ≤ `last_episode`.
 
+A later change to those bounds does not rewrite show notes already published.
+Those episodes stay as written.
+The new bounds apply when drafting a new episode,
+and they decide whether the site shows that sponsor's logo.
+
 ### What to insert
 
 From each file, take the single line under `## Shownotes line` (trim whitespace). Copy it exactly — do not rephrase. If the section is empty, skip that file and tell the user.

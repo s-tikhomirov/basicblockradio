@@ -23,4 +23,4 @@
 
 [Поддержите подкаст](https://basicblockradio.com/donate/)!
 
-![](https://basicblockradio.com/wp-content/uploads/Screenshot-from-2019-01-31-11-34-33-300x211.png)
+![Отзывы слушателей](about-screenshot.png)

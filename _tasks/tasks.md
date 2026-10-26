@@ -18,8 +18,8 @@
 - Topics: curated topic vocabulary and episode filters after v1.
 - Related episodes (`related_episodes` or derived "also appeared in"):
   postpone past v1.
-- WordPress historical import and domain cutover:
-  after the new site MVP is agreed.
+- WordPress historical import and domain cutover.
+  Plan: `docs/website-migration.md`.
 - Website track as separate projects if ever:
   internal CMS, finance or sponsor accounting, manager control plane.
 - Dogfood decentralized tech for the podcast:

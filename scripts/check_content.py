@@ -85,6 +85,22 @@ def split_frontmatter(text: str) -> tuple[dict[str, Any] | None, str, list[str]]
     return data, body, errors
 
 
+_SHOWNOTES_SECTION = re.compile(
+    r"^## Shownotes line[ \t]*\n(.*?)(?=^## |\Z)",
+    re.M | re.S,
+)
+_MD_LINK = re.compile(r"\[[^\]]*\]\((https?://[^)\s]+)\)")
+LOGO_SUFFIXES = frozenset({".png", ".svg", ".webp", ".jpg", ".jpeg"})
+
+
+def shownotes_link(body: str) -> str | None:
+    match = _SHOWNOTES_SECTION.search(body)
+    if not match:
+        return None
+    link = _MD_LINK.search(match.group(1))
+    return link.group(1) if link else None
+
+
 def parse_iso_date(value: str) -> date | None:
     if not ISO_DATE_RE.match(value):
         return None
@@ -213,7 +229,7 @@ class Checker:
             if path.name == "sponsorship-template.md":
                 continue
             text = path.read_text(encoding="utf-8")
-            data, _body, fm_errors = split_frontmatter(text)
+            data, body, fm_errors = split_frontmatter(text)
             for err in fm_errors:
                 self.error(path, err)
             if data is None:
@@ -221,7 +237,12 @@ class Checker:
             org = data.get("organization")
             first = data.get("first_episode")
             last = data.get("last_episode")
-            unknown = set(data) - {"organization", "first_episode", "last_episode"}
+            unknown = set(data) - {
+                "organization",
+                "first_episode",
+                "last_episode",
+                "logo",
+            }
             if unknown:
                 self.error(path, f"unknown frontmatter keys: {sorted(unknown)}")
             if not isinstance(org, str) or not SLUG_RE.match(org):
@@ -236,6 +257,24 @@ class Checker:
             expected = f"{org}-{first}-{last}.md"
             if path.name != expected:
                 self.error(path, f"filename should be {expected}")
+            self.check_sponsorship_logo(path, sp_dir, data.get("logo"))
+            if shownotes_link(body) is None:
+                self.error(path, "Shownotes line needs one markdown link")
+
+    def check_sponsorship_logo(self, path: Path, sp_dir: Path, logo: Any) -> None:
+        if not isinstance(logo, str) or not logo.strip():
+            self.error(path, "missing logo")
+            return
+        rel = Path(logo)
+        if rel.is_absolute() or ".." in rel.parts or "\\" in logo:
+            self.error(path, f"invalid logo path: {logo!r}")
+            return
+        logo_path = sp_dir / rel
+        if not logo_path.is_file():
+            self.error(path, f"missing logo file {logo}")
+            return
+        if logo_path.suffix.lower() not in LOGO_SUFFIXES:
+            self.error(path, f"unsupported logo type {logo_path.suffix}")
 
     def check_episodes(self, people_slugs: set[str], org_slugs: set[str]) -> None:
         episodes_dir = self.content / "episodes"

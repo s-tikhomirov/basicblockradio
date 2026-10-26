@@ -202,8 +202,7 @@ Near-term: shape and build the new site against episodes already in this repo
 on structure and design.
 
 WordPress stays the live public site for now, in parallel.
-Migration of the historical catalog, redirects, and import tooling come later —
-after the new site’s look and content contracts feel settled.
+The cutover plan, including open decisions, is `docs/website-migration.md`.
 Do not let WP import details drive v1 schema or MVP scope.
 
 ## Site stack (decided 2026-10-01: Zola + thin Python adapter)
@@ -274,4 +273,4 @@ Implementation notes for future agents
 
 - Content-side compose helper for repeatable show-notes blocks (optional)
 - Public organization pages after v1 (records stay data-only until then)
-- WordPress → repo import and `/eNNN/` cutover (after site MVP is agreed)
+- Domain cutover from WordPress (`docs/website-migration.md`)

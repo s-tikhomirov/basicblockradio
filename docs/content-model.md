@@ -1,6 +1,6 @@
 # Content model and repository layout
 
-Last updated: 2026-09-02
+Last updated: 2026-10-26
 
 Living description of how domain data is stored in this repository.
 Product goals for the public site: `docs/website.md`.
@@ -70,6 +70,17 @@ Organization — `content/organizations/<slug>.yml`
 Sponsorship — `content/sponsorships/{org}-{first}-{last}.md`
 
 - Time-bounded contract: `organization`, `first_episode`, `last_episode`, ad copy
+- `logo`: image path relative to `content/sponsorships/`
+  (for example `logos/1inch.png`)
+- The public site shows that logo on every page
+  while the highest episode number in the build
+  is inside `first_episode`..`last_episode`.
+  The image links to the URL in `Shownotes line`.
+  Patreon and Boosty stay on every page alongside those logos.
+- Changing `first_episode` or `last_episode` leaves show notes
+  already published in older episodes as they were written.
+  The range decides the sidebar logo,
+  and which new episode receives the sponsor line.
 - Not a separate “sponsor org” tree
 
 Topic / `related_episodes` — omitted in v1 (see `_tasks/tasks.md`).
@@ -105,6 +116,14 @@ not a permanent staff roster. Zero guests allowed.
 Optional `organization` only on guest entries.
 
 Organization records exist for joins; public org pages are not in v1 browse.
+
+## Articles
+
+`content/articles/index.md` is the «Статьи» page.
+`content/articles/<slug>/article.md` is one article.
+Files in `images/` are numbered in the order they appear in the article.
+`images/sources.txt` records each filename, its caption, and the address the file was saved from.
+The public paths are `/articles/` and `/articles/<slug>/`.
 
 ## Show notes and the site
 
