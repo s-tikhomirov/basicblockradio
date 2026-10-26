@@ -200,4 +200,6 @@ Use one reviewed `NNN-readable.md` per episode for publication. Extra drafts, if
 Review gates are human workflow steps.
 `status` on `NNN-episode.yml` records them:
 `draft` → `transcript-reviewed` → `readable-reviewed` → `ready`.
-The public site build includes only `ready`.
+`catalog` publishes a historical episode from its show notes and page URL.
+A catalog episode becomes `ready` after a transcript and a readable file are reviewed.
+The public site build includes `ready` and `catalog`.

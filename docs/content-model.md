@@ -46,9 +46,12 @@ Editorial / non-public (stay in git; never copied into the public site output)
 
 Every file name in the folder carries the episode number `NNN`.
 No `depth` field; richness = which files exist.
-`status`: `draft` | `transcript-reviewed` | `readable-reviewed` | `ready`.
-The public site build includes only `ready`.
+`status`: `draft` | `transcript-reviewed` | `readable-reviewed` | `ready` | `catalog`.
+The public site build includes `ready` and `catalog`.
 `ready` requires `NNN-readable.md`, `NNN-shownotes.md`, and `url`.
+`catalog` requires `NNN-shownotes.md` and `url`.
+A `catalog` episode stays `catalog` while a transcript is added,
+and becomes `ready` after that transcript and a readable file are reviewed.
 
 Site build may use a two-stage flow: (1) project only public-facing inputs into a
 gitignored staging tree shaped for the SSG, or load them in memory; (2) generate HTML.
@@ -90,7 +93,7 @@ Topic / `related_episodes` — omitted in v1 (see `_tasks/tasks.md`).
 ```yaml
 episode: 221
 title: "ББ-221: …"          # full-string canon for the webpage
-status: ready                 # draft | transcript-reviewed | readable-reviewed | ready
+status: ready                 # draft | transcript-reviewed | readable-reviewed | ready | catalog
 
 recording_date: 2026-05-22
 publish_date: 2026-07-03      # optional
@@ -107,6 +110,7 @@ url: https://basicblockradio.com/e221/   # canonical episode webpage
 `url` is the canonical episode webpage in episode YAML (see `docs/website.md`).
 Optional `youtube_url` holds the episode's YouTube watch URL.
 When `status: ready`: `url`, `NNN-readable.md`, and `NNN-shownotes.md` are required.
+When `status: catalog`: `url` and `NNN-shownotes.md` are required.
 `transcript-reviewed` requires `NNN-transcript.md`.
 `readable-reviewed` requires transcript and readable.
 Agents create YAML as `draft`. A human sets the next status after each review gate.
@@ -153,9 +157,10 @@ Run from repo root: `python3 scripts/check_content.py`
 - Show-notes first line equals `title`
 - `title` starts with `ББ-{N}:`
 - Appearance slugs resolve under `people/` / `organizations/`
-- `url` is an http(s) page URL; required when `status: ready`
+- `url` is an http(s) page URL; required when `status` is `ready` or `catalog`
 - `youtube_url`, when present, is an http(s) URL
 - `NNN-shownotes.md` and `NNN-readable.md` required when `status: ready`
+- `NNN-shownotes.md` required when `status: catalog`
 - `NNN-transcript.md` required when `status` is `transcript-reviewed` or later
 - Implication rules (e.g. readable implies transcript)
 

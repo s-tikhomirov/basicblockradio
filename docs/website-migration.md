@@ -29,9 +29,9 @@ The episode files already name the canonical page:
 - episode 214 is live at `/https-basicblockradio-com-e214/`, canonical `/e214/`
 - episode 215 is live at `/https-basicblockradio-com-e215/`, canonical `/e215/`
 
-199 other WordPress posts use an `eNNN` slug and are outside the current build.
-`/ep099/`, `/e106b/`, `/e107b/`, and `/e119b/` are older episodes.
-They use the soon page until the import of episodes before 200.
+Episodes before 200 are in the build with status `catalog`.
+`/ep099/` redirects to `/e099/`.
+`/e106b/`, `/e107b/`, and `/e119b/` stay at those addresses.
 
 Listening stays on the Libsyn RSS.
 Both sites already point subscribers there.
@@ -75,8 +75,9 @@ The logo file and the paid range live on the sponsorship
 (`content/sponsorships/`, field `logo`).
 The image links to the URL in that file's `Shownotes line`.
 
-Episodes before 200 will be imported.
-That import is a separate task for later.
+Episodes before 200 publish as `catalog`: show notes and the page URL.
+Guest names on those episodes are a guess from the title.
+The review of those names is a separate pass, below.
 
 ## Old addresses
 
@@ -165,9 +166,28 @@ The Bitcoin Reformation PDF and EPUB live in
 Settled 2026-10-26.
 The site keeps its current fonts and its current colors.
 
+## Historical credits
+
+Catalog episodes include guest names taken from the episode title.
+When every name in that title is a regular host and the title names no organization, those names are filed as hosts.
+The other catalog episodes have an empty host list.
+Companies named in the title stay in the show notes.
+The review list covers guest names and hosts.
+
+`content/people/historical-review.csv` is the working list for this pass.
+Each row is one episode.
+`guests` and `hosts` hold names taken from the title.
+A blank name cell means the title yielded no name on that side.
+`guests status` and `hosts status` stay empty until review.
+`OK` in a status cell means that side is reviewed.
+A row is finished when both status cells are `OK`.
+The pass corrects guest names that came from the title and fills in the host of each episode.
+
 ## Cutover
 
-1. Import episodes before 200 in the separate later task.
+1. Episodes before 200 are in the build as `catalog`.
+   Guest names are the title guess recorded in `content/people/historical-review.csv`.
+   Host names for those episodes are still part of that review.
 2. The articles section is already in the build,
    including redirects from the old root addresses.
 3. The bonus page still links to the WordPress copies of

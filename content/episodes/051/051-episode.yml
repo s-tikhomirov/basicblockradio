@@ -1,0 +1,17 @@
+episode: 51
+title: "ББ-051: Йонн Мостовой и Георгий Агапов (Serokell) о блокчейн-фреймворке на Haskell, Cardano-кошельке в терминале и крипто-зиме"
+status: catalog
+
+recording_date: unknown
+publish_date: 2019-01-31
+
+hosts: []
+guests:
+  - slug: yonn-mostovoy
+  - slug: georgiy-agapov
+
+url: https://basicblockradio.com/e051/
+youtube_url: "https://www.youtube.com/watch?v=hlyz4iiHF_U"
+libsyn_item_id: 7815110
+audio_url: "https://traffic.libsyn.com/secure/basicblockradio/basicblockradio-ep051_2018-12-06.mp3?dest-id=573859"
+audio_bytes: 64410208

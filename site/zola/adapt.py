@@ -16,8 +16,9 @@ from typing import Any
 import markdown
 import yaml
 
-EPISODE_NUMBERS = tuple(range(223, 199, -1))  # full catalog, reverse numeric sort
 PAGE_SIZE = 8
+PUBLIC_STATUSES = frozenset({"ready", "catalog"})
+FOLDER_RE = re.compile(r"^(\d{3,})([a-z])?$")
 
 # Player embeds. Libsyn item IDs mined from the Libsyn RSS feed (libsyn:item-id).
 def _libsyn_embed(episode_id: int) -> str:
@@ -293,29 +294,52 @@ def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[P
 
     people: dict[str, dict[str, Any]] = {}
     episodes_meta: list[dict[str, Any]] = []
+    image_copies: list[tuple[Path, str]] = []
 
-    for weight, number in enumerate(EPISODE_NUMBERS, start=1):
-        folder = content / "episodes" / str(number)
-        meta = load_yaml(folder / f"{number}-episode.yml")
-
-        def resolve(items: Any) -> list[dict[str, str]]:
-            out: list[dict[str, str]] = []
-            if not isinstance(items, list):
-                return out
-            for item in items:
-                if not isinstance(item, dict):
-                    continue
-                slug = item.get("slug")
-                if not isinstance(slug, str):
-                    continue
-                if slug not in people:
-                    people[slug] = load_person_meta(content, slug)
-                    people[slug]["episodes"] = []
-                    people[slug]["is_guest"] = False
-                    people[slug]["guest_episodes"] = []
-                out.append({"slug": slug, "name": people[slug]["name"]})
+    def resolve(items: Any) -> list[dict[str, str]]:
+        out: list[dict[str, str]] = []
+        if not isinstance(items, list):
             return out
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            person_slug = item.get("slug")
+            if not isinstance(person_slug, str):
+                continue
+            if person_slug not in people:
+                people[person_slug] = load_person_meta(content, person_slug)
+                people[person_slug]["episodes"] = []
+                people[person_slug]["is_guest"] = False
+                people[person_slug]["guest_episodes"] = []
+            out.append({"slug": person_slug, "name": people[person_slug]["name"]})
+        return out
 
+    included: list[tuple[Path, dict[str, Any], int, str]] = []
+    episodes_dir = content / "episodes"
+    for folder in episodes_dir.iterdir():
+        folder_match = FOLDER_RE.match(folder.name)
+        if not folder.is_dir() or folder_match is None:
+            continue
+        meta_path = folder / f"{folder.name}-episode.yml"
+        if not meta_path.is_file():
+            continue
+        meta = load_yaml(meta_path)
+        if meta.get("status") not in PUBLIC_STATUSES:
+            continue
+        number = int(folder_match.group(1))
+        public_slug = f"e{folder.name}"
+        included.append((folder, meta, number, public_slug))
+
+    def sort_date(row: tuple[Path, dict[str, Any], int, str]) -> str:
+        _folder, meta, number, _slug = row
+        published = format_date(meta.get("publish_date"))
+        if published:
+            return published
+        return _PUBDATES.get(number, "")
+
+    included.sort(key=lambda row: (sort_date(row), row[3]), reverse=True)
+
+    for weight, (folder, meta, number, public_slug) in enumerate(included, start=1):
         hosts = resolve(meta.get("hosts"))
         guests = resolve(meta.get("guests"))
 
@@ -323,6 +347,7 @@ def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[P
             people[ref["slug"]]["episodes"].append(
                 {
                     "number": number,
+                    "slug": public_slug,
                     "title": str(meta["title"]),
                     "role": "ведущий",
                 }
@@ -333,6 +358,7 @@ def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[P
             people[ref["slug"]]["episodes"].append(
                 {
                     "number": number,
+                    "slug": public_slug,
                     "title": str(meta["title"]),
                     "role": "гость",
                 }
@@ -345,24 +371,38 @@ def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[P
                 seen.add(ref["slug"])
                 people_order.append(ref)
 
-        shownotes = (folder / f"{number}-shownotes.md").read_text(encoding="utf-8")
+        shownotes = (folder / f"{folder.name}-shownotes.md").read_text(encoding="utf-8")
         shownotes_html = md_to_html(shownotes.strip())
-        (data_episodes / f"e{number}-shownotes.html").write_text(
+        (data_episodes / f"{public_slug}-shownotes.html").write_text(
             shownotes_html,
             encoding="utf-8",
         )
 
-        readable_path = folder / f"{number}-readable.md"
+        readable_path = folder / f"{folder.name}-readable.md"
         if readable_path.is_file():
             _fm, readable_body = split_frontmatter(
                 readable_path.read_text(encoding="utf-8")
             )
-            (data_episodes / f"e{number}-readable.html").write_text(
+            (data_episodes / f"{public_slug}-readable.html").write_text(
                 md_to_html(readable_body.strip()),
                 encoding="utf-8",
             )
 
-        embeds = {"libsyn": _libsyn_embed(_LIBYSN_IDS[number])} if number in _LIBYSN_IDS else {}
+        images = folder / "images"
+        if images.is_dir():
+            for img in images.iterdir():
+                if img.suffix == ".txt" or not img.is_file():
+                    continue
+                image_copies.append((img, f"{public_slug}/images/{img.name}"))
+
+        item_id = meta.get("libsyn_item_id")
+        if not isinstance(item_id, int):
+            item_id = _LIBYSN_IDS.get(number)
+        libsyn = _libsyn_embed(item_id) if isinstance(item_id, int) else ""
+        audio_url = meta.get("audio_url") if isinstance(meta.get("audio_url"), str) else ""
+        audio_bytes = meta.get("audio_bytes") if isinstance(meta.get("audio_bytes"), int) else 0
+        if not audio_url and number in _AUDIO:
+            audio_url, audio_bytes = _AUDIO[number]
         ep_date = display_date(meta)
         ep_excerpt = excerpt(shownotes_html)
         frontmatter: dict[str, Any] = {
@@ -371,24 +411,28 @@ def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[P
             "weight": weight,
             "extra": {
                 "number": number,
+                "slug": public_slug,
                 "hosts": hosts,
                 "guests": guests,
                 "people": people_order,
                 "youtube_embed": youtube_embed(meta.get("youtube_url")),
-                "libsyn_embed": embeds.get("libsyn", ""),
+                "libsyn_embed": libsyn,
                 "description": ep_excerpt,
             },
         }
         if ep_date:
             frontmatter["extra"]["display_date"] = ep_date
 
-        write_md(content_out / f"e{number}.md", frontmatter)
+        write_md(content_out / f"{public_slug}.md", frontmatter)
         episodes_meta.append(
             {
                 "number": number,
+                "slug": public_slug,
                 "title": str(meta["title"]),
-                "date": _PUBDATES[number],
+                "date": sort_date((folder, meta, number, public_slug)),
                 "excerpt": ep_excerpt,
+                "audio_url": audio_url,
+                "audio_bytes": audio_bytes,
             }
         )
 
@@ -420,7 +464,7 @@ def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[P
             "slug": p["slug"],
             "name": p["name"],
             "guest_episodes": [
-                {"number": e["number"], "title": e["title"]}
+                {"number": e["number"], "slug": e["slug"], "title": e["title"]}
                 for e in p["episodes"]
                 if e["role"] == "гость"
             ],
@@ -479,7 +523,7 @@ def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[P
         f"Projected {len(episodes_meta)} episodes, {len(people)} people, "
         f"{len(sponsors)} sponsor logos (latest episode {latest}) → {build}"
     )
-    return episodes_meta, logo_copies + article_copies
+    return episodes_meta, logo_copies + article_copies + image_copies
 
 
 SITE_URL = "https://basicblockradio.com"
@@ -542,12 +586,15 @@ def write_rss(out: Path, episodes: list[dict[str, Any]]) -> None:
 
     items = []
     for ep in sorted(episodes, key=lambda e: e["date"], reverse=True):
-        audio_url, audio_len = _AUDIO[ep["number"]]
+        audio_url = ep.get("audio_url") or ""
+        audio_len = ep.get("audio_bytes") or 0
+        if not audio_url or not audio_len:
+            continue
         items.append(
             "  <item>\n"
             f"    <title>{sax.escape(ep['title'])}</title>\n"
-            f"    <link>{SITE_URL}/e{ep['number']}/</link>\n"
-            f"    <guid isPermaLink=\"false\">bbr-{ep['number']}</guid>\n"
+            f"    <link>{SITE_URL}/{ep['slug']}/</link>\n"
+            f"    <guid isPermaLink=\"false\">bbr-{ep['slug']}</guid>\n"
             f"    <pubDate>{rfc2822(ep['date'])}</pubDate>\n"
             f"    <description>{sax.escape(ep['excerpt'])}</description>\n"
             "    <enclosure"
@@ -596,6 +643,7 @@ REDIRECTS: tuple[tuple[str, str, str], ...] = (
     ("for-sponsors-and-advertisers", "for-sponsors/index.html", "/for-sponsors/"),
     ("all-episodes", "index.html", "/"),
     ("ep212", "e212/index.html", "/e212/"),
+    ("ep099", "e099/index.html", "/e099/"),
     ("https-basicblockradio-com-e214", "e214/index.html", "/e214/"),
     ("https-basicblockradio-com-e215", "e215/index.html", "/e215/"),
     ("best-of-basic-block-1", "best-of-2020/index.html", "/best-of-2020/"),
@@ -773,7 +821,7 @@ def run_zola(
     write_rss(out, episodes or [])
     write_sitemap(out)
     write_robots(out)
-    published = {f"e{ep['number']}" for ep in episodes or []}
+    published = {ep["slug"] for ep in episodes or []}
     write_cutover(out, published)
 
 

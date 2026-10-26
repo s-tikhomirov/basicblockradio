@@ -1,0 +1,17 @@
+episode: 123
+title: "ББ-123: Игорь Мацак и Александр Ракунов (Atomex) об атомарных свопах"
+status: catalog
+
+recording_date: unknown
+publish_date: 2020-05-21
+
+hosts: []
+guests:
+  - slug: igor-matsak
+  - slug: aleksandr-rakunov
+
+url: https://basicblockradio.com/e123/
+youtube_url: "https://www.youtube.com/watch?v=PPYCuSGfMKE"
+libsyn_item_id: 14504288
+audio_url: "https://traffic.libsyn.com/secure/basicblockradio/basicblockradio-ep123_2020-05-20.mp3?dest-id=573859"
+audio_bytes: 81719701

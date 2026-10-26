@@ -54,11 +54,11 @@
   {% endif %}
 
   <article class="shownotes">
-    {% set shownotes = load_data(path="data/episodes/e" ~ page.extra.number ~ "-shownotes.html") %}
+    {% set shownotes = load_data(path="data/episodes/" ~ page.extra.slug ~ "-shownotes.html") %}
     {{ shownotes | safe }}
   </article>
 
-  {% set readable_path = "data/episodes/e" ~ page.extra.number ~ "-readable.html" %}
+  {% set readable_path = "data/episodes/" ~ page.extra.slug ~ "-readable.html" %}
   {% set readable = load_data(path=readable_path, required=false) %}
   {% if readable %}
   <details class="transcript">

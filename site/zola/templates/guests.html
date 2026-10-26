@@ -10,7 +10,7 @@
       <div class="title"><a href="{{ m::href(depth=depth, target='people/' ~ person.slug) }}">{{ person.name }}</a></div>
       <div class="meta">
         {% for ep in person.guest_episodes %}
-          <a href="{{ m::href(depth=depth, target='e' ~ ep.number) }}">{{ ep.title }}</a>{% if not loop.last %}, {% endif %}
+          <a href="{{ m::href(depth=depth, target=ep.slug) }}">{{ ep.title }}</a>{% if not loop.last %}, {% endif %}
         {% endfor %}
       </div>
     </li>

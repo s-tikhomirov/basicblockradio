@@ -18,7 +18,7 @@
   <ul class="episode-list">
     {% for ep in page.extra.episodes %}
     <li>
-      <div class="title"><a href="{{ m::href(depth=depth, target='e' ~ ep.number) }}">{{ ep.title }}</a></div>
+      <div class="title"><a href="{{ m::href(depth=depth, target=ep.slug) }}">{{ ep.title }}</a></div>
       <div class="meta">{{ ep.role }}</div>
     </li>
     {% endfor %}

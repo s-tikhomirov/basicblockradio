@@ -68,8 +68,8 @@ Episode (primary)
 - Webpage title and headings use that string
 - Show-notes first line should match `title` (enforced by checker later)
 - Title is authored; number/guest/org are not auto-assembled into the title in v1
-- `status`: `draft` | `transcript-reviewed` | `readable-reviewed` | `ready`
-  (`ready` = include in the public site build; earlier values stay in the repo)
+- `status`: `draft` | `transcript-reviewed` | `readable-reviewed` | `ready` | `catalog`
+  (`ready` and `catalog` are included in the public site build; earlier values stay in the repo)
 - No `depth` field; richness follows which files and fields exist
 
 Person (first-class records; hosts and guests share one type)
@@ -132,10 +132,13 @@ Launch without waiting for every historical episode to have full text artifacts.
 
 Site inclusion
 
-- Public build includes episodes with `status: ready`
+- Public build includes episodes with `status: ready` or `status: catalog`
 - `draft`, `transcript-reviewed`, and `readable-reviewed` stay out of the public build
   (optional local/preview flag may include them)
 - `ready` requires `NNN-readable.md`, `NNN-shownotes.md`, and `url` (enforced by the checker)
+- `catalog` requires `NNN-shownotes.md` and `url`
+  A catalog episode is a historical page published from its show notes.
+  It becomes `ready` after a transcript and a readable file are reviewed.
 
 Richness (no stored depth level)
 

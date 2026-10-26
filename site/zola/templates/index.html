@@ -17,7 +17,7 @@
   <ul class="episode-list">
     {% for page in paginator.pages %}
     <li>
-      <div class="title"><a href="{{ m::href(depth=depth, target='e' ~ page.extra.number) }}">{{ page.title }}</a></div>
+      <div class="title"><a href="{{ m::href(depth=depth, target=page.extra.slug) }}">{{ page.title }}</a></div>
       <div class="meta">
         {% if page.extra.display_date %}{{ page.extra.display_date }} · {% endif %}
         {% if page.extra.guests %}{% if page.extra.guests | length == 1 %}Гость{% else %}Гости{% endif %}: {% for p in page.extra.guests %}<a href="{{ m::href(depth=depth, target='people/' ~ p.slug) }}">{{ p.name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}{% if page.extra.hosts %} · {% endif %}{% endif %}

@@ -24,6 +24,10 @@ EPISODE_TOP_KEYS = frozenset(
         "guests",
         "url",
         "youtube_url",
+        "variant",
+        "libsyn_item_id",
+        "audio_url",
+        "audio_bytes",
     }
 )
 STATUS_VALUES = frozenset(
@@ -32,8 +36,11 @@ STATUS_VALUES = frozenset(
         "transcript-reviewed",
         "readable-reviewed",
         "ready",
+        "catalog",
     }
 )
+PUBLIC_STATUSES = frozenset({"ready", "catalog"})
+FOLDER_RE = re.compile(r"^(\d{3,})([a-z])?$")
 ARTIFACT_SUFFIXES = (
     "episode.yml",
     "shownotes.md",
@@ -288,24 +295,32 @@ class Checker:
                 continue
             if path.name.startswith("."):
                 continue
-            if not path.name.isdigit():
-                self.error(path, "episode folder name must be digits only")
+            if FOLDER_RE.match(path.name) is None:
+                self.error(path, "episode folder name must be a number, optional letter")
                 continue
-            self.check_episode_folder(path, int(path.name), people_slugs, org_slugs)
+            self.check_episode_folder(path, people_slugs, org_slugs)
 
     def check_episode_folder(
         self,
         folder: Path,
-        number: int,
         people_slugs: set[str],
         org_slugs: set[str],
     ) -> None:
-        prefix = f"{number}-"
+        match = FOLDER_RE.match(folder.name)
+        if match is None:
+            self.error(folder, "episode folder name must be a number, optional letter")
+            return
+        number = int(match.group(1))
+        letter = match.group(2) or ""
+        prefix = f"{folder.name}-"
         present: set[str] = set()
         for path in sorted(folder.iterdir()):
             if path.name.startswith("."):
                 continue
             if path.is_dir():
+                if path.name == "images":
+                    self.check_episode_images(path)
+                    continue
                 self.error(path, "unexpected subdirectory (use .chunks/ only, gitignored)")
                 continue
             if path.name in EXTRA_EPISODE_FILES:
@@ -322,7 +337,7 @@ class Checker:
                 continue
             present.add(suffix)
 
-        yml_path = folder / f"{number}-episode.yml"
+        yml_path = folder / f"{folder.name}-episode.yml"
         if "episode.yml" not in present:
             self.error(folder, f"missing {number}-episode.yml")
             return
@@ -341,14 +356,17 @@ class Checker:
             self.error(yml_path, f"unknown keys: {sorted(unknown)}")
 
         if data.get("episode") != number:
-            self.error(yml_path, f"episode: {data.get('episode')!r} != folder {number}")
+            self.error(yml_path, f"episode: {data.get('episode')!r} != {number}")
+        variant = data.get("variant") or ""
+        if not isinstance(variant, str) or variant != letter:
+            self.error(yml_path, f"variant {variant!r} != folder letter {letter!r}")
 
         title = data.get("title")
         if not isinstance(title, str) or not title.strip():
             self.error(yml_path, "title must be a non-empty string")
             title = None
         else:
-            expected_prefix = f"ББ-{number}:"
+            expected_prefix = f"ББ-{folder.name}:"
             if not title.startswith(expected_prefix):
                 self.error(yml_path, f"title must start with {expected_prefix!r}")
 
@@ -374,10 +392,14 @@ class Checker:
         self.check_appearances(yml_path, data.get("guests"), "guests", people_slugs, org_slugs, True)
         self.check_episode_url(yml_path, data.get("url"), status)
         self.check_optional_url(yml_path, data.get("youtube_url"), "youtube_url")
+        self.check_libsyn_item_id(yml_path, data.get("libsyn_item_id"))
+        self.check_audio(yml_path, data.get("audio_url"), data.get("audio_bytes"))
 
-        shownotes = folder / f"{number}-shownotes.md"
-        transcript = folder / f"{number}-transcript.md"
-        readable = folder / f"{number}-readable.md"
+        shownotes = folder / f"{folder.name}-shownotes.md"
+        transcript = folder / f"{folder.name}-transcript.md"
+        readable = folder / f"{folder.name}-readable.md"
+        if status == "catalog" and not shownotes.is_file():
+            self.error(folder, f"shownotes required when status is catalog ({folder.name}-shownotes.md)")
         if status == "transcript-reviewed" and not transcript.is_file():
             self.error(
                 folder,
@@ -412,7 +434,7 @@ class Checker:
         for kind in ("transcript.md", "readable.md", "shorts.md"):
             if kind not in present:
                 continue
-            self.check_speech_file(folder / f"{number}-{kind}", number, kind)
+            self.check_speech_file(folder / f"{folder.name}-{kind}", number, kind)
 
     def check_appearances(
         self,
@@ -453,11 +475,38 @@ class Checker:
 
     def check_episode_url(self, path: Path, value: Any, status: Any) -> None:
         if value is None or value == "":
-            if status == "ready":
-                self.error(path, "url is required when status is ready")
+            if status in PUBLIC_STATUSES:
+                self.error(path, f"url is required when status is {status}")
             return
         if not isinstance(value, str) or not URL_RE.match(value):
             self.error(path, "url must be an http(s) URL")
+
+    def check_libsyn_item_id(self, path: Path, value: Any) -> None:
+        if value is None or value == "":
+            return
+        if not isinstance(value, int) or value <= 0:
+            self.error(path, f"libsyn_item_id must be a positive integer, got {value!r}")
+
+    def check_audio(self, path: Path, url: Any, size: Any) -> None:
+        has_url = url not in (None, "")
+        has_size = size not in (None, "")
+        if has_url != has_size:
+            self.error(path, "audio_url and audio_bytes are set together")
+            return
+        if not has_url:
+            return
+        if not isinstance(url, str) or not URL_RE.match(url):
+            self.error(path, "audio_url must be an http(s) URL")
+        if not isinstance(size, int) or size <= 0:
+            self.error(path, f"audio_bytes must be a positive integer, got {size!r}")
+
+    def check_episode_images(self, path: Path) -> None:
+        allowed = {".png", ".jpg", ".jpeg", ".gif", ".webp"}
+        for child in sorted(path.iterdir()):
+            if child.name == "sources.txt":
+                continue
+            if child.is_dir() or child.suffix.lower() not in allowed:
+                self.error(child, "unexpected file in images/")
 
     def check_optional_url(self, path: Path, value: Any, field: str) -> None:
         if value is None or value == "":
