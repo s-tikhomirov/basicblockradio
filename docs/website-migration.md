@@ -1,6 +1,6 @@
 # Website migration
 
-Last updated: 2026-10-26
+Last updated: 2026-10-27
 
 Status key: settled means the migration follows this until explicitly changed.
 Open means decide before the domain cutover.
@@ -183,6 +183,40 @@ A blank name cell means the title yielded no name on that side.
 A row is finished when both status cells are `OK`.
 The pass corrects guest names that came from the title and fills in the host of each episode.
 
+## Publishing
+
+Decided 2026-10-27.
+
+The repository is public, on GitHub Free.
+The owner sets the Pages source to GitHub Actions.
+A collaborator with write access adds the workflow.
+A push to `master` runs it.
+The workflow rebuilds the site and deploys the result to GitHub Pages.
+After a deploy has succeeded,
+the owner enters `basicblockradio.com` as the Pages custom domain,
+then points the domain's DNS at GitHub Pages.
+The apex domain uses the `A` and `AAAA` records from GitHub's custom-domain guide.
+`www` uses a `CNAME` to this account's `github.io` host.
+The owner turns on Enforce HTTPS once the certificate is available.
+
+### Workflow
+
+The workflow author owns the build on the runner.
+
+- The workflow runs on a push to `master`.
+- The runner installs Python dependencies from `site/requirements.txt`
+  and Zola 0.22.1, the release the local build uses.
+  `site/.venv/` and `site/.tools/` stay out of git.
+  `adapt.py` expects the binary at `site/.tools/zola`.
+- From the repository root, the build command is `python site/zola/adapt.py`.
+  The site output is `site/zola/public/`.
+- The deploy job uploads that directory
+  and publishes it with the GitHub Pages upload and deploy actions.
+  That job has `pages: write` and `id-token: write`,
+  and it uses the `github-pages` environment.
+- `base_url` in `site/zola/config.toml` stays `/`,
+  so pages are served at the root of `basicblockradio.com`.
+
 ## Cutover
 
 1. Episodes before 200 are in the build as `catalog`.
@@ -193,6 +227,6 @@ The pass corrects guest names that came from the title and fills in the host of 
 3. The bonus page still links to the WordPress copies of
    `stallman.mp4` and `stallman_hq.mp4`.
    Moving those files is a later step, before WordPress stops serving uploads.
-4. Build the static site and serve it at basicblockradio.com.
+4. Publish the site as in Publishing, at basicblockradio.com.
 5. Retire WordPress as the public host.
    The build already includes the address redirects, the soon pages, and the 404.
