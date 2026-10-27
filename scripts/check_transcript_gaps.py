@@ -13,11 +13,10 @@ leaves NNN-readable.md unchanged.
 Span is next-block start minus this start. The last block has no next
 start and is skipped for the sparse check.
 
-Constants frozen from transcripts that already have NNN-readable.md
-(200, 203, 211, 219, 220, 221, 223). 420 is a fixture. 222 has no
-transcript. On that set, no positive span of 12s or more fell under
-0.4 words per second. A one-word line over 17s (202, 00:27:55) is
-below that floor and is flagged.
+Constants frozen from transcripts that already had NNN-readable.md
+(200, 203, 211, 219, 220, 221, 223). On that set, no positive span
+of 12s or more fell under 0.4 words per second. A one-word line over
+17s (202, 00:27:55) is below that floor and is flagged.
 """
 
 from __future__ import annotations

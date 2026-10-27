@@ -9,8 +9,8 @@ Product contract: `docs/website.md`.
   staging (`zola/.build/`), runs the pinned Zola binary, writes feed,
   sitemap, and robots files alongside the output
 - `zola/templates/` — Tera templates
-- `zola/pages/` — about, donate, for-sponsors source Markdown
-  (verbatim copies from basicblockradio.com plus `#` title headers)
+- `zola/pages/` — static page Markdown
+  (about, donate, for-sponsors, and the other kept pages)
 - `zola/config.toml` — Zola config (`base_url` stays `/`
   so `file://` preview keeps working)
 - `shared/site.css` — the single stylesheet, copied to output at build time

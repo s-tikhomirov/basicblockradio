@@ -17,8 +17,12 @@ Knowledge base for the Basic Block Radio podcast — deep technical interviews a
 │   └── tasks.md
 ├── docs/
 │   ├── content-model.md            # Data model and layout (source of truth)
-│   └── website.md                  # Public archive product brief
+│   ├── website.md                  # Public archive product brief
+│   ├── website-migration.md        # Cutover from WordPress
+│   ├── site-stack-bakeoff.md       # July stack recipe (concluded)
+│   └── site-stack-bakeoff-results.md
 ├── content/
+│   ├── articles/
 │   ├── episodes/
 │   │   ├── templates/
 │   │   │   ├── episode-template.yml
@@ -37,7 +41,7 @@ Knowledge base for the Basic Block Radio podcast — deep technical interviews a
 │   ├── people/
 │   ├── organizations/
 │   └── sponsorships/
-├── site/                           # Website project (not implemented yet)
+├── site/                           # Zola site (site/zola/)
 ├── scripts/
 └── .agents/
     ├── skills/

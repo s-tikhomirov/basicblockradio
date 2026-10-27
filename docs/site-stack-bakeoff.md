@@ -1,31 +1,22 @@
 # Site stack bake-off (concluded 2026-10-01: Zola selected)
 
-Last updated: 2026-10-01
+Last updated: 2026-10-27
 
-> Concluded. Zola + thin Python adapter was selected
-> (decision in `docs/website.md`); Hugo, Pelican, and custom were retired
-> and their trees removed, leaving `site/bakeoff/zola/` only.
-> Below is the July fixture recipe, kept as a historical record.
-> It describes 4 episodes, page size 2, and «Новее»/«Старее» labels;
-> v0.1 (see `docs/website.md`) builds 24 episodes with evolved chrome.
+Zola and a thin Python adapter were selected
+(decision in `docs/website.md`).
+Hugo, Pelican, and custom were retired and their trees removed.
+The site lives at `site/zola/`.
+The stylesheet lives at `site/shared/site.css`.
 
-Living recipe for choosing the static site generator for the public archive.
+Below is the July fixture recipe, kept as a historical record.
+It describes 4 episodes, page size 2, and «Новее»/«Старее» labels.
+v0.1 (see `docs/website.md`) builds the `ready` episodes with evolved chrome.
+Every `site/bakeoff/` path below is that July layout.
+Those directories are gone.
+
 Product contract: `docs/website.md`.
 Content layout: `docs/content-model.md`.
 Parked ideas: `_tasks/tasks.md`.
-
-If this experiment is inconclusive, edit this file and re-run.
-Do not delete `site/bakeoff/` trees unless explicitly asked.
-
-This file is the single contract for every bake-off stack.
-Hugo, Zola, Pelican, and custom Python + Jinja must produce the same
-routes, chrome, and page shapes. Visual and ergonomic differences may
-remain; information architecture must not.
-
-Reference implementation (already built): `site/bakeoff/custom/`.
-Shared CSS: `site/bakeoff/shared/site.css`.
-Static chrome copy: `site/bakeoff/custom/pages/`
-(reuse these files or copy equivalently into other stacks).
 
 ## Task
 
@@ -306,20 +297,9 @@ site/bakeoff/
 
 Each stack writes its own `public/` (gitignored).
 
-### Procedure
+### Closed
 
-1. Ensure bake-off tool isolation (binaries + venv under `site/bakeoff/`, gitignored).
-2. Implement a thin shared content load or per-stack adapter/reader that
-   selects only the four episodes and public-facing files.
-3. Build each site to match the URL map, chrome, and page shapes above.
-   Diff against `site/bakeoff/custom/public/` for route parity if unsure.
-4. Open each `public/` over HTTP and compare.
-5. Record the decision in `docs/website.md` (site stack section) when chosen.
-6. Optionally delete only `.tools/` and `.venv/` to drop unused toolchains;
-   keep bake-off project trees until explicitly asked to remove them.
-
-### Re-run
-
-Change this recipe first (episodes, pagination, URLs, stacks, chrome), then rebuild
-all stacks. Treat `site/bakeoff/` as disposable experiment code until a winner
-is promoted to the real `site/` project.
+The four stacks were built from this recipe in July 2026.
+Measurements are in `docs/site-stack-bakeoff-results.md`.
+Zola was selected on 2026-10-01.
+The bake-off directories were removed after that.

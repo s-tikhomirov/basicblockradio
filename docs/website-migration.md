@@ -16,8 +16,8 @@ It holds 235 posts,
 from `e000` (2019-01-30) through episode 223.
 
 The static site is the Zola build under `site/zola/`.
-It publishes episodes with `status: ready`.
-That set is episodes 200–223.
+It publishes `ready` and `catalog` episodes.
+Ready episodes are 200–223.
 Episode 224 is in the repo as `readable-reviewed`,
 so the build leaves it out until that status changes.
 

@@ -1,6 +1,6 @@
 # Website product brief
 
-Last updated: 2026-09-02
+Last updated: 2026-10-27
 
 Status key: decided means build against this until explicitly changed.
 Open means safe to refine later.
@@ -146,8 +146,7 @@ Richness (no stored depth level)
 - Whatever files exist are what the page can show
   (show notes, transcript, readable, shorts, …)
 - Checker uses implication rules (e.g. readable implies transcript), not a level matrix
-- Catalog stubs stay `draft` until editorial review and show notes (and `url`)
-- Newer episodes add deeper artifacts over time; person cross-links work across stub and full pages
+- Newer episodes add deeper artifacts over time; person cross-links work across catalog and full pages
 - Prefer quiet absence of missing sections over undated «coming soon» on many pages
 
 ## Homepage
@@ -201,13 +200,11 @@ Required when `status: ready`; optional before that.
 
 ## Sequencing
 
-Near-term: shape and build the new site against episodes already in this repo
-(especially recent ones with transcripts / show notes), preview locally, and agree
-on structure and design.
-
-WordPress stays the live public site for now, in parallel.
-The cutover plan, including open decisions, is `docs/website-migration.md`.
-Do not let WP import details drive v1 schema or MVP scope.
+The Zola site under `site/zola/` is the archive build.
+Preview it locally.
+WordPress stays the live public site until cutover.
+The cutover plan is `docs/website-migration.md`.
+Do not let WordPress import details drive the v1 schema.
 
 ## Site stack (decided 2026-10-01: Zola + thin Python adapter)
 
@@ -228,11 +225,10 @@ Full-site iteration continues on the Zola tree.
 
 Bake-off record (concluded)
 
-Full site structure (routes, chrome, page shapes, listen sidebar, static pages)
-is defined in `docs/site-stack-bakeoff.md`.
-The four-stack spike and its scoring are recorded in
-`docs/site-stack-bakeoff-results.md`; the recipe stays as the build contract
-for the Zola implementation.
+The July fixture is recorded in `docs/site-stack-bakeoff.md`.
+The four-stack spike and its scoring are in
+`docs/site-stack-bakeoff-results.md`.
+The site implementation is `site/zola/`.
 
 Decision criteria (unchanged): content-layout fit, static/privacy, OSS/non-commercial,
 small supply-chain surface, local preview, glue vs batteries.
@@ -270,8 +266,9 @@ Implementation notes for future agents
   the adapter derives the embed URL. Never guess IDs, match channel titles.
 - Static page sources live in `site/zola/pages/`
   (verbatim WP copies plus `#` title headers the adapter reads).
-- Only `site/zola/` is versioned;
-  tool binary, venv, staging, and output stay gitignored.
+- The Zola project is `site/zola/`.
+  `site/shared/` holds the stylesheet and logo.
+  Tool binary, venv, staging, and output stay gitignored.
 
 ## Open for Phase B
 

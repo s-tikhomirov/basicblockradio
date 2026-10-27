@@ -46,10 +46,13 @@ One-line pointers only — invoke the matching `SKILL.md` for scope, inputs, and
 
 ## In repo today
 
-- Episodes 200–223: all `status: ready` with transcript, readable,
-  shownotes, `url`, `youtube_url`, and publication dates.
-- `NNN-shorts.md` present for 200, 211, 219, 220, 221, 223 (older files may predate current `Диапазон в выпуске` rules; regenerate or fix when re-editing clips).
-- Website v0.1: Zola build over the full catalog (see `docs/website.md`).
-  Other bake-off stacks retired; only `site/bakeoff/zola/` remains.
+- Episodes 200–223 are `status: ready`, each with transcript, readable,
+  shownotes, `url`, and `youtube_url`.
+- Episode 224 is `readable-reviewed`, so the public build leaves it out.
+- Episodes before 200 are `catalog` (show notes and page URL).
+- `NNN-shorts.md` is present for 200, 211, 219, 220, 221, 222, and 223.
+  Older files may predate the current `Диапазон в выпуске` rules.
+- The website is the Zola build at `site/zola/`.
+  Publish steps: `docs/website-migration.md`.
 
 Open and parked work lives in `_tasks/tasks.md`.

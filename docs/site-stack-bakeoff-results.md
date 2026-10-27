@@ -1,14 +1,14 @@
 # Site stack bake-off results
 
-Last updated: 2026-10-01
+Last updated: 2026-10-27
 
 > Concluded 2026-10-01: Zola selected (see `docs/website.md` for rationale).
 > Hugo, Pelican, and custom retired as candidates.
 > Measurements below describe the July four-episode fixture.
 
 Outcome of the four-stack spike against the recipe in `docs/site-stack-bakeoff.md`.
-This records process metrics and parity checks.
-It is not a stack decision (that still goes in `docs/website.md` when chosen).
+This records process metrics and parity checks from the July fixture.
+The stack decision is in `docs/website.md`.
 
 ## How it was run
 
@@ -37,8 +37,8 @@ guests, person, about, donate, for-sponsors, listen sidebar).
 | zola | done | Zola + thin Python adapter | `site/bakeoff/.venv/bin/python site/bakeoff/zola/adapt.py` |
 | pelican | done | Pelican + custom reader or plugin | `site/bakeoff/.venv/bin/python site/bakeoff/pelican/build.py` |
 
-Docs for hugo, zola, and pelican live in each stack’s `README.md`.
-Custom remains documented in `site/bakeoff/README.md`.
+Each stack had its own README next to the code.
+Those trees are removed.
 
 ## Agent wall time
 
@@ -142,21 +142,9 @@ than size.
 - Chrome Markdown under `site/bakeoff/custom/pages/` links people as
   `../people/{slug}/` without `index.html` (inherited by all stacks).
 
-## Freeze-zone gaps left unedited
+## After the spike
 
-Workers did not edit shared freeze paths.
-Still open for a human follow-up if desired:
-
-- `site/bakeoff/README.md` still says Hugo, Zola, and Pelican are
-  unimplemented.
-- No stack decision written into `docs/website.md` yet.
-
-## What this spike does and does not decide
-
-Settled for the fixture: all four can hit the frozen URL map and chrome
-with local tools under `site/bakeoff/`.
-
-Still open for judgment (ergonomics after opening the sites over HTTP,
-long-term maintenance, dependency and CVE surface, comfort with Go
-templates vs Tera vs Jinja vs owning the custom builder).
-Scoring criteria in the recipe are meant to be filled in after that review.
+The stack decision is in `docs/website.md`.
+The bake-off trees are removed.
+The site is `site/zola/`.
+The stylesheet is `site/shared/site.css`.

@@ -1,6 +1,6 @@
 # Content model and repository layout
 
-Last updated: 2026-10-26
+Last updated: 2026-10-27
 
 Living description of how domain data is stored in this repository.
 Product goals for the public site: `docs/website.md`.
@@ -10,6 +10,7 @@ Parked ideas: `_tasks/tasks.md`.
 
 ```text
 content/                 # domain data (file-backed model)
+  articles/
   episodes/
   people/
   organizations/
@@ -30,10 +31,10 @@ Episode — `content/episodes/NNN/`
 Keep one episode folder (do not split into `public/` vs `internal/` subfolders).
 Classify artifacts by role; the site build selects what may go live.
 
-Public-facing (eligible for the site when `status: ready`)
+Public-facing (eligible for the site when `status` is `ready` or `catalog`)
 
 - `NNN-episode.yml` — canonical metadata (title, status, dates, hosts/guests, url)
-- `NNN-shownotes.md` — full public article (required for `ready`)
+- `NNN-shownotes.md` — full public article (required for `ready` and `catalog`)
 - `NNN-transcript.md` / `NNN-readable.md` — optional deep archive on the episode page
 
 Editorial / non-public (stay in git; never copied into the public site output)
@@ -165,12 +166,6 @@ Run from repo root: `python3 scripts/check_content.py`
 - `NNN-shownotes.md` required when `status: catalog`
 - `NNN-transcript.md` required when `status` is `transcript-reviewed` or later
 - Implication rules (e.g. readable implies transcript)
-
-## Prototype
-
-`content/episodes/420/` is a fake structure sample (lorem ipsum), not a real publish package.
-`status: draft` so it stays out of the public site build.
-See `content/episodes/420/STRUCTURE.md`.
 
 Golden real packages (full YAML + show notes + `url`, `status: ready`):
 `content/episodes/220/`, `content/episodes/221/`.
