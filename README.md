@@ -207,3 +207,13 @@ Review gates are human workflow steps.
 `catalog` publishes a historical episode from its show notes and page URL.
 A catalog episode becomes `ready` after a transcript and a readable file are reviewed.
 The public site build includes `ready` and `catalog`.
+
+## CI/CD
+
+GitHub Actions automatically builds the website on every pull request to `master` and builds and deploys it to GitHub Pages on every push to `master`. A failing build does not currently block merging.
+
+**Recommended workflow:**
+1. Create a feature branch and push your changes.
+2. Open a pull request to `master`.
+3. Verify that the `build` check passes in GitHub Actions.
+4. Merge the PR to trigger automatic deployment.
