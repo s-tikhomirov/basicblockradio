@@ -53,6 +53,6 @@ One-line pointers only — invoke the matching `SKILL.md` for scope, inputs, and
 - `NNN-shorts.md` is present for 200, 211, 219, 220, 221, 222, and 223.
   Older files may predate the current `Диапазон в выпуске` rules.
 - The website is the Zola build at `site/zola/`.
-  Publish steps: `docs/website-migration.md`.
+  Publish steps: `site/README.md`.
 
 Open and parked work lives in `_tasks/tasks.md`.

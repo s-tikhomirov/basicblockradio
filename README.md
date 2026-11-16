@@ -18,7 +18,6 @@ Knowledge base for the Basic Block Radio podcast — deep technical interviews a
 ├── docs/
 │   ├── content-model.md            # Data model and layout (source of truth)
 │   ├── website.md                  # Public archive product brief
-│   ├── website-migration.md        # Cutover from WordPress
 │   ├── site-stack-bakeoff.md       # July stack recipe (concluded)
 │   └── site-stack-bakeoff-results.md
 ├── content/
@@ -210,7 +209,7 @@ The public site build includes `ready` and `catalog`.
 
 ## CI/CD
 
-GitHub Actions automatically builds the website on every pull request to `master` and builds and deploys it to GitHub Pages on every push to `master`. A failing build does not currently block merging.
+GitHub Actions builds the website on every pull request to `master` and builds and deploys it to GitHub Pages on every push to `master`. A failing build does not currently block merging. What the workflow runs is in `site/README.md`.
 
 **Recommended workflow:**
 1. Create a feature branch and push your changes.

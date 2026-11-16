@@ -1,6 +1,6 @@
 # Content model and repository layout
 
-Last updated: 2026-10-27
+Last updated: 2026-11-16
 
 Living description of how domain data is stored in this repository.
 Product goals for the public site: `docs/website.md`.
@@ -123,6 +123,21 @@ not a permanent staff roster. Zero guests allowed.
 Optional `organization` only on guest entries.
 
 Organization records exist for joins; public org pages are not in v1 browse.
+
+## Catalog credits
+
+Catalog episodes include guest names taken from the episode title.
+When every name in that title is a regular host and the title names no organization,
+those names are filed as hosts.
+The other catalog episodes have an empty host list.
+Companies named in the title stay in the show notes.
+
+`content/people/historical-review.csv` is the review list for that pass.
+Each row is one episode.
+`guests` and `hosts` hold the names.
+A blank name cell means the title yielded no name on that side.
+`OK` in `guests status` or `hosts status` means that side is reviewed.
+A row is finished when both status cells are `OK`.
 
 ## Articles
 

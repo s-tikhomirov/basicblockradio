@@ -1,6 +1,6 @@
 # Website product brief
 
-Last updated: 2026-10-27
+Last updated: 2026-11-16
 
 Status key: decided means build against this until explicitly changed.
 Open means safe to refine later.
@@ -192,19 +192,85 @@ One field: the canonical public webpage for the episode.
 url: https://basicblockradio.com/e221/
 ```
 
-Platform-agnostic: old WordPress, the new archive site, or whatever hosts the page.
+The live pages use `https://basicblockradio.com/eNNN/`.
 Optional `youtube_url` holds the episode's YouTube watch URL; the site build
 derives the player embed from it. Other platform listen links stay in show
 notes when needed.
 Required when `status: ready`; optional before that.
 
-## Sequencing
+## Public site
 
-The Zola site under `site/zola/` is the archive build.
-Preview it locally.
-WordPress stays the live public site until cutover.
-The cutover plan is `docs/website-migration.md`.
-Do not let WordPress import details drive the v1 schema.
+Decided 2026-10-26.
+The site has been served this way since the domain cutover.
+Checked 2026-11-16.
+
+The public site is the Zola build under `site/zola/`,
+at https://basicblockradio.com.
+HTTPS answers with the static archive.
+The certificate is for `basicblockradio.com`.
+Preview the same build locally.
+Publishing steps are in `site/README.md`.
+
+GitHub Pages serves the site from this public repository.
+The Pages source is GitHub Actions.
+DNS is published by Yandex (`dns1.yandex.net`, `dns2.yandex.net`).
+Moving that DNS host is listed in `_tasks/tasks.md`.
+
+The site keeps its current fonts and colors (`site/shared/site.css`).
+
+Listening stays on the Libsyn RSS.
+The sidebar links Apple Podcasts, Google Podcasts, Spotify,
+Яндекс Музыка, YouTube, and that RSS.
+The build also writes `/rss.xml`.
+
+The header menu is Все выпуски, Гости, Чат, Статьи, О подкасте, and Для спонсоров.
+Чат links to `https://t.me/basicblockradio_chat`.
+«Статьи» is `/articles/`.
+Article files are described in `docs/content-model.md`.
+
+Every page links to Patreon and Boosty.
+The donate page keeps Patreon, Boosty, and the BTC and ETH addresses.
+Sponsor lines inside show notes stay in the episode body.
+The sponsor logo on each page follows the rule in `docs/content-model.md`.
+
+### Addresses
+
+The build writes a page for each old address.
+That page refreshes to the current one.
+
+- `/for-sponsors-and-advertisers/` refreshes to `/for-sponsors/`
+- `/ep099/` refreshes to `/e099/`
+- `/ep212/` refreshes to `/e212/`
+- `/https-basicblockradio-com-e214/` refreshes to `/e214/`
+- `/https-basicblockradio-com-e215/` refreshes to `/e215/`
+- `/best-of-basic-block-1/` refreshes to `/best-of-2020/`
+- `/базовый-блок-лучшее-часть-2-из-4/` refreshes to `/best-of-2020/`
+- `/базовый-блок-лучшее-часть-3-из-4/` refreshes to `/best-of-2020/`
+- `/flash-attacks/` refreshes to `/articles/flash-attacks/`
+- `/51-percent-attack/` refreshes to `/articles/51-percent-attack/`
+- `/bitcoin-reformation/` refreshes to `/articles/bitcoin-reformation/`
+
+`/all-episodes/` lists every published episode title, newest first.
+`/e106b/`, `/e107b/`, and `/e119b/` stay at those addresses.
+
+A slug listed in `site/zola/pending-episodes.txt`,
+and absent from the public build,
+is a page that says «Этот выпуск скоро будет опубликован.»
+and links to the main page.
+Any other missing address is the 404 page:
+«Страница не найдена.» and a link to the main page.
+
+### Kept pages
+
+The about page shows the listener-review screenshot
+saved at `site/zola/pages/about-screenshot.png`.
+
+`/best-of-2020/` is one page made from the three published parts of «Лучшее» (2020).
+The old addresses refresh to that page.
+
+`/bb-bonus-rms/` and `/ep100an/` stay at those addresses.
+The two Stallman video files stay out of git.
+Publishing those files is listed in `_tasks/tasks.md`.
 
 ## Site stack (decided 2026-10-01: Zola + thin Python adapter)
 
@@ -274,4 +340,3 @@ Implementation notes for future agents
 
 - Content-side compose helper for repeatable show-notes blocks (optional)
 - Public organization pages after v1 (records stay data-only until then)
-- Domain cutover from WordPress (`docs/website-migration.md`)
