@@ -22,6 +22,7 @@ Knowledge base for the Basic Block Radio podcast — deep technical interviews a
 │   └── site-stack-bakeoff-results.md
 ├── content/
 │   ├── articles/
+│   ├── pages/
 │   ├── episodes/
 │   │   ├── templates/
 │   │   │   ├── episode-template.yml

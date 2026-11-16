@@ -11,6 +11,7 @@ Parked ideas: `_tasks/tasks.md`.
 ```text
 content/                 # domain data (file-backed model)
   articles/
+  pages/
   episodes/
   people/
   organizations/
@@ -147,6 +148,16 @@ Files in `images/` are numbered in the order they appear in the article.
 `images/sources.txt` records each filename, its caption, and the address the file was saved from.
 Downloads that belong to an article live in `files/` next to `article.md`.
 The public paths are `/articles/` and `/articles/<slug>/`.
+
+## Site pages
+
+`content/pages/<name>.md` is one top-level public page.
+The first `#` heading is the page title.
+The public path is `/<name>/`.
+A Markdown image with a relative path is copied next to that page.
+
+Pages: `about`, `donate`, `for-sponsors`, `best-of-2020`, `bb-bonus-rms`, `ep100an`.
+`about-screenshot.png` sits beside `about.md`.
 
 ## Show notes and the site
 

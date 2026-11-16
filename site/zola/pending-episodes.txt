@@ -1,3 +1,0 @@
-# Episode paths published on WordPress and not yet in this build.
-# One slug per line. The site writes a short page at that path
-# until the episode is part of the public build.

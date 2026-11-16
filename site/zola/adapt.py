@@ -265,9 +265,29 @@ def write_md(path: Path, frontmatter: dict[str, Any], body: str = "") -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def local_page_assets(pages_dir: Path, page_dir: str, text: str) -> list[tuple[Path, str]]:
+    copies: list[tuple[Path, str]] = []
+    root = pages_dir.resolve()
+    for match in re.finditer(r"!\[[^\]]*\]\(([^)\s]+)\)", text):
+        rel = match.group(1)
+        if "://" in rel or rel.startswith("/"):
+            continue
+        asset = (pages_dir / rel).resolve()
+        try:
+            asset.relative_to(root)
+        except ValueError:
+            raise SystemExit(
+                f"content/pages/{page_dir}.md: image escapes content/pages: {rel}"
+            )
+        if not asset.is_file():
+            raise SystemExit(f"content/pages/{page_dir}.md: missing image {rel}")
+        copies.append((asset, f"{page_dir}/{rel}"))
+    return copies
+
+
 def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[Path, str]]]:
     content = root / "content"
-    custom_pages = stack_dir() / "pages"
+    pages_dir = content / "pages"
     zola = stack_dir()
 
     if build.exists():
@@ -510,8 +530,9 @@ def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[P
         },
     )
 
+    page_copies: list[tuple[Path, str]] = []
     for page_dir, filename in STATIC_PAGES:
-        text = (custom_pages / filename).read_text(encoding="utf-8").strip()
+        text = (pages_dir / filename).read_text(encoding="utf-8").strip()
         title = filename
         for line in text.splitlines():
             if line.startswith("# "):
@@ -527,6 +548,7 @@ def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[P
                 "extra": {"html_file": html_name},
             },
         )
+        page_copies.extend(local_page_assets(pages_dir, page_dir, text))
 
     latest = max((ep["number"] for ep in episodes_meta), default=None)
     if latest is None:
@@ -543,7 +565,7 @@ def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[P
         f"Projected {len(episodes_meta)} episodes, {len(people)} people, "
         f"{len(sponsors)} sponsor logos (latest episode {latest}) → {build}"
     )
-    return episodes_meta, logo_copies + article_copies + image_copies
+    return episodes_meta, logo_copies + article_copies + image_copies + page_copies
 
 
 SITE_URL = "https://basicblockradio.com"
@@ -691,18 +713,6 @@ REDIRECTS: tuple[tuple[str, str, str], ...] = (
 )
 
 
-def pending_episode_slugs() -> list[str]:
-    path = stack_dir() / "pending-episodes.txt"
-    slugs = []
-    if not path.is_file():
-        return slugs
-    for line in path.read_text(encoding="utf-8").splitlines():
-        line = line.split("#", 1)[0].strip()
-        if line:
-            slugs.append(line)
-    return slugs
-
-
 def notice_page(title: str, message: str, home_href: str, css_href: str, logo_href: str) -> str:
     return (
         "<!DOCTYPE html>\n"
@@ -748,26 +758,8 @@ def redirect_page(target: str) -> str:
     )
 
 
-def write_cutover(out: Path, published: set[str]) -> None:
-    """Soon pages, address redirects, and the 404 page."""
-    soon = notice_page(
-        "Выпуск скоро будет опубликован — Базовый Блок",
-        "Этот выпуск скоро будет опубликован.",
-        "../index.html",
-        "../css/site.css",
-        "../logo.png",
-    )
-    written = 0
-    for slug in pending_episode_slugs():
-        if slug in published:
-            continue
-        dest = out / slug / "index.html"
-        if dest.exists():
-            continue
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text(soon, encoding="utf-8")
-        written += 1
-
+def write_cutover(out: Path) -> None:
+    """Address redirects and the 404 page."""
     rules = []
     for folder, relative, absolute in REDIRECTS:
         dest = out / folder / "index.html"
@@ -790,7 +782,7 @@ def write_cutover(out: Path, published: set[str]) -> None:
         ),
         encoding="utf-8",
     )
-    print(f"Cutover: {written} soon pages, {len(REDIRECTS)} redirects, 404")
+    print(f"Cutover: {len(REDIRECTS)} redirects, 404")
 
 
 def run_zola(
@@ -825,9 +817,6 @@ def run_zola(
     css_dest.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(css_src, css_dest)
     shutil.copy2(site_root() / "shared" / "logo.png", out / "logo.png")
-    about_dir = out / "about"
-    about_dir.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(stack_dir() / "pages" / "about-screenshot.png", about_dir / "about-screenshot.png")
     for src, rel in logo_copies or []:
         dest = out / rel
         dest.parent.mkdir(parents=True, exist_ok=True)
@@ -841,8 +830,7 @@ def run_zola(
     write_rss(out, episodes or [])
     write_sitemap(out)
     write_robots(out)
-    published = {ep["slug"] for ep in episodes or []}
-    write_cutover(out, published)
+    write_cutover(out)
 
 
 def main() -> int:

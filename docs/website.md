@@ -253,17 +253,13 @@ That page refreshes to the current one.
 `/all-episodes/` lists every published episode title, newest first.
 `/e106b/`, `/e107b/`, and `/e119b/` stay at those addresses.
 
-A slug listed in `site/zola/pending-episodes.txt`,
-and absent from the public build,
-is a page that says «Этот выпуск скоро будет опубликован.»
-and links to the main page.
-Any other missing address is the 404 page:
+A missing address is the 404 page:
 «Страница не найдена.» and a link to the main page.
 
 ### Kept pages
 
 The about page shows the listener-review screenshot
-saved at `site/zola/pages/about-screenshot.png`.
+saved at `content/pages/about-screenshot.png`.
 
 `/best-of-2020/` is one page made from the three published parts of «Лучшее» (2020).
 The old addresses refresh to that page.
@@ -330,8 +326,8 @@ Implementation notes for future agents
   `_PUBDATES`); refresh them from the Libsyn RSS if episodes are added.
 - `youtube_url` in episode YAML is the home for video links;
   the adapter derives the embed URL. Never guess IDs, match channel titles.
-- Static page sources live in `site/zola/pages/`
-  (verbatim WP copies plus `#` title headers the adapter reads).
+- Standalone pages live in `content/pages/`.
+  The adapter reads the `#` title and publishes each named file at `/<name>/`.
 - The Zola project is `site/zola/`.
   `site/shared/` holds the stylesheet and logo.
   Tool binary, venv, staging, and output stay gitignored.

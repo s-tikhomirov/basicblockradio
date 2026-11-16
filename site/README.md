@@ -9,8 +9,6 @@ Product contract: `docs/website.md`.
   staging (`zola/.build/`), runs the pinned Zola binary, writes feed,
   sitemap, and robots files alongside the output
 - `zola/templates/` — Tera templates
-- `zola/pages/` — static page Markdown
-  (about, donate, for-sponsors, and the other kept pages)
 - `zola/config.toml` — Zola config (`base_url` stays `/`
   so `file://` preview keeps working)
 - `shared/site.css` — the single stylesheet, copied to output at build time
@@ -62,7 +60,5 @@ GitHub Pages uses this workflow as its source.
 The custom domain is `basicblockradio.com`.
 Enforce HTTPS is on for that name.
 
-`site/zola/pending-episodes.txt` lists episode slugs that get a short page
-saying «Этот выпуск скоро будет опубликован.»
-until that episode is part of the public build.
+Standalone page Markdown lives in `content/pages/`.
 The address map for old paths is in `docs/website.md`.

@@ -23,7 +23,6 @@ EPISODES = ROOT / "content" / "episodes"
 PEOPLE = ROOT / "content" / "people"
 REVIEW = PEOPLE / "historical-review.csv"
 LOG = PEOPLE / "catalog-import-log.txt"
-PENDING = ROOT / "site" / "zola" / "pending-episodes.txt"
 PLAYLIST = "PLU_YQeud2Sg4aasRHsI11tTyq4nF8Tk4X"
 WP = "https://basicblockradio.com/wp-json/wp/v2/posts"
 RSS_URL = "https://basicblockradio.libsyn.com/rss"
@@ -574,14 +573,6 @@ def main() -> None:
 
     write_review(review_rows)
     LOG.write_text("\n".join(log) + "\n", encoding="utf-8")
-    published = {f"e{folder}" for folder in imported}
-    published.add("ep099")
-    kept = []
-    for line in PENDING.read_text(encoding="utf-8").splitlines():
-        if line.strip() in published:
-            continue
-        kept.append(line)
-    PENDING.write_text("\n".join(kept).rstrip() + "\n", encoding="utf-8")
     print(f"imported {len(imported)} episodes")
     print(f"playlist videos {len(playlist)}")
     print(f"review rows {len(review_rows) - 1}")
