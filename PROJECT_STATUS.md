@@ -46,9 +46,8 @@ One-line pointers only — invoke the matching `SKILL.md` for scope, inputs, and
 
 ## In repo today
 
-- Episodes 200–223 are `status: ready`, each with transcript, readable,
+- Episodes 200–224 are `status: ready`, each with transcript, readable,
   shownotes, `url`, and `youtube_url`.
-- Episode 224 is `readable-reviewed`, so the public build leaves it out.
 - Episodes before 200 are `catalog` (show notes and page URL).
 - `NNN-shorts.md` is present for 200, 211, 219, 220, 221, 222, and 223.
   Older files may predate the current `Диапазон в выпуске` rules.

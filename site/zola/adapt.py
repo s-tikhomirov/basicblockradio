@@ -39,6 +39,7 @@ _LIBYSN_IDS = {
     212: 39252045, 213: 39442365, 214: 39666875, 215: 39732875,
     216: 39992260, 217: 40106790, 218: 40868785, 219: 41034615,
     220: 41440480, 221: 41620665, 222: 41956790, 223: 42315795,
+    224: 43464899,
 }
 def youtube_embed(watch_url: Any) -> str:
     if not isinstance(watch_url, str) or not watch_url:
@@ -573,6 +574,7 @@ _AUDIO: dict[int, tuple[str, int]] = {
     221: ("https://traffic.libsyn.com/secure/basicblockradio/-221.mp3?dest-id=573859", 92958179),
     222: ("https://traffic.libsyn.com/secure/basicblockradio/-222___Resolv_______.mp3?dest-id=573859", 93829527),
     223: ("https://traffic.libsyn.com/secure/basicblockradio/-223__DWeb_Camp.____.mp3?dest-id=573859", 102583948),
+    224: ("https://traffic.libsyn.com/secure/basicblockradio/-224___bitcoin___.mp3?dest-id=573859", 70847054),
 }
 
 # Publication dates mined from the Libsyn RSS feed (pubDate).
