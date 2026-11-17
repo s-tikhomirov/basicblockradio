@@ -214,8 +214,7 @@ Body hooks: `nav.trail`, `ul.episode-list` / `.title` / `.meta`, `nav.pager`,
 ### Feed pages
 
 - List episodes for that page only, newest first within the global sort
-- Each row: full `title` (linked to `/eNNN/`), optional date
-  (`publish_date` if set, else `recording_date` if not `unknown`),
+- Each row: full `title` (linked to `/eNNN/`), `publication_date`,
   then linked people in appearance order (hosts then guests)
 - Pager: «Новее» / «Старее» between `/` and `/page/2/` as appropriate
 

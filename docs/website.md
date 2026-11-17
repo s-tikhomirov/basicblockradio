@@ -1,6 +1,6 @@
 # Website product brief
 
-Last updated: 2026-11-16
+Last updated: 2026-11-17
 
 Status key: decided means build against this until explicitly changed.
 Open means safe to refine later.
@@ -100,7 +100,7 @@ Two contracts.
 Source completeness (repo)
 
 - Canonical metadata in `NNN-episode.yml`; public narrative in show notes
-- Identity: episode number, full-string `title`, guests, hosts, recording date
+- Identity: episode number, full-string `title`, guests, hosts, recording date, publication date
 - Body: intro or summary, timecodes, links, usual CTAs and sponsors as today
 - Canonical episode page `url` in episode metadata
 - Transcript and readable are deeper artifacts from the editorial pipeline;
@@ -111,7 +111,7 @@ Public episode page
 - Article body comes from `NNN-shownotes.md` (same order/shape as the public article;
   may duplicate person/org/sponsor/CTA lines already known elsewhere — that is OK)
 - Page chrome and structured data come from `NNN-episode.yml`
-  (title, status, url, appearances → person/org pages)
+  (title, status, publication date, url, appearances → person/org pages)
 - Optional extra section from `NNN-readable.md` (and/or transcript) when present
 - Never publish `NNN-shorts.md`, `NNN-raw.srt`, `NNN-raw-undiaried.srt`, or `NNN-raw-diarized.txt` (editorial / pipeline only)
 - Compose/fill of repeatable show-notes blocks is a content-side step
@@ -322,8 +322,10 @@ Implementation notes for future agents
 
 - Build entrypoint: `site/zola/adapt.py --out <dir>`;
   preview with `python3 -m http.server --directory <dir>`.
-- The adapter hardcodes feed-derived maps (`_LIBYSN_IDS`, `_AUDIO`,
-  `_PUBDATES`); refresh them from the Libsyn RSS if episodes are added.
+- The adapter hardcodes feed-derived maps (`_LIBYSN_IDS`, `_AUDIO`);
+  refresh them from the Libsyn RSS if episodes are added.
+- `publication_date` lives in episode YAML.
+  The home list and the episode page show that day as `YYYY-MM-DD`.
 - `youtube_url` in episode YAML is the home for video links;
   the adapter derives the embed URL. Never guess IDs, match channel titles.
 - Standalone pages live in `content/pages/`.

@@ -1,6 +1,6 @@
 # Content model and repository layout
 
-Last updated: 2026-11-16
+Last updated: 2026-11-17
 
 Living description of how domain data is stored in this repository.
 Product goals for the public site: `docs/website.md`.
@@ -99,7 +99,7 @@ title: "ББ-221: …"          # full-string canon for the webpage
 status: ready                 # draft | transcript-reviewed | readable-reviewed | ready | catalog
 
 recording_date: 2026-05-22
-publish_date: 2026-07-03      # optional
+publication_date: 2026-06-12
 
 hosts:
   - slug: sergei-tikhomirov
@@ -112,8 +112,12 @@ url: https://basicblockradio.com/e221/   # canonical episode webpage
 
 `url` is the canonical episode webpage in episode YAML (see `docs/website.md`).
 Optional `youtube_url` holds the episode's YouTube watch URL.
-When `status: ready`: `url`, `NNN-readable.md`, and `NNN-shownotes.md` are required.
-When `status: catalog`: `NNN-shownotes.md` is required.
+`publication_date` is the release day from the Libsyn RSS `pubDate`,
+stored as `YYYY-MM-DD` in UTC.
+151b, 188b, and 193b have no RSS item.
+Their `publication_date` is the date recorded for that page.
+When `status: ready`: `url`, `publication_date`, `NNN-readable.md`, and `NNN-shownotes.md` are required.
+When `status: catalog`: `publication_date` and `NNN-shownotes.md` are required.
 `url` is the canonical page address when the episode has one.
 `transcript-reviewed` requires `NNN-transcript.md`.
 `readable-reviewed` requires transcript and readable.
@@ -186,6 +190,7 @@ Run from repo root: `python3 scripts/check_content.py`
 - Show-notes first line equals `title`
 - `title` starts with `ББ-{N}:`
 - Appearance slugs resolve under `people/` / `organizations/`
+- `publication_date` is `YYYY-MM-DD`; required when `status` is `ready` or `catalog`
 - `url` is an http(s) page URL; required when `status` is `ready`
 - `youtube_url`, when present, is an http(s) URL
 - `NNN-shownotes.md` and `NNN-readable.md` required when `status: ready`

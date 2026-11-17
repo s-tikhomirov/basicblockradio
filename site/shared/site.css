@@ -20,6 +20,7 @@
   Pager:         nav.pager
   Trail:         nav.trail
   Credits:       .credits > p
+                 .credits > p.publication-date
   Embeds:        section.embeds > .embed.embed-youtube | .embed.embed-libsyn > iframe
   Show notes:    article.shownotes
   Readable:      details.transcript > summary + .readable
@@ -318,6 +319,10 @@ nav.trail {
 
 .credits p {
   margin: 0.25rem 0;
+}
+
+.credits .publication-date {
+  color: var(--muted);
 }
 
 .embeds {

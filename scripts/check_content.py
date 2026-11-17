@@ -19,7 +19,7 @@ EPISODE_TOP_KEYS = frozenset(
         "title",
         "status",
         "recording_date",
-        "publish_date",
+        "publication_date",
         "hosts",
         "guests",
         "url",
@@ -381,12 +381,17 @@ class Checker:
             elif isinstance(rec, str) and parse_iso_date(rec) is None:
                 self.error(yml_path, f"invalid recording_date: {rec!r}")
 
-        if "publish_date" in data and data["publish_date"] is not None:
-            pub = data["publish_date"]
+        pub = data.get("publication_date")
+        if status in PUBLIC_STATUSES and pub is None:
+            self.error(
+                yml_path,
+                "publication_date is required when status is ready or catalog",
+            )
+        elif pub is not None:
             if not isinstance(pub, (str, date)):
-                self.error(yml_path, "publish_date must be YYYY-MM-DD")
+                self.error(yml_path, "publication_date must be YYYY-MM-DD")
             elif isinstance(pub, str) and parse_iso_date(pub) is None:
-                self.error(yml_path, f"invalid publish_date: {pub!r}")
+                self.error(yml_path, f"invalid publication_date: {pub!r}")
 
         self.check_appearances(yml_path, data.get("hosts"), "hosts", people_slugs, org_slugs, False)
         self.check_appearances(yml_path, data.get("guests"), "guests", people_slugs, org_slugs, True)

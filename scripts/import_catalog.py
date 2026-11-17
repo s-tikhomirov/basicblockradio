@@ -3,6 +3,7 @@
 
 Writes content/episodes/NNN as status catalog.
 Hosts and guests stay empty.
+Publication dates come from the Libsyn RSS pubDate.
 People guesses go to content/people/historical-review.csv.
 """
 
@@ -15,6 +16,8 @@ import re
 import urllib.error
 import urllib.parse
 import urllib.request
+from datetime import timezone
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
@@ -99,7 +102,14 @@ def load_rss() -> dict[str, dict[str, str | int]]:
         enclosure = item.find("enclosure")
         url = enclosure.get("url") if enclosure is not None else ""
         length = enclosure.get("length") if enclosure is not None else ""
-        found.setdefault(key, {"title": title, "url": url or "", "length": length or ""})
+        pub = item.findtext("pubDate") or ""
+        day = ""
+        if pub:
+            day = parsedate_to_datetime(pub).astimezone(timezone.utc).date().isoformat()
+        found.setdefault(
+            key,
+            {"title": title, "url": url or "", "length": length or "", "publication_date": day},
+        )
     return found
 
 
@@ -403,12 +413,15 @@ def write_episode(folder: str, number: int, letter: str, title: str, day: str, f
         "status: catalog",
         "",
         "recording_date: unknown",
-        f"publish_date: {day}",
+    ]
+    if day:
+        lines.append(f"publication_date: {day}")
+    lines.extend([
         "",
         credits,
         "",
         f"url: https://basicblockradio.com/e{folder}/",
-    ]
+    ])
     if letter:
         lines.append(f"variant: {letter}")
     youtube = fields.get("youtube_url")
@@ -478,7 +491,6 @@ def main() -> None:
                 log.append(f"{folder}\ttitle prefix aligned to {expected}")
             else:
                 log.append(f"{folder}\ttitle does not start with {expected}: {title}")
-        day = str(post["date"])[:10]
         source = post["content"]["rendered"]
         notes: list[str] = []
         embed_ids = list(dict.fromkeys(YT_EMBED_RE.findall(source)))
@@ -516,7 +528,20 @@ def main() -> None:
             notes.append("several libsyn ids: " + ", ".join(libsyn_ids))
         else:
             notes.append("no libsyn player")
-        audio = rss.get(folder)
+        audio = rss.get(folder) or {}
+        day = str(audio.get("publication_date") or "")
+        if not day:
+            existing = EPISODES / folder / f"{folder}-episode.yml"
+            if existing.is_file():
+                kept = re.search(
+                    r"^publication_date:\s*(\d{4}-\d{2}-\d{2})\s*$",
+                    existing.read_text(encoding="utf-8"),
+                    re.M,
+                )
+                if kept:
+                    day = kept.group(1)
+            if not day:
+                notes.append("no rss publication date")
         audio_url = ""
         audio_bytes = 0
         if audio and audio["url"] and str(audio["length"]).isdigit():

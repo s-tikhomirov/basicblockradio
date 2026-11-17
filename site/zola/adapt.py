@@ -114,13 +114,7 @@ def format_date(value: Any) -> str | None:
 
 
 def display_date(meta: dict[str, Any]) -> str | None:
-    pub = format_date(meta.get("publish_date"))
-    if pub:
-        return pub
-    rec = format_date(meta.get("recording_date"))
-    if rec and rec != "unknown":
-        return rec
-    return None
+    return format_date(meta.get("publication_date"))
 
 
 def load_person_meta(content: Path, slug: str) -> dict[str, Any]:
@@ -352,11 +346,8 @@ def project(root: Path, build: Path) -> tuple[list[dict[str, Any]], list[tuple[P
         included.append((folder, meta, number, public_slug))
 
     def sort_date(row: tuple[Path, dict[str, Any], int, str]) -> str:
-        _folder, meta, number, _slug = row
-        published = format_date(meta.get("publish_date"))
-        if published:
-            return published
-        return _PUBDATES.get(number, "")
+        _folder, meta, _number, _slug = row
+        return format_date(meta.get("publication_date")) or ""
 
     included.sort(key=lambda row: (sort_date(row), row[3]), reverse=True)
 
@@ -597,16 +588,6 @@ _AUDIO: dict[int, tuple[str, int]] = {
     222: ("https://traffic.libsyn.com/secure/basicblockradio/-222___Resolv_______.mp3?dest-id=573859", 93829527),
     223: ("https://traffic.libsyn.com/secure/basicblockradio/-223__DWeb_Camp.____.mp3?dest-id=573859", 102583948),
     224: ("https://traffic.libsyn.com/secure/basicblockradio/-224___bitcoin___.mp3?dest-id=573859", 70847054),
-}
-
-# Publication dates mined from the Libsyn RSS feed (pubDate).
-_PUBDATES = {
-    200: "2025-06-08", 201: "2025-06-28", 202: "2025-07-06", 203: "2025-07-10",
-    204: "2025-07-17", 205: "2025-07-24", 206: "2025-08-19", 207: "2025-09-08",
-    208: "2025-09-17", 209: "2025-10-20", 210: "2025-11-10", 211: "2025-11-14",
-    212: "2025-12-03", 213: "2025-12-17", 214: "2026-01-09", 215: "2026-01-15",
-    216: "2026-02-04", 217: "2026-02-14", 218: "2026-04-14", 219: "2026-04-27",
-    220: "2026-05-27", 221: "2026-06-12", 222: "2026-07-03", 223: "2026-08-04",
 }
 
 
